@@ -7,7 +7,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+  <router-link 
+    :to="{ name: 'product-detail', params: { id: product.id } }"
+    class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full cursor-pointer block"
+  >
     <div class="h-48 overflow-hidden relative group">
       <img
         :src="product.thumbnail"
@@ -39,5 +42,5 @@ defineProps<{
         </div>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
