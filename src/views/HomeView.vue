@@ -12,16 +12,19 @@ const isLoading = ref(true);
 
 onMounted(async () => {
   try {
-    const [productsRes] = await Promise.all([
-      fetch('https://dummyjson.com/products?limit=100'),
-      fetch('https://dummyjson.com/products/categories')
+    const [mensRes, womensRes] = await Promise.all([
+      fetch('https://dummyjson.com/products/category/mens-shoes'),
+      fetch('https://dummyjson.com/products/category/womens-shoes')
     ]);
     
-    const productsData = await productsRes.json();
-    products.value = productsData.products;
+    const mensData = await mensRes.json();
+    const womensData = await womensRes.json();
+    
+    // Combine filtered products
+    products.value = [...mensData.products, ...womensData.products];
     
     // Extract unique categories from products
-    const uniqueCategories = new Set(productsData.products.map((p: Product) => p.category as string));
+    const uniqueCategories = new Set(products.value.map((p: Product) => p.category as string));
     categories.value = Array.from(uniqueCategories).sort();
   } catch (error) {
     console.error('Failed to fetch data:', error);
