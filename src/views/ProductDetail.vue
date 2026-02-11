@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useCartStore } from '../stores/cart';
 import type { Product } from '../types/product';
 
 const route = useRoute();
+const cartStore = useCartStore();
 const product = ref<Product | null>(null);
 const isLoading = ref(true);
 const error = ref('');
+const showAddedFeedback = ref(false);
+
+const handleAddToCart = () => {
+  if (product.value) {
+    cartStore.addToCart(product.value);
+    showAddedFeedback.value = true;
+    setTimeout(() => {
+      showAddedFeedback.value = false;
+    }, 2000);
+  }
+};
 
 onMounted(async () => {
   try {
@@ -97,10 +110,12 @@ onMounted(async () => {
            </div>
            
            <button 
-             class="w-full bg-indigo-600 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-indigo-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+             @click="handleAddToCart"
+             class="w-full text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+             :class="showAddedFeedback ? 'bg-green-600 hover:bg-green-700 ring-green-300' : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-300'"
              :disabled="product.stock === 0"
            >
-             {{ product.stock > 0 ? 'Add to Cart' : 'Sold Out' }}
+             {{ showAddedFeedback ? 'Added to Cart!' : (product.stock > 0 ? 'Add to Cart' : 'Sold Out') }}
            </button>
         </div>
       </div>
