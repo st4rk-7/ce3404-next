@@ -48,7 +48,7 @@ export function useProducts() {
         return x - Math.floor(x);
     };
 
-    originalProducts.forEach((product, index) => {
+    originalProducts.forEach((product) => {
       // 1. Original (Augmented)
       const originalImage = sneakerImages[transformed.length % sneakerImages.length] || '';
       const basePrice = product.price * 10; // Augment price globally
