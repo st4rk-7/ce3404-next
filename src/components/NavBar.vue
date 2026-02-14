@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useCartStore } from '../stores/cart';
+import { useAuthStore } from '../stores/auth';
 
 const cartStore = useCartStore();
-const cartStore = useCartStore();
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -46,12 +46,28 @@ const cartStore = useCartStore();
             <span class="font-bold">EUR €</span>
         </div>
 
-        <!-- User Icon -->
-        <button class="p-1 hover:text-gray-600 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
-        </button>
+        <!-- User Icon or Login -->
+        <div v-if="authStore.isAuthenticated" class="relative group">
+            <button class="p-1 hover:text-indigo-600 transition-colors flex items-center gap-2">
+                 <img v-if="authStore.user?.image" :src="authStore.user.image" class="w-6 h-6 rounded-full border border-gray-200" alt="avatar">
+                 <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+            </button>
+            <!-- Dropdown -->
+            <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg py-2 hidden group-hover:block z-50">
+                <div class="px-4 py-2 text-xs border-b border-gray-100">
+                    <p class="font-bold text-gray-900">{{ authStore.user?.firstName }} {{ authStore.user?.lastName }}</p>
+                    <p class="text-gray-500 truncate">{{ authStore.user?.email }}</p>
+                </div>
+                <button @click="authStore.logout()" class="block w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-gray-50">
+                    Sign Out
+                </button>
+            </div>
+        </div>
+        <RouterLink v-else to="/login" class="text-xs font-bold tracking-widest hover:text-indigo-600 transition-colors">
+            LOGIN
+        </RouterLink>
 
         <!-- Search Icon -->
         <button class="p-1 hover:text-gray-600 transition-colors hidden sm:block">
