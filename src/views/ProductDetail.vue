@@ -3,9 +3,11 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import type { Product } from '../types/product';
+import { useProducts } from '../composables/useProducts';
 
 const route = useRoute();
 const cartStore = useCartStore();
+const { getProductById, fetchProducts } = useProducts();
 const product = ref<Product | null>(null);
 const isLoading = ref(true);
 const error = ref('');
@@ -23,9 +25,18 @@ const handleAddToCart = () => {
 
 onMounted(async () => {
   try {
-    const res = await fetch(`https://dummyjson.com/products/${route.params.id}`);
-    if (!res.ok) throw new Error('Product not found');
-    product.value = await res.json();
+    const productId = parseInt(route.params.id as string);
+    product.value = getProductById(productId) || null;
+
+    // If product not found (page reload), fetch data first
+    if (!product.value) {
+        await fetchProducts();
+        product.value = getProductById(productId) || null;
+    }
+
+    if (!product.value) {
+        throw new Error('Product not found');
+    }
   } catch (err: any) {
     error.value = err.message || 'Failed to load product';
   } finally {

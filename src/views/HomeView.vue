@@ -3,34 +3,21 @@ import { ref, computed, onMounted } from 'vue';
 import FilterBar from '../components/FilterBar.vue';
 import ProductCard from '../components/ProductCard.vue';
 import type { Product } from '../types/product';
+import { useProducts } from '../composables/useProducts';
 
-const products = ref<Product[]>([]);
+const { products, isLoading, fetchProducts } = useProducts();
 const categories = ref<string[]>([]);
 const searchQuery = ref('');
 const selectedCategory = ref('');
-const isLoading = ref(true);
 
 onMounted(async () => {
-  try {
-    const [mensRes, womensRes] = await Promise.all([
-      fetch('https://dummyjson.com/products/category/mens-shoes'),
-      fetch('https://dummyjson.com/products/category/womens-shoes')
-    ]);
+    await fetchProducts();
     
-    const mensData = await mensRes.json();
-    const womensData = await womensRes.json();
-    
-    // Combine filtered products
-    products.value = [...mensData.products, ...womensData.products];
-    
-    // Extract unique categories from products
+    // Extract unique categories from augmented products
+    // We cast to string because typically category is a string, 
+    // but strict mode might complain if it's potentially something else.
     const uniqueCategories = new Set(products.value.map((p: Product) => p.category as string));
     categories.value = Array.from(uniqueCategories).sort();
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-  } finally {
-    isLoading.value = false;
-  }
 });
 
 const filteredProducts = computed(() => {
