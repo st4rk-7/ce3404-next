@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { Product } from '@/types/product';
+import type { Product } from '../types/product';
 
 defineProps<{
   product: Product;

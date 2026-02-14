@@ -42,9 +42,9 @@ export function useProducts() {
     const transformed: Product[] = [];
     const suffixes = ['Midnight Edition', 'Volt', 'Red October', 'Cool Grey', 'Triple Black', 'Royal', 'Bred', 'Chicago', 'Panda'];
 
-    originalProducts.forEach((product, index) => {
+    originalProducts.forEach((product) => {
       // 1. Original
-      const originalImage = sneakerImages[transformed.length % sneakerImages.length];
+      const originalImage = sneakerImages[transformed.length % sneakerImages.length] || '';
       const transformedOriginal = {
         ...product,
         thumbnail: originalImage,
@@ -61,7 +61,7 @@ export function useProducts() {
         // But for mapped items, we'll just generate.
         const cloneId = parseInt(`${product.id}${i + 1}${Math.floor(Math.random() * 100)}`);
         
-        const cloneImage = sneakerImages[transformed.length % sneakerImages.length];
+        const cloneImage = sneakerImages[transformed.length % sneakerImages.length] || '';
 
         transformed.push({
           ...product,
