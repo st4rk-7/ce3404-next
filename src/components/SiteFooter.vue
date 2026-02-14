@@ -96,8 +96,8 @@ const subscribe = () => {
        <div class="mt-16 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-500 uppercase tracking-widest">
            <div>
                <div class="flex items-center space-x-2 border border-gray-300 px-2 py-1 inline-flex">
-                   <span>🇮🇹</span>
-                   <span>EUR €</span>
+                   <span>🇱🇰</span>
+                   <span>LKR Rs</span>
                </div>
            </div>
            

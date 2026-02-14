@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { Product } from '../types/product';
+import { useCurrency } from '../composables/useCurrency';
+
+const { formatPrice } = useCurrency();
 
 const props = defineProps<{
   product: Product;
   discountPercentage?: number; // allow overriding or defaulting if missing
 }>();
-
-// Helper to format currency
-const formatPrice = (value: number) => {
-  return new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(value);
-};
 
 // Calculate original price assuming product.price is the SELLING price
 // OR if product.price is original, calculate selling.
@@ -36,7 +34,7 @@ const discountLabel = computed(() => {
 </script>
 
 <template>
-  <div class="group cursor-pointer">
+  <RouterLink :to="`/product/${product.id}`" class="group cursor-pointer block">
     <!-- Image Container -->
     <div class="relative overflow-hidden bg-gray-100 aspect-[4/3] mb-4">
       <img
@@ -49,7 +47,7 @@ const discountLabel = computed(() => {
 
     <!-- Product Details -->
     <div class="space-y-1">
-      <h3 class="text-sm font-normal text-gray-900 leading-snug font-sans group-hover:underline decoration-1 underline-offset-2">
+      <h3 class="text-sm font-normal text-brand-blue leading-snug font-sans group-hover:underline decoration-1 underline-offset-2">
         {{ product.title }}
       </h3>
       
@@ -57,13 +55,13 @@ const discountLabel = computed(() => {
         <span v-if="hasDiscount" class="text-gray-400 line-through decoration-gray-400">
             {{ formatPrice(originalPrice) }}
         </span>
-        <span :class="{'text-red-600': hasDiscount, 'text-gray-900': !hasDiscount}" class="font-bold">
+        <span :class="{'text-brand-red': hasDiscount, 'text-brand-blue': !hasDiscount}" class="font-bold">
             {{ formatPrice(product.price) }}
         </span>
-        <span v-if="hasDiscount" class="text-[#efb012]">
+        <span v-if="hasDiscount" class="text-brand-red">
             {{ discountLabel }}
         </span>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>

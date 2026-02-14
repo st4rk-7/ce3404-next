@@ -42,34 +42,45 @@ export function useProducts() {
     const transformed: Product[] = [];
     const suffixes = ['Midnight Edition', 'Volt', 'Red October', 'Cool Grey', 'Triple Black', 'Royal', 'Bred', 'Chicago', 'Panda'];
 
-    originalProducts.forEach((product) => {
-      // 1. Original
+    // Deterministic random for consistency
+    const seededRandom = (seed: number) => {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    };
+
+    originalProducts.forEach((product, index) => {
+      // 1. Original (Augmented)
       const originalImage = sneakerImages[transformed.length % sneakerImages.length] || '';
+      const basePrice = product.price * 10; // Augment price globally
+      const randomDiscount = Math.floor(seededRandom(product.id) * 30 + 10);
+      
       const transformedOriginal = {
         ...product,
+        price: basePrice,
+        discountPercentage: product.discountPercentage || (seededRandom(product.id + 1) > 0.5 ? randomDiscount : 0),
         thumbnail: originalImage,
-        images: [originalImage]
+        images: [originalImage, originalImage]
       };
       transformed.push(transformedOriginal);
 
       // 2. Clones
       for (let i = 0; i < 3; i++) {
-        const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-        const priceVariation = Math.floor(Math.random() * 41) - 20;
+        const seed = product.id + (i + 1) * 1000;
+        const randomSuffix = suffixes[Math.floor(seededRandom(seed) * suffixes.length)];
+        const priceVariation = Math.floor(seededRandom(seed + 1) * 41) - 20; // -20 to +20
         
-        // We need a deterministic but seemingly random ID for persistence during session if possible
-        // But for mapped items, we'll just generate.
-        const cloneId = parseInt(`${product.id}${i + 1}${Math.floor(Math.random() * 100)}`);
-        
+        const cloneId = parseInt(`${product.id}${i + 1}${Math.floor(seededRandom(seed + 2) * 100)}`);
         const cloneImage = sneakerImages[transformed.length % sneakerImages.length] || '';
+        const cloneBasePrice = basePrice + (priceVariation * 10);
 
         transformed.push({
           ...product,
           id: cloneId,
           title: `${product.title} - ${randomSuffix}`,
-          price: Math.max(0, product.price + priceVariation),
+          price: Math.max(0, cloneBasePrice),
+          discountPercentage: seededRandom(cloneId) > 0.5 ? Math.floor(seededRandom(cloneId + 1) * 30 + 10) : 0,
           thumbnail: cloneImage, 
-          images: [cloneImage, cloneImage] // Ensure images array has content
+          images: [cloneImage, cloneImage]
         });
       }
     });

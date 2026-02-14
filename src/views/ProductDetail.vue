@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import type { Product } from '../types/product';
 import { useProducts } from '../composables/useProducts';
 import ProductGallery from '../components/ProductGallery.vue';
 import ProductInfo from '../components/ProductInfo.vue';
+import ProductGrid from '../components/ProductGrid.vue';
 
 const route = useRoute();
 const cartStore = useCartStore();
-const { getProductById, fetchProducts } = useProducts();
+const { getProductById, fetchProducts, products } = useProducts();
 const product = ref<Product | null>(null);
 const isLoading = ref(true);
 const error = ref('');
@@ -23,16 +24,17 @@ const handleAddToCart = (payload: { product: Product; size: string; quantity: nu
   }, 2000);
 };
 
+// Mock related products (just filter out current product and take 4)
+const relatedProducts = computed(() => {
+    if (!product.value) return [];
+    return products.value.filter(p => p.id !== product.value?.id).slice(0, 4);
+});
+
 onMounted(async () => {
   try {
-    const productId = parseInt(route.params.id as string);
+    const productId = Number(route.params.id); // Changed parseInt to Number
+    await fetchProducts(); // Ensure products are loaded for grid/recommendations
     product.value = getProductById(productId) || null;
-
-    // If product not found (page reload), fetch data first
-    if (!product.value) {
-        await fetchProducts();
-        product.value = getProductById(productId) || null;
-    }
 
     if (!product.value) {
         throw new Error('Product not found');
@@ -58,7 +60,7 @@ onMounted(async () => {
     </div>
 
     <!-- Product Content -->
-    <div v-else-if="product" class="container mx-auto px-4 md:px-8 py-6 md:py-12">
+    <div v-if="product" class="container mx-auto px-4 md:px-8 py-6 md:py-12 font-mono">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8">
         <!-- Gallery (Left Column) -->
         <div class="md:col-span-7 lg:col-span-8">
@@ -80,6 +82,12 @@ onMounted(async () => {
             Added to cart!
           </div>
         </div>
+      </div>
+
+      <!-- Recommendations Section -->
+      <div class="mt-20 pt-10 border-t border-gray-100">
+        <h3 class="text-xl font-bold uppercase tracking-widest text-center mb-10 text-black">You Might Also Like</h3>
+        <ProductGrid :products="relatedProducts" :columns="4" />
       </div>
     </div>
   </div>
