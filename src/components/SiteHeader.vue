@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { useCartStore } from '../stores/cart';
 
-const cartStore = useCartStore();
-const cartStore = useCartStore();
+// Placeholder states for interactivity
+const isSearchOpen = ref(false);
+const cartCount = ref(0);
 </script>
 
 <template>
-  <header class="w-full bg-white text-gray-900 font-sans border-b border-gray-200 fixed top-0 left-0 z-50">
+  <header class="w-full bg-white text-gray-900 font-sans border-b border-gray-200">
     <!-- Top Bar -->
-    <div class="bg-black text-white text-xs font-bold text-center py-2 tracking-widest uppercase">
+    <div class="bg-[#efb012] text-xs font-bold text-center py-2 tracking-widest uppercase">
       Free Shipping Worldwide
     </div>
 
     <!-- Main Navigation -->
-    <div class="container mx-auto px-4 md:px-8 h-16 md:h-20 flex justify-between items-center bg-white">
+    <div class="container mx-auto px-4 md:px-8 h-20 flex justify-between items-center">
       
       <!-- Left Nav: Desktop -->
       <nav class="hidden md:flex space-x-8 text-xs font-bold tracking-widest">
@@ -34,7 +34,7 @@ const cartStore = useCartStore();
       <!-- Center Logo -->
       <div class="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold tracking-tighter">
         <RouterLink to="/" class="flex flex-col items-center leading-none">
-          <span class="text-3xl tracking-widest">NEXT</span>
+          <span>LEATHER C|R|OWN</span>
         </RouterLink>
       </div>
 
@@ -65,13 +65,15 @@ const cartStore = useCartStore();
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
             </svg>
-            <span v-if="cartStore.cartCount > 0" class="absolute -top-1 -right-1 bg-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-                {{ cartStore.cartCount }}
+            <span v-if="cartCount > 0" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                {{ cartCount }}
             </span>
         </button>
       </div>
     </div>
   </header>
-  <!-- Spacer for fixed header -->
-  <div class="h-24 md:h-28"></div>
 </template>
+
+<style scoped>
+/* Optional: Add custom font logic here or in global css */
+</style>

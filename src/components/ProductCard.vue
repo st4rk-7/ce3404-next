@@ -1,46 +1,69 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { Product } from '../types/product';
 
-defineProps<{
+const props = defineProps<{
   product: Product;
+  discountPercentage?: number; // allow overriding or defaulting if missing
 }>();
+
+// Helper to format currency
+const formatPrice = (value: number) => {
+  return new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(value);
+};
+
+// Calculate original price assuming product.price is the SELLING price
+// OR if product.price is original, calculate selling.
+// Standard DummyJSON: price IS the selling price. discountPercentage is metadata.
+// But usually in e-commerce UI "Save 50%" implies Original was higher.
+// Let's assume product.price is the *selling* price.
+// Original = Selling / (1 - discount / 100)
+const originalPrice = computed(() => {
+    const discount = props.discountPercentage || props.product.discountPercentage || 0;
+    if (discount <= 0) return 0;
+    return props.product.price / (1 - discount / 100);
+});
+
+const hasDiscount = computed(() => {
+    return (props.discountPercentage || props.product.discountPercentage || 0) > 0;
+});
+
+const discountLabel = computed(() => {
+    const discount = props.discountPercentage || props.product.discountPercentage || 0;
+    return `Save ${Math.round(discount)}%`;
+});
+
 </script>
 
 <template>
-  <router-link 
-    :to="{ name: 'product-detail', params: { id: product.id } }"
-    class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full cursor-pointer block"
-  >
-    <div class="h-48 overflow-hidden relative group">
+  <div class="group cursor-pointer">
+    <!-- Image Container -->
+    <div class="relative overflow-hidden bg-gray-100 aspect-[4/3] mb-4">
       <img
         :src="product.thumbnail"
         :alt="product.title"
-        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+        class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
       />
+      <!-- Optional: Add 'Quick View' or 'Add to Cart' overlay here if needed -->
     </div>
-    <div class="p-4 flex flex-col flex-grow">
-      <div class="flex justify-between items-start mb-2">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 line-clamp-1" :title="product.title">
-          {{ product.title }}
-        </h3>
-        <span class="text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-0.5 rounded">
-          ${{ product.price }}
+
+    <!-- Product Details -->
+    <div class="space-y-1">
+      <h3 class="text-sm font-normal text-gray-900 leading-snug font-sans group-hover:underline decoration-1 underline-offset-2">
+        {{ product.title }}
+      </h3>
+      
+      <div class="flex items-baseline space-x-2 text-xs font-mono">
+        <span v-if="hasDiscount" class="text-gray-400 line-through decoration-gray-400">
+            {{ formatPrice(originalPrice) }}
+        </span>
+        <span :class="{'text-red-600': hasDiscount, 'text-gray-900': !hasDiscount}" class="font-bold">
+            {{ formatPrice(product.price) }}
+        </span>
+        <span v-if="hasDiscount" class="text-[#efb012]">
+            {{ discountLabel }}
         </span>
       </div>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 flex-grow">
-        {{ product.description }}
-      </p>
-      <div class="flex justify-between items-center mt-auto">
-        <span class="text-xs text-gray-400 dark:text-gray-500 capitalize">
-          {{ product.category }}
-        </span>
-        <div class="flex items-center">
-          <svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          <span class="text-sm text-gray-700 dark:text-gray-300">{{ product.rating }}</span>
-        </div>
-      </div>
     </div>
-  </router-link>
+  </div>
 </template>
