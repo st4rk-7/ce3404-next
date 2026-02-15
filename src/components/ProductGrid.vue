@@ -12,7 +12,7 @@ defineProps<{
   <div>
     <!-- Loading State -->
     <div v-if="isLoading" class="flex justify-center py-20">
-       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-black dark:border-white"></div>
     </div>
 
     <!-- Empty State -->
@@ -33,7 +33,7 @@ defineProps<{
     <!-- Load More Button (Mock) -->
     <div class="mt-16 text-center">
         <p class="text-[10px] text-gray-400 mb-4 font-mono">You've viewed {{ products.length }} of {{ products.length + 12 }} products</p>
-        <button class="border border-gray-300 text-xs font-bold uppercase tracking-widest py-3 px-12 hover:bg-black hover:text-white transition-colors">
+        <button class="border border-gray-300 dark:border-gray-600 text-xs font-bold uppercase tracking-widest py-3 px-12 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
             Load More
         </button>
     </div>

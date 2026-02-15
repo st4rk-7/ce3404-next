@@ -35,9 +35,9 @@ const addToCart = () => {
 </script>
 
 <template>
-  <div class="product-info flex flex-col space-y-8 pt-6 md:pt-0 md:pl-10 lg:pl-20 sticky top-32 font-mono text-black">
+  <div class="product-info flex flex-col space-y-8 pt-6 md:pt-0 md:pl-10 lg:pl-20 sticky top-32 font-mono text-black dark:text-white">
     <!-- Header -->
-    <div class="space-y-4 text-center md:text-left border-b border-gray-200 pb-6">
+    <div class="space-y-4 text-center md:text-left border-b border-gray-200 dark:border-gray-800 pb-6">
       <h1 class="text-2xl md:text-xl lg:text-2xl font-bold tracking-tight uppercase leading-tight">
         {{ product.title }}
       </h1>
@@ -49,7 +49,7 @@ const addToCart = () => {
 
     <!-- Size Selector -->
     <div class="space-y-4">
-      <div class="flex justify-between items-center text-[10px] uppercase font-bold tracking-widest text-black">
+      <div class="flex justify-between items-center text-[10px] uppercase font-bold tracking-widest text-black dark:text-white">
         <span>Select Size</span>
         <button class="underline hover:no-underline">Size Guide</button>
       </div>
@@ -58,11 +58,11 @@ const addToCart = () => {
           v-for="size in sizes" 
           :key="size"
           @click="selectedSize = size"
-          class="h-10 border border-gray-300 flex items-center justify-center text-sm hover:border-black transition-colors"
+          class="h-10 border border-gray-300 dark:border-gray-600 flex items-center justify-center text-sm hover:border-black dark:hover:border-white transition-colors"
           :class="[
             selectedSize === size 
-              ? 'bg-black text-white border-black' 
-              : 'text-black'
+              ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white' 
+              : 'text-black dark:text-white'
           ]"
         >
           {{ size }}
@@ -74,7 +74,7 @@ const addToCart = () => {
     <div class="pt-4">
       <button 
         @click="addToCart"
-        class="w-full bg-black text-white font-bold uppercase tracking-widest text-sm py-4 hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+        class="w-full bg-black text-white dark:bg-white dark:text-black font-bold uppercase tracking-widest text-sm py-4 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
       >
         <span>Add to Cart</span>
         <span v-if="selectedSize" class="opacity-75">— {{ selectedSize }}</span>
@@ -91,14 +91,14 @@ const addToCart = () => {
         <button 
           @click="activeTab = 'description'"
           class="border-b transition-colors pb-1"
-          :class="activeTab === 'description' ? 'border-black text-black' : 'border-transparent text-gray-400'"
+          :class="activeTab === 'description' ? 'border-black text-black dark:border-white dark:text-white' : 'border-transparent text-gray-400'"
         >
           Description
         </button>
         <button 
           @click="activeTab = 'shipping'"
           class="border-b transition-colors pb-1"
-          :class="activeTab === 'shipping' ? 'border-black text-black' : 'border-transparent text-gray-400'"
+          :class="activeTab === 'shipping' ? 'border-black text-black dark:border-white dark:text-white' : 'border-transparent text-gray-400'"
         >
           Shipping
         </button>

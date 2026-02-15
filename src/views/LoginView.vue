@@ -28,29 +28,29 @@ const handleLogin = async () => {
 
 <template>
   <div class="flex items-center justify-center min-h-[60vh]">
-    <div class="w-full max-w-md bg-white border border-gray-200 p-8 shadow-sm">
-      <h2 class="text-2xl font-bold tracking-widest uppercase mb-6 text-center">Login</h2>
+    <div class="w-full max-w-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-8 shadow-sm">
+      <h2 class="text-2xl font-bold tracking-widest uppercase mb-6 text-center text-black dark:text-white">Login</h2>
 
       <form @submit.prevent="handleLogin" class="space-y-6">
         <div>
-          <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Username</label>
+          <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Username</label>
           <input 
             v-model="username"
             type="text" 
             placeholder="emilys"
             required
-            class="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
+            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"
           />
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Password</label>
+          <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Password</label>
           <input 
             v-model="password"
             type="password" 
             placeholder="emilyspass"
             required
-            class="w-full border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
+            class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"
           />
         </div>
 
@@ -61,7 +61,7 @@ const handleLogin = async () => {
         <button 
           type="submit" 
           :disabled="isLoading"
-          class="w-full bg-black text-white text-xs font-bold uppercase tracking-widest py-4 hover:bg-gray-800 transition-colors disabled:opacity-50"
+          class="w-full bg-black text-white dark:bg-white dark:text-black text-xs font-bold uppercase tracking-widest py-4 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50"
         >
           {{ isLoading ? 'Logging in...' : 'Sign In' }}
         </button>

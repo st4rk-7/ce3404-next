@@ -48,7 +48,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-white min-h-screen">
+  <div class="bg-white dark:bg-gray-900 min-h-screen">
     <!-- Loading State -->
     <div v-if="isLoading" class="flex justify-center items-center h-[50vh]">
       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -85,8 +85,8 @@ onMounted(async () => {
       </div>
 
       <!-- Recommendations Section -->
-      <div class="mt-20 pt-10 border-t border-gray-100">
-        <h3 class="text-xl font-bold uppercase tracking-widest text-center mb-10 text-black">You Might Also Like</h3>
+      <div class="mt-20 pt-10 border-t border-gray-100 dark:border-gray-800">
+        <h3 class="text-xl font-bold uppercase tracking-widest text-center mb-10 text-black dark:text-white">You Might Also Like</h3>
         <ProductGrid :products="relatedProducts" :columns="4" />
       </div>
     </div>

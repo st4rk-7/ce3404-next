@@ -1,0 +1,65 @@
+commit a0457b01a156e280b39da3b16da34751bf811252
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Sun Feb 15 01:55:18 2026 +0530
+
+    fix:deployment build in netfily
+
+commit e44c6a1a343804df36f8189e0308c8f34ddab37c
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Sat Feb 14 18:08:59 2026 +0530
+
+    feat: enhancments
+
+commit 13183a4ba65092e6bedea0f8bcd9ae591a8e1326
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Sat Feb 14 17:08:01 2026 +0530
+
+    fix: stabilize build , refine auth types
+
+commit 3f7066786856e9f605702702d7bb34cb22eec51a
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Sat Feb 14 16:42:21 2026 +0530
+
+    feat: implement auth store, login view, and nav integration
+
+commit 5a9fb79560a5095d121f2652e3b8e99926296b7d
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Sat Feb 14 16:14:42 2026 +0530
+
+    refactor: rebrand to Next,unify app structure and ,implement seach/filtering
+
+commit 9b0935efcc1dc68c9b2a2cf67e5928e2f958f3eb
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Sat Feb 14 13:30:43 2026 +0530
+
+    feat: image injection and updated product detail view
+
+commit 2410fc5a6c233ec3f85a67a95337500575d1874e
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Wed Feb 11 17:56:52 2026 +0530
+
+    refactor: pivot to sneaker/streatwear shop
+
+commit e0d6948a2e5e6c60d5b73de6d74db697e2960db8
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Wed Feb 11 17:48:31 2026 +0530
+
+    feat: integrated Pinia cart with localstorage
+
+commit 74451aaa54961714b71adec8a08327e89787d8ba
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Wed Feb 11 16:31:58 2026 +0530
+
+    feat: vue-router and dynamic product detail page
+
+commit 1c568efdd579828bb8ca6273263d3801b317bf73
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Mon Feb 9 17:05:12 2026 +0530
+
+    feat:implement search and category filtering
+
+commit bc1046f5b607227657572533c633ae6a366a8196
+Author: st4rk-7 <st4rk.7@proton.me>
+Date:   Mon Feb 9 15:44:07 2026 +0530
+
+    init

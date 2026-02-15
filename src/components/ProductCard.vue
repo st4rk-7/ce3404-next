@@ -36,7 +36,7 @@ const discountLabel = computed(() => {
 <template>
   <RouterLink :to="`/product/${product.id}`" class="group cursor-pointer block">
     <!-- Image Container -->
-    <div class="relative overflow-hidden bg-gray-100 aspect-[4/3] mb-4">
+    <div class="relative overflow-hidden bg-gray-100 dark:bg-gray-800 aspect-[4/3] mb-4">
       <img
         :src="product.thumbnail"
         :alt="product.title"
@@ -47,7 +47,7 @@ const discountLabel = computed(() => {
 
     <!-- Product Details -->
     <div class="space-y-1">
-      <h3 class="text-sm font-normal text-brand-blue leading-snug font-sans group-hover:underline decoration-1 underline-offset-2">
+      <h3 class="text-sm font-normal text-brand-blue dark:text-gray-200 leading-snug font-sans group-hover:underline decoration-1 underline-offset-2">
         {{ product.title }}
       </h3>
       

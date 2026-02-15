@@ -26,7 +26,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-white flex flex-col font-mono text-gray-800">
+  <div class="min-h-screen bg-white dark:bg-gray-900 flex flex-col font-mono text-gray-800 dark:text-gray-100">
     
     <main class="flex-grow pt-24 md:pt-32">
         <div class="container mx-auto px-4 md:px-8 mb-20 max-w-[1600px]">

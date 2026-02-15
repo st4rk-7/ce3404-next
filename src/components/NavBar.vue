@@ -12,18 +12,21 @@ const { currency, setCurrency } = useCurrency();
 const toggleCurrency = () => {
     setCurrency(currency.value === 'LKR' ? 'EUR' : 'LKR');
 };
+
+import { useTheme } from '../composables/useTheme';
+const { isDark, toggleTheme } = useTheme();
 </script>
 
 <template>
-  <div class="font-sans antialiased text-brand-blue">
+  <div class="font-sans antialiased text-brand-blue dark:text-gray-100">
     <!-- Announcement Bar -->
     <div class="bg-brand-red text-white text-[10px] md:text-xs font-bold text-center py-2 tracking-widest uppercase relative z-50">
       FREE SHIPPING WORLDWIDE
     </div>
 
     <!-- Main Header -->
-    <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-40 h-[57px] flex items-center transition-all duration-300">
-      <div class="container mx-auto px-4 md:px-8 h-full flex justify-between items-center bg-white relative">
+    <header class="w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-40 h-[57px] flex items-center transition-all duration-300">
+      <div class="container mx-auto px-4 md:px-8 h-full flex justify-between items-center bg-white dark:bg-gray-900 relative">
         
         <!-- Left: Navigation (Desktop) -->
         <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-6 text-[11px] font-bold tracking-[0.2em] text-brand-blue">
@@ -43,7 +46,7 @@ const toggleCurrency = () => {
         <div v-if="!searchStore.isSearchOpen" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <RouterLink to="/" class="block text-center group">
              <!-- Text-based logo to match visual fidelity as close as possible without image assets -->
-             <h1 class="text-xl md:text-2xl font-bold tracking-[0.15em] leading-none whitespace-nowrap text-brand-blue">
+             <h1 class="text-xl md:text-2xl font-bold tracking-[0.15em] leading-none whitespace-nowrap text-brand-blue dark:text-white">
                NEXT
              </h1>
           </RouterLink>
@@ -60,6 +63,18 @@ const toggleCurrency = () => {
              <span v-else>🇪🇺 EUR €</span>
              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
+
+          <!-- Theme Toggle -->
+          <button @click="toggleTheme" class="p-1 hover:text-gray-600 transition-colors">
+            <!-- Sun Icon (for Dark Mode) -->
+            <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <!-- Moon Icon (for Light Mode) -->
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
 
           <!-- Account -->
           <RouterLink to="/login" class="hidden md:block p-1 hover:text-gray-600 transition-colors text-[11px] font-bold tracking-widest uppercase">

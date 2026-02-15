@@ -100,7 +100,7 @@ const toggleSection = (filterId: string) => {
       <!-- Header -->
       <button 
         @click="toggleSection(filter.id)"
-        class="w-full flex items-center justify-between py-2 border-b border-gray-200"
+        class="w-full flex items-center justify-between py-2 border-b border-gray-200 dark:border-gray-800"
       >
         <span class="font-bold uppercase tracking-wider">{{ filter.label }}</span>
         <span>{{ filter.isOpen ? '−' : '+' }}</span>
@@ -110,7 +110,7 @@ const toggleSection = (filterId: string) => {
       <div v-if="filter.isOpen" class="mt-2 space-y-1">
         <template v-if="filter.id === 'size'">
              <div class="grid grid-cols-4 gap-2">
-                <button v-for="opt in filter.options" :key="opt.id" class="border border-gray-300 py-1 hover:border-black text-center text-xs">
+                <button v-for="opt in filter.options" :key="opt.id" class="border border-gray-300 dark:border-gray-600 py-1 hover:border-black dark:hover:border-white text-center text-xs">
                     {{ opt.label }}
                 </button>
              </div>
@@ -130,7 +130,7 @@ const toggleSection = (filterId: string) => {
 
         <template v-else>
             <div v-for="opt in filter.options" :key="opt.id" class="flex items-center gap-2 group cursor-pointer py-1">
-            <div class="w-3 h-3 border border-gray-300 group-hover:border-black flex items-center justify-center">
+            <div class="w-3 h-3 border border-gray-300 dark:border-gray-600 group-hover:border-black dark:group-hover:border-white flex items-center justify-center">
                 <!-- Checkmark placeholder -->
             </div>
             <span class="flex-grow group-hover:underline">{{ opt.label }}</span>
