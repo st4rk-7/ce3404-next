@@ -36,8 +36,8 @@ const isDraggingMax = ref(false);
 // Watch for external updates
 watch(() => props.modelValue, (newVal) => {
   if (!isDraggingMin.value && !isDraggingMax.value && newVal && newVal.length >= 2) {
-    minValue.value = Math.max(props.min, Math.min(newVal[0], maxValue.value));
-    maxValue.value = Math.min(props.max, Math.max(newVal[1], minValue.value));
+    minValue.value = Math.max(props.min, Math.min(newVal[0]!, maxValue.value));
+    maxValue.value = Math.min(props.max, Math.max(newVal[1]!, minValue.value));
   }
 });
 
