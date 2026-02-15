@@ -10,4 +10,5 @@ export interface Product {
   category: string;
   thumbnail: string;
   images: string[];
+  tags?: string[]; // For 'Edit' filters like 'Studs', 'Vintage', etc.
 }

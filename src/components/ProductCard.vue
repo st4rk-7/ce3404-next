@@ -31,6 +31,12 @@ const discountLabel = computed(() => {
     return `Save ${Math.round(discount)}%`;
 });
 
+const handleImageError = (e: Event) => {
+    const target = e.target as HTMLImageElement;
+    // Fallback to a reliable placeholder if the main image fails
+    target.src = 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80';
+};
+
 </script>
 
 <template>
@@ -40,6 +46,7 @@ const discountLabel = computed(() => {
       <img
         :src="product.thumbnail"
         :alt="product.title"
+        @error="handleImageError"
         class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
       />
       <!-- Optional: Add 'Quick View' or 'Add to Cart' overlay here if needed -->

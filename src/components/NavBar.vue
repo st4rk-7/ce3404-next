@@ -30,8 +30,8 @@ const { isDark, toggleTheme } = useTheme();
         
         <!-- Left: Navigation (Desktop) -->
         <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-6 text-[11px] font-bold tracking-[0.2em] text-brand-blue">
-          <RouterLink to="/" class="hover:text-brand-red transition-colors">MEN'S</RouterLink>
-          <RouterLink to="/" class="hover:text-brand-red transition-colors">WOMEN'S</RouterLink>
+          <RouterLink to="/?gender=men" class="hover:text-brand-red transition-colors">MEN'S</RouterLink>
+          <RouterLink to="/?gender=women" class="hover:text-brand-red transition-colors">WOMEN'S</RouterLink>
           <RouterLink to="/" class="hover:text-brand-red transition-colors">ABOUT</RouterLink>
         </nav>
 
