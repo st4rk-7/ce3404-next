@@ -14,14 +14,11 @@ const { getProductById, fetchProducts, products } = useProducts();
 const product = ref<Product | null>(null);
 const isLoading = ref(true);
 const error = ref('');
-const showAddedFeedback = ref(false);
 
 const handleAddToCart = (payload: { product: Product; size: string; quantity: number }) => {
-  cartStore.addToCart(payload.product); // You might want to update store to accept size/quantity
-  showAddedFeedback.value = true;
-  setTimeout(() => {
-    showAddedFeedback.value = false;
-  }, 2000);
+  cartStore.addToCart(payload.product);
+  // Open the cart drawer to show the newly added item
+  cartStore.openDrawer();
 };
 
 // Mock related products (just filter out current product and take 4)
@@ -73,14 +70,6 @@ onMounted(async () => {
             :product="product" 
             @add-to-cart="handleAddToCart"
           />
-          
-          <!-- Feedback Toast -->
-          <div 
-            v-if="showAddedFeedback"
-            class="fixed bottom-4 right-4 bg-green-900 text-white px-6 py-3 rounded shadow-lg z-50 transition-opacity duration-300"
-          >
-            Added to cart!
-          </div>
         </div>
       </div>
 

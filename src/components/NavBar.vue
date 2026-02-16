@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import { useSearchStore } from '../stores/search';
+import CartDrawer from './CartDrawer.vue';
 
 const cartStore = useCartStore();
 const searchStore = useSearchStore();
@@ -93,7 +94,7 @@ const { isDark, toggleTheme } = useTheme();
           </button>
 
           <!-- Cart -->
-          <button class="p-1 hover:text-gray-600 transition-colors relative flex items-center">
+          <button @click="cartStore.openDrawer()" class="p-1 hover:text-gray-600 transition-colors relative flex items-center">
              <span class="hidden md:block text-[11px] font-bold tracking-widest mr-2">CART</span>
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
@@ -180,6 +181,9 @@ const { isDark, toggleTheme } = useTheme();
         </div>
       </Transition>
     </Teleport>
+
+    <!-- Cart Drawer -->
+    <CartDrawer :is-open="cartStore.isDrawerOpen" @close="cartStore.closeDrawer()" />
   </div>
 </template>
 

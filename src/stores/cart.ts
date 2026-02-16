@@ -8,6 +8,7 @@ export interface CartItem extends Product {
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref<CartItem[]>([]);
+  const isDrawerOpen = ref(false);
 
   // Load from localStorage
   const storedCart = localStorage.getItem('cart-items');
@@ -48,16 +49,39 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
   
+  function updateQuantity(productId: number, quantity: number) {
+    const item = items.value.find(item => item.id === productId);
+    if (item) {
+      if (quantity <= 0) {
+        removeFromCart(productId);
+      } else {
+        item.quantity = quantity;
+      }
+    }
+  }
+
   function clearCart() {
     items.value = [];
   }
 
+  function openDrawer() {
+    isDrawerOpen.value = true;
+  }
+
+  function closeDrawer() {
+    isDrawerOpen.value = false;
+  }
+
   return {
     items,
+    isDrawerOpen,
     cartCount,
     cartTotal,
     addToCart,
     removeFromCart,
-    clearCart
+    updateQuantity,
+    clearCart,
+    openDrawer,
+    closeDrawer
   };
 });

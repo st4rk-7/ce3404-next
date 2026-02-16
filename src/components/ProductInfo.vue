@@ -13,12 +13,13 @@ const props = defineProps<{
 const selectedSize = ref<string | null>(null);
 const activeTab = ref<'description' | 'shipping'>('description');
 const quantity = ref(1);
+const btnState = ref<'idle' | 'loading' | 'done'>('idle');
 
 // Mock sizes
 const sizes = ['39', '40', '41', '42', '43', '44', '45'];
 
 const discountPrice = computed(() => {
-  return props.product.price * 0.8; // 20% off mock (Keep number for calculation)
+  return props.product.price * 0.8;
 });
 
 const emit = defineEmits<{
@@ -30,7 +31,20 @@ const addToCart = () => {
     alert('Please select a size');
     return;
   }
-  emit('add-to-cart', { product: props.product, size: selectedSize.value, quantity: quantity.value });
+  if (btnState.value !== 'idle') return;
+  
+  // Phase 1: Loading spinner
+  btnState.value = 'loading';
+  
+  setTimeout(() => {
+    // Phase 2: Tick mark
+    emit('add-to-cart', { product: props.product, size: selectedSize.value!, quantity: quantity.value });
+    btnState.value = 'done';
+    
+    setTimeout(() => {
+      btnState.value = 'idle';
+    }, 1000);
+  }, 600);
 };
 </script>
 
@@ -76,8 +90,26 @@ const addToCart = () => {
         @click="addToCart"
         class="w-full bg-black text-white dark:bg-white dark:text-black font-bold uppercase tracking-widest text-sm py-5 md:py-4 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
       >
-        <span>Add to Cart</span>
-        <span v-if="selectedSize" class="opacity-75">— {{ selectedSize }}</span>
+        <Transition name="btn-content" mode="out-in">
+          <!-- Loading spinner -->
+          <span v-if="btnState === 'loading'" key="loading" class="flex items-center justify-center">
+            <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+          </span>
+          <!-- Tick mark -->
+          <span v-else-if="btnState === 'done'" key="tick" class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </span>
+          <!-- Default text -->
+          <span v-else key="add" class="flex items-center gap-2">
+            <span>Add to Cart</span>
+            <span v-if="selectedSize" class="opacity-75">— {{ selectedSize }}</span>
+          </span>
+        </Transition>
       </button>
       
       <p class="text-[10px] text-center text-gray-500 mt-3 uppercase tracking-wider">
@@ -123,3 +155,18 @@ const addToCart = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.btn-content-enter-active,
+.btn-content-leave-active {
+  transition: all 0.2s ease;
+}
+.btn-content-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.btn-content-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+</style>
