@@ -11,15 +11,15 @@ const subscribe = () => {
 </script>
 
 <template>
-  <footer class="bg-white dark:bg-gray-900 text-black dark:text-white pt-16 pb-8 border-t border-gray-200 dark:border-gray-800">
+  <footer class="bg-white dark:bg-gray-900 text-black dark:text-white pt-10 md:pt-16 pb-8 border-t border-gray-200 dark:border-gray-800">
     <div class="container mx-auto px-4 md:px-8">
       
       <!-- Logo in Footer -->
       <div class="mb-12">
-        <h2 class="text-3xl font-bold tracking-widest">NEXT</h2>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-widest">NEXT</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
         
         <!-- Newsletter Section -->
         <div class="md:col-span-5 space-y-4">
@@ -93,7 +93,7 @@ const subscribe = () => {
       </div>
       
       <!-- Bottom Footer -->
-       <div class="mt-16 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-500 uppercase tracking-widest">
+       <div class="mt-10 md:mt-16 pt-6 md:pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-gray-500 uppercase tracking-widest">
            <div>
                <div class="flex items-center space-x-2 border border-gray-300 px-2 py-1 inline-flex">
                    <span>🇱🇰</span>
@@ -101,9 +101,7 @@ const subscribe = () => {
                </div>
            </div>
            
-           <div class="mt-4 md:mt-0">
-               &copy; NEXT 2026 Powered by Shopify
-           </div>
+               &copy; NEXT 2026 shewon ss
        </div>
 
     </div>

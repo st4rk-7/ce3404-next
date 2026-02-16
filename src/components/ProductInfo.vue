@@ -35,7 +35,7 @@ const addToCart = () => {
 </script>
 
 <template>
-  <div class="product-info flex flex-col space-y-8 pt-6 md:pt-0 md:pl-10 lg:pl-20 sticky top-32 font-mono text-black dark:text-white">
+  <div class="product-info flex flex-col space-y-8 pt-6 md:pt-0 md:pl-10 lg:pl-20 sticky top-32 font-mono text-black dark:text-white px-4 sm:px-0">
     <!-- Header -->
     <div class="space-y-4 text-center md:text-left border-b border-gray-200 dark:border-gray-800 pb-6">
       <h1 class="text-2xl md:text-xl lg:text-2xl font-bold tracking-tight uppercase leading-tight">
@@ -53,7 +53,7 @@ const addToCart = () => {
         <span>Select Size</span>
         <button class="underline hover:no-underline">Size Guide</button>
       </div>
-      <div class="grid grid-cols-4 gap-2">
+      <div class="grid grid-cols-7 sm:grid-cols-4 gap-2">
         <button 
           v-for="size in sizes" 
           :key="size"
@@ -74,7 +74,7 @@ const addToCart = () => {
     <div class="pt-4">
       <button 
         @click="addToCart"
-        class="w-full bg-black text-white dark:bg-white dark:text-black font-bold uppercase tracking-widest text-sm py-4 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+        class="w-full bg-black text-white dark:bg-white dark:text-black font-bold uppercase tracking-widest text-sm py-5 md:py-4 hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
       >
         <span>Add to Cart</span>
         <span v-if="selectedSize" class="opacity-75">— {{ selectedSize }}</span>

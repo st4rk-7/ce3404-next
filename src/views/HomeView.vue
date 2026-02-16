@@ -54,11 +54,11 @@ onMounted(async () => {
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900 flex flex-col font-mono text-gray-800 dark:text-gray-100">
     
-    <main class="flex-grow pt-24 md:pt-32">
+    <main class="flex-grow pt-4 md:pt-32">
         <div class="container mx-auto px-4 md:px-8 mb-20 max-w-[1600px]">
             
             <!-- Mobile Filter Button & Sort (Sticky or just top) -->
-            <div class="md:hidden flex justify-between items-center mb-6 pt-4 sticky top-[57px] bg-white dark:bg-gray-900 z-30 py-2">
+            <div class="md:hidden flex justify-between items-center mb-6 sticky top-[52px] bg-white dark:bg-gray-900 z-30 py-3 border-b border-gray-100 dark:border-gray-800">
                  <button 
                     @click="isMobileMenuOpen = true"
                     class="flex items-center gap-2 uppercase font-bold tracking-widest text-xs border border-gray-300 dark:border-gray-700 px-6 py-3 w-1/2 justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"

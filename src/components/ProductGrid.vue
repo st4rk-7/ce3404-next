@@ -21,7 +21,7 @@ defineProps<{
     </div>
 
     <!-- Grid -->
-    <div v-else class="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-12">
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10 sm:gap-y-8 md:gap-x-6 md:gap-y-12">
       <ProductCard
         v-for="product in products"
         :key="product.id"

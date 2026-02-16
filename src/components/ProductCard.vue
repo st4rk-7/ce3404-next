@@ -42,7 +42,7 @@ const handleImageError = (e: Event) => {
 <template>
   <RouterLink :to="`/product/${product.id}`" class="group cursor-pointer block">
     <!-- Image Container -->
-    <div class="relative overflow-hidden bg-gray-100 dark:bg-gray-800 aspect-[4/3] mb-4">
+    <div class="relative overflow-hidden bg-gray-100 dark:bg-gray-800 aspect-[4/5] sm:aspect-[4/3] mb-4">
       <img
         :src="product.thumbnail"
         :alt="product.title"

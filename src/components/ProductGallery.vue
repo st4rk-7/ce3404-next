@@ -30,11 +30,11 @@ const currentImageIndex = ref(0);
     </div>
 
     <!-- Mobile: Horizontal Slider -->
-    <div class="md:hidden relative overflow-x-auto snap-x snap-mandatory flex w-full no-scrollbar h-[50vh]">
+    <div class="md:hidden relative overflow-x-auto snap-x snap-mandatory flex w-full no-scrollbar h-[65vh]">
       <div 
         v-for="(image, index) in product.images" 
         :key="index"
-        class="snap-center shrink-0 w-full h-full bg-gray-100"
+        class="snap-center shrink-0 w-full h-full bg-gray-100 dark:bg-gray-800"
       >
         <img 
           :src="image" 
@@ -48,8 +48,8 @@ const currentImageIndex = ref(0);
         <span 
           v-for="(_, index) in product.images" 
           :key="index"
-          class="block w-2 h-2 rounded-full bg-white shadow-sm transition-opacity duration-300"
-          :class="index === currentImageIndex ? 'opacity-100 scale-110' : 'opacity-60'"
+          class="block w-2.5 h-2.5 rounded-full bg-white shadow transition-all duration-300"
+          :class="index === currentImageIndex ? 'opacity-100 scale-125' : 'opacity-50'"
         ></span>
       </div>
     </div>

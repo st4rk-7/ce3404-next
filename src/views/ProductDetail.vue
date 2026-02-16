@@ -60,7 +60,7 @@ onMounted(async () => {
     </div>
 
     <!-- Product Content -->
-    <div v-if="product" class="container mx-auto px-4 md:px-8 py-6 md:py-12 font-mono">
+    <div v-if="product" class="container mx-auto px-0 sm:px-4 md:px-8 py-4 md:py-12 font-mono">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8">
         <!-- Gallery (Left Column) -->
         <div class="md:col-span-7 lg:col-span-8">
