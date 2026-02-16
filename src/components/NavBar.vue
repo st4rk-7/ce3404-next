@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import { useSearchStore } from '../stores/search';
+import { useAuthStore } from '../stores/auth';
 import CartDrawer from './CartDrawer.vue';
 
 const cartStore = useCartStore();
 const searchStore = useSearchStore();
+const authStore = useAuthStore();
+const router = useRouter();
 const isMobileMenuOpen = ref(false);
 
 import { useCurrency } from '../composables/useCurrency';
@@ -18,6 +21,11 @@ const toggleCurrency = () => {
 
 import { useTheme } from '../composables/useTheme';
 const { isDark, toggleTheme } = useTheme();
+
+const handleLogout = () => {
+  authStore.logout();
+  router.push('/');
+};
 </script>
 
 <template>
@@ -76,15 +84,41 @@ const { isDark, toggleTheme } = useTheme();
             </svg>
           </button>
 
-          <!-- Account -->
-          <RouterLink to="/login" class="hidden md:block p-1 hover:text-gray-600 transition-colors text-[11px] font-bold tracking-widest uppercase">
-            ACCOUNT
-          </RouterLink>
-          <RouterLink to="/login" class="md:hidden p-1 hover:text-gray-600">
-             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Account (Auth-aware) -->
+          <template v-if="authStore.isAuthenticated && authStore.user">
+            <!-- Logged in: User icon + Name + Logout -->
+            <div class="hidden md:flex items-center space-x-3">
+              <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span class="text-[11px] font-bold tracking-widest uppercase">{{ authStore.user.firstName }}</span>
+              </div>
+              <button 
+                @click="handleLogout"
+                class="text-[11px] font-bold tracking-widest uppercase text-gray-400 hover:text-brand-red transition-colors"
+              >
+                Logout
+              </button>
+            </div>
+            <!-- Mobile: User icon that taps to logout -->
+            <button @click="handleLogout" class="md:hidden p-1 hover:text-gray-600 relative">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
-          </RouterLink>
+              </svg>
+            </button>
+          </template>
+          <template v-else>
+            <!-- Not logged in: Login link -->
+            <RouterLink to="/login" class="hidden md:block p-1 hover:text-gray-600 transition-colors text-[11px] font-bold tracking-widest uppercase">
+              ACCOUNT
+            </RouterLink>
+            <RouterLink to="/login" class="md:hidden p-1 hover:text-gray-600">
+               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </RouterLink>
+          </template>
 
           <!-- Search -->
           <button @click="searchStore.toggleSearch()" class="p-1 hover:text-gray-600 transition-colors">
