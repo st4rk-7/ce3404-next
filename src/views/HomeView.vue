@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue';
-import { useRoute } from 'vue-router'; // Import useRoute
-import SidebarFilter from '../components/SidebarFilter.vue';
+import { useRoute } from 'vue-router';
 import ProductGrid from '../components/ProductGrid.vue';
+import SidebarFilter from '../components/SidebarFilter.vue'; // Will refactor this inside the new filter drawer soon
 import { useProducts } from '../composables/useProducts';
 import { useSearchStore } from '../stores/search';
 
 const { products, isLoading, fetchProducts } = useProducts();
 const searchStore = useSearchStore();
-const route = useRoute(); // Initialize route
-const isMobileMenuOpen = ref(false);
+const route = useRoute();
+const isFilterOpen = ref(false);
 
 // Filter Logic: Search + Category
 const filteredProducts = computed(() => {
@@ -52,78 +52,68 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900 flex flex-col font-mono text-gray-800 dark:text-gray-100">
+  <div class="min-h-screen bg-offwhite flex flex-col font-sans text-black">
     
-    <main class="flex-grow pt-4 md:pt-32">
-        <div class="container mx-auto px-4 md:px-8 mb-20 max-w-[1600px]">
+    <main class="flex-grow pt-10 md:pt-16">
+        <div class="w-full mx-auto px-4 md:px-8 lg:px-12 mb-20">
             
-            <!-- Mobile Filter Button & Sort (Sticky or just top) -->
-            <div class="md:hidden flex justify-between items-center mb-6 sticky top-[52px] bg-white dark:bg-gray-900 z-30 py-3 border-b border-gray-100 dark:border-gray-800">
-                 <button 
-                    @click="isMobileMenuOpen = true"
-                    class="flex items-center gap-2 uppercase font-bold tracking-widest text-xs border border-gray-300 dark:border-gray-700 px-6 py-3 w-1/2 justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+            <!-- Page Header: Title & Subtitle -->
+            <div class="text-center mb-10 max-w-2xl mx-auto">
+                <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Men's Sale</h1>
+                <p class="text-sm md:text-base text-gray-600">
+                    Stock up and shop these last-chance styles and colors before they're gone for good.
+                </p>
+            </div>
+
+            <!-- New Filter/Sort Bar (Allbirds style) -->
+            <div class="bg-[#ebebe4] rounded-full px-4 py-2 flex justify-between items-center mb-10 relative">
+                
+                <!-- Left: Filter Toggle -->
+                <button 
+                    @click="isFilterOpen = !isFilterOpen"
+                    class="flex items-center gap-2 text-xs font-bold tracking-widest px-4 py-2 rounded-full hover:bg-gray-200 transition-colors"
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                    Filter
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    <span>FILTER</span>
+                    <span class="font-normal text-gray-500 lowercase ml-1">({{ filteredProducts.length }} products)</span>
                 </button>
-                 <!-- Mock Sort Button for visual balance -->
-                 <button class="flex items-center gap-2 uppercase font-bold tracking-widest text-xs border border-gray-300 dark:border-gray-700 px-6 py-3 w-1/2 justify-center border-l-0 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
-                    Sort
+
+                <!-- Right: Sort Dropdown (Mock for now) -->
+                <button class="bg-charcoal text-white flex items-center gap-2 text-[10px] md:text-xs font-bold tracking-widest px-6 py-3 rounded-full hover:bg-black transition-colors">
+                    FEATURED
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
             </div>
 
-            <!-- Mobile Filter Drawer (Slide-over) -->
-            <div v-if="isMobileMenuOpen" class="fixed inset-0 z-50 flex md:hidden" role="dialog" aria-modal="true">
-                <!-- Overlay -->
-                <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" @click="isMobileMenuOpen = false"></div>
-                
-                <!-- Drawer Panel -->
-                <div class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white dark:bg-gray-900 py-4 pb-12 shadow-xl">
-                    <div class="flex items-center justify-between px-4 mb-4">
-                        <h2 class="text-lg font-bold uppercase tracking-widest">Filters</h2>
-                        <button type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md p-2 text-gray-400" @click="isMobileMenuOpen = false">
-                            <span class="sr-only">Close menu</span>
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Filter Content form Sidebar component -->
-                    <div class="px-4">
-                        <SidebarFilter />
-                    </div>
-                    
-                     <div class="mt-auto px-4 pt-6 border-t border-gray-200 dark:border-gray-800">
-                        <button @click="isMobileMenuOpen = false" class="w-full bg-black text-white dark:bg-white dark:text-black py-4 uppercase font-bold tracking-widest text-xs">
-                            Show Results
-                        </button>
-                    </div>
+            <!-- Filter Drawer (Appears below filter bar) -->
+            <div v-show="isFilterOpen" class="bg-white rounded-3xl shadow-xl w-full p-6 md:p-10 mb-10 relative z-30 animate-fade-in-down">
+                <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100">
+                    <button @click="isFilterOpen = false" class="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-black transition-colors uppercase tracking-widest">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        COLLAPSE FILTERS <span class="font-normal lowercase ml-1">({{ filteredProducts.length }} products)</span>
+                    </button>
+                    <button class="text-xs font-bold underline hover:text-gray-600 transition-colors uppercase tracking-widest">
+                        Clear All
+                    </button>
                 </div>
-            </div>
-
-            <!-- Layout: Sidebar + Grid -->
-            <div class="flex flex-col md:flex-row gap-8">
                 
-                <!-- Left Sidebar (Filters) - Desktop Only -->
-                <aside class="hidden md:block w-full md:w-1/5 lg:w-[18%] flex-shrink-0">
+                <!-- Temporary SidebarFilter placement before rewriting it into columns -->
+                <div class="opacity-50 pointer-events-none">
+                    <p class="text-xs text-red-500 mb-4 font-bold uppercase">Placeholder: Working on the columnar filter layout next</p>
                     <SidebarFilter />
-                </aside>
-
-                <!-- Right Content (Grid) -->
-                <div class="flex-grow">
-                    <ProductGrid :products="filteredProducts" :is-loading="isLoading" />
                 </div>
-
             </div>
+
+            <!-- Product Grid -->
+            <div class="w-full relative z-20">
+                <ProductGrid :products="filteredProducts" :is-loading="isLoading" />
+            </div>
+
         </div>
     </main>
   </div>
 </template>
 
-<style scoped>
-/* Font override if not globally set yet */
-:deep(.font-mono) {
-    font-family: "Anonymous Pro", monospace;
-}
-</style>
+

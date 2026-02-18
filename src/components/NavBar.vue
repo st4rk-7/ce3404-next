@@ -31,39 +31,74 @@ const handleLogout = () => {
 <template>
   <div class="font-sans antialiased text-brand-blue dark:text-gray-100">
     <!-- Announcement Bar -->
-    <div class="bg-brand-red text-white text-[10px] md:text-xs font-bold text-center py-1.5 md:py-2 tracking-widest uppercase relative z-50">
-      FREE SHIPPING WORLDWIDE
+    <div class="bg-charcoal text-white text-[10px] md:text-sm font-bold text-center py-2 tracking-wide relative z-50">
+      Free Shipping on Orders over $75. Easy Returns.
     </div>
 
     <!-- Main Header -->
-    <header class="w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-40 h-[52px] md:h-[57px] flex items-center transition-all duration-300">
-      <div class="container mx-auto px-4 md:px-8 h-full flex justify-between items-center bg-white dark:bg-gray-900 relative">
+    <header class="w-full bg-white sticky top-0 z-40 h-[60px] md:h-[70px] flex items-center shadow-sm relative transition-all duration-300">
+      <div class="w-full px-4 md:px-8 h-full flex justify-between items-center group/header">
         
-        <!-- Left: Navigation (Desktop) -->
-        <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-6 text-[11px] font-bold tracking-[0.2em] text-brand-blue">
-          <RouterLink to="/?gender=men" class="hover:text-brand-red transition-colors">MEN'S</RouterLink>
-          <RouterLink to="/?gender=women" class="hover:text-brand-red transition-colors">WOMEN'S</RouterLink>
-          <RouterLink to="/" class="hover:text-brand-red transition-colors">ABOUT</RouterLink>
-        </nav>
-
-        <!-- Mobile Menu Button -->
-        <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="md:hidden p-2 -ml-2 text-brand-blue dark:text-white">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-
-        <!-- Center: Logo -->
-        <div v-if="!searchStore.isSearchOpen" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <RouterLink to="/" class="block text-center group">
-             <h1 class="text-xl md:text-2xl font-bold tracking-[0.15em] leading-none whitespace-nowrap text-brand-blue dark:text-white">
-               NEXT
-             </h1>
+        <!-- Left: Logo -->
+        <div class="flex-shrink-0 flex items-center">
+          <!-- Mobile Menu Button -->
+          <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="md:hidden p-2 -ml-2 text-black">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          
+          <RouterLink to="/" class="block text-black hover:opacity-70 transition-opacity ml-2 md:ml-0">
+             <span class="text-3xl font-extrabold tracking-widest uppercase">NEXT</span>
           </RouterLink>
         </div>
 
+        <!-- Center: Navigation (Desktop) -->
+        <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-8 text-xs font-bold tracking-wide text-black items-center h-full">
+          <div class="h-full flex items-center group/men">
+            <RouterLink to="/?gender=men" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
+            
+            <!-- Mega Menu Dropdown -->
+            <div class="absolute top-[70px] left-0 w-full bg-white shadow-xl flex z-50 opacity-0 invisible group-hover/men:opacity-100 group-hover/men:visible transition-all duration-300 ease-in-out">
+              <div class="w-full max-w-[1240px] mx-auto flex p-10 min-h-[400px]">
+                 <!-- Left Column links -->
+                 <div class="w-1/4 space-y-6">
+                    <div>
+                      <h4 class="text-xs font-bold mb-4 uppercase tracking-wider">Shoes</h4>
+                      <ul class="space-y-3 text-sm font-normal text-gray-700">
+                        <li><a href="#" class="hover:underline">Shop All</a></li>
+                        <li><a href="#" class="hover:underline">Sneakers</a></li>
+                        <li><a href="#" class="hover:underline">Slip-Ons</a></li>
+                        <li><a href="#" class="hover:underline">Active Shoes</a></li>
+                      </ul>
+                    </div>
+                 </div>
+                 <!-- Right Content Images (Placeholder) -->
+                 <div class="w-3/4 flex gap-4">
+                    <div class="flex-1 bg-gray-100 rounded-xl p-6 relative overflow-hidden group/card cursor-pointer">
+                       <span class="relative z-10 font-bold text-white text-lg">NEW ARRIVALS</span>
+                       <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover/card:scale-105 transition-transform duration-500" alt="New Arrivals">
+                    </div>
+                    <div class="flex-1 bg-gray-100 rounded-xl p-6 relative overflow-hidden group/card cursor-pointer">
+                       <span class="relative z-10 font-bold text-white text-lg">BESTSELLERS</span>
+                       <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover/card:scale-105 transition-transform duration-500" alt="Bestsellers">
+                    </div>
+                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="h-full flex items-center">
+            <RouterLink to="/?gender=women" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">WOMEN</RouterLink>
+          </div>
+          <div class="h-full flex items-center">
+            <RouterLink to="/?sale=true" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">SALE</RouterLink>
+          </div>
+        </nav>
+
         <!-- Right: Actions -->
-        <div v-if="!searchStore.isSearchOpen" class="flex items-center space-x-3 md:space-x-6 text-brand-blue dark:text-white">
+        <div v-if="!searchStore.isSearchOpen" class="flex items-center space-x-4 md:space-x-5 text-black">
+          <RouterLink to="/" class="hidden md:block text-xs font-bold hover:underline">About</RouterLink>
+          <RouterLink to="/" class="hidden md:block text-xs font-bold hover:underline">ReRun</RouterLink>
           <!-- Country/Currency Selector -->
           <div 
             @click="toggleCurrency"
@@ -86,54 +121,40 @@ const handleLogout = () => {
 
           <!-- Account (Auth-aware) -->
           <template v-if="authStore.isAuthenticated && authStore.user">
-            <!-- Logged in: User icon + Name + Logout -->
-            <div class="hidden md:flex items-center space-x-3">
-              <div class="flex items-center space-x-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            <!-- Logged in: User icon specific to Allbirds style -->
+            <div class="relative group/account">
+              <button class="p-1 hover:text-gray-600 transition-colors flex items-center focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
-                <span class="text-[11px] font-bold tracking-widest uppercase">{{ authStore.user.firstName }}</span>
-              </div>
-              <button 
-                @click="handleLogout"
-                class="text-[11px] font-bold tracking-widest uppercase text-gray-400 hover:text-brand-red transition-colors"
-              >
-                Logout
               </button>
+              <div class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 shadow-lg rounded-md p-2 hidden group-hover/account:block">
+                 <div class="px-4 py-2 text-sm font-bold border-b border-gray-100">{{ authStore.user.firstName }}</div>
+                 <button @click="handleLogout" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 text-red-600">Logout</button>
+              </div>
             </div>
-            <!-- Mobile: User icon that taps to logout -->
-            <button @click="handleLogout" class="md:hidden p-1 hover:text-gray-600 relative">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-              </svg>
-            </button>
           </template>
           <template v-else>
-            <!-- Not logged in: Login link -->
-            <RouterLink to="/login" class="hidden md:block p-1 hover:text-gray-600 transition-colors text-[11px] font-bold tracking-widest uppercase">
-              ACCOUNT
-            </RouterLink>
-            <RouterLink to="/login" class="md:hidden p-1 hover:text-gray-600">
-               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-              </svg>
+            <!-- Not logged in: Account icon -->
+            <RouterLink to="/login" class="p-1 hover:text-gray-600 transition-colors tooltip" aria-label="Account">
+               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+               </svg>
             </RouterLink>
           </template>
 
-          <!-- Search -->
-          <button @click="searchStore.toggleSearch()" class="p-1 hover:text-gray-600 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          <RouterLink to="/help" class="hidden md:block p-1 hover:text-gray-600 transition-colors" aria-label="Help">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
             </svg>
-          </button>
+          </RouterLink>
 
           <!-- Cart -->
           <button @click="cartStore.openDrawer()" class="p-1 hover:text-gray-600 transition-colors relative flex items-center">
-             <span class="hidden md:block text-[11px] font-bold tracking-widest mr-2">CART</span>
-             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
              </svg>
-             <span v-if="cartStore.cartCount > 0" class="absolute -top-1 -right-1 md:top-[-4px] md:right-[-8px] bg-brand-red text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">
+             <span v-if="cartStore.cartCount > 0" class="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
                  {{ cartStore.cartCount }}
              </span>
           </button>

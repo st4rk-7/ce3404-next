@@ -21,7 +21,7 @@ defineProps<{
     </div>
 
     <!-- Grid -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10 sm:gap-y-8 md:gap-x-6 md:gap-y-12">
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
       <ProductCard
         v-for="product in products"
         :key="product.id"
@@ -33,7 +33,7 @@ defineProps<{
     <!-- Load More Button (Mock) -->
     <div class="mt-16 text-center">
         <p class="text-[10px] text-gray-400 mb-4 font-mono">You've viewed {{ products.length }} of {{ products.length + 12 }} products</p>
-        <button class="border border-gray-300 dark:border-gray-600 text-xs font-bold uppercase tracking-widest py-3 px-12 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
+        <button class="border border-black rounded-full bg-white text-black text-xs font-bold uppercase tracking-widest py-3 px-12 hover:bg-black hover:text-white transition-colors">
             Load More
         </button>
     </div>
