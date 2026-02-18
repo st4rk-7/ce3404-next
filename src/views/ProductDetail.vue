@@ -45,7 +45,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-white dark:bg-gray-900 min-h-screen">
+  <div class="bg-[#f5f4f0] dark:bg-gray-900 min-h-screen">
     <!-- Loading State -->
     <div v-if="isLoading" class="flex justify-center items-center h-[50vh]">
       <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -57,15 +57,20 @@ onMounted(async () => {
     </div>
 
     <!-- Product Content -->
-    <div v-if="product" class="container mx-auto px-0 sm:px-4 md:px-8 py-4 md:py-12 font-mono">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8">
-        <!-- Gallery (Left Column) -->
-        <div class="md:col-span-7 lg:col-span-8">
+    <div v-if="product" class="w-full">
+      <!-- Breadcrumb - Allbirds style -->
+      <div class="container mx-auto px-4 md:px-8 py-4 top-0 z-10 text-xs text-gray-500 font-medium">
+        Home > {{ product.title }}
+      </div>
+      
+      <div class="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto px-0 sm:px-4 md:px-8 pb-12">
+        <!-- Gallery (Left Column - approx 65%) -->
+        <div class="w-full md:w-[65%] lg:w-[68%]">
           <ProductGallery :product="product" />
         </div>
 
-        <!-- Info (Right Column - Sticky) -->
-        <div class="md:col-span-5 lg:col-span-4 relative">
+        <!-- Info (Right Column - sticky - approx 35%) -->
+        <div class="w-full md:w-[35%] lg:w-[32%] relative px-4 md:px-0 mt-8 md:mt-0 md:pl-8 lg:pl-16">
           <ProductInfo 
             :product="product" 
             @add-to-cart="handleAddToCart"
@@ -74,7 +79,7 @@ onMounted(async () => {
       </div>
 
       <!-- Recommendations Section -->
-      <div class="mt-20 pt-10 border-t border-gray-100 dark:border-gray-800">
+      <div class="container mx-auto mt-20 pt-10 border-t border-gray-200 dark:border-gray-800 px-4 md:px-8">
         <h3 class="text-xl font-bold uppercase tracking-widest text-center mb-10 text-black dark:text-white">You Might Also Like</h3>
         <ProductGrid :products="relatedProducts" :columns="4" />
       </div>
