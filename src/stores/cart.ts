@@ -2,7 +2,10 @@ import { defineStore } from 'pinia';
 import { ref, computed, watch } from 'vue';
 import type { Product } from '../types/product';
 
-export interface CartItem extends Product {
+export interface CartItem {
+  id: string;
+  product: Product;
+  size: string;
   quantity: number;
 }
 
@@ -10,73 +13,84 @@ export const useCartStore = defineStore('cart', () => {
   const items = ref<CartItem[]>([]);
   const isDrawerOpen = ref(false);
 
-  // Load from localStorage
-  const storedCart = localStorage.getItem('cart-items');
-  if (storedCart) {
-    try {
-      items.value = JSON.parse(storedCart);
-    } catch (e) {
-      console.error('Failed to parse cart items from localStorage', e);
-    }
-  }
-
-  // Watch for changes and save to localStorage
-  watch(items, (newItems) => {
-    localStorage.setItem('cart-items', JSON.stringify(newItems));
-  }, { deep: true });
-
-  const cartCount = computed(() => {
+  const totalItems = computed(() => {
     return items.value.reduce((total, item) => total + item.quantity, 0);
   });
 
-  const cartTotal = computed(() => {
-    return items.value.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const totalPrice = computed(() => {
+    return items.value.reduce((total, item) => {
+      return total + (item.product.price * item.quantity);
+    }, 0);
   });
+  
+  const subtotal = computed(() => totalPrice.value);
 
-  function addToCart(product: Product) {
-    const existingItem = items.value.find(item => item.id === product.id);
+  const addToCart = (product: Product, size: string, quantity: number = 1) => {
+    const existingItem = items.value.find(item => 
+      item.product.id === product.id && item.size === size
+    );
+
     if (existingItem) {
-      existingItem.quantity++;
+      existingItem.quantity += quantity;
     } else {
-      items.value.push({ ...product, quantity: 1 });
+      items.value.push({
+        id: `${product.id}-${size}`,
+        product,
+        size,
+        quantity
+      });
     }
-  }
+    
+    // Auto-open drawer when adding to cart
+    openDrawer();
+  };
 
-  function removeFromCart(productId: number) {
-    const index = items.value.findIndex(item => item.id === productId);
-    if (index !== -1) {
+  const removeFromCart = (itemId: string) => {
+    const index = items.value.findIndex(item => item.id === itemId);
+    if (index > -1) {
       items.value.splice(index, 1);
     }
-  }
-  
-  function updateQuantity(productId: number, quantity: number) {
-    const item = items.value.find(item => item.id === productId);
+  };
+
+  const updateQuantity = (itemId: string, quantity: number) => {
+    const item = items.value.find(item => item.id === itemId);
     if (item) {
       if (quantity <= 0) {
-        removeFromCart(productId);
+        removeFromCart(itemId);
       } else {
         item.quantity = quantity;
       }
     }
-  }
+  };
 
-  function clearCart() {
+  const clearCart = () => {
     items.value = [];
-  }
+  };
 
-  function openDrawer() {
+  const openDrawer = () => {
     isDrawerOpen.value = true;
-  }
+    document.body.style.overflow = 'hidden';
+  };
 
-  function closeDrawer() {
+  const closeDrawer = () => {
     isDrawerOpen.value = false;
-  }
+    document.body.style.overflow = '';
+  };
+  
+  const toggleDrawer = () => {
+    if (isDrawerOpen.value) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  };
 
   return {
     items,
+    totalItems,
+    totalPrice,
+    subtotal,
     isDrawerOpen,
-    cartCount,
-    cartTotal,
     addToCart,
     removeFromCart,
     updateQuantity,
