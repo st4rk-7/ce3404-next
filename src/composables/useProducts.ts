@@ -8,31 +8,56 @@ const isLoading = ref(false);
 const error = ref<string | null>(null);
 const hasLoaded = ref(false); // Track if we've already fetched
 
-// High-quality sneaker images (Unsplash - Reliable Public Access)
-const sneakerImages = [
-    // Nike / Jordan / Sporty
-    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80', // Red Nike
-    'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80', // Green Nike
-    'https://images.unsplash.com/photo-1607522370275-f14206abe5d3?auto=format&fit=crop&w=800&q=80', // Converse High Top
-    'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80', // White/Pattern
-    'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80', // White/Blue Sport
-    'https://images.unsplash.com/photo-1584735175315-9d5df23860e6?auto=format&fit=crop&w=800&q=80', // Red/White
-    'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80', // Nike White/Orange
-    'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80', // Vans
-    'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80', // Grey Sport
-    'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80', // Puma
-    'https://images.unsplash.com/photo-1605348532760-6753d5c4365c?auto=format&fit=crop&w=800&q=80', // Black Nike
-    'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=800&q=80', // Nike Multi
-
-    // Lifestyle / Clean
-    'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&w=800&q=80', // New Balance
-    'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=800&q=80', // Black/White generic
-    'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=800&q=80', // Yellow boot/shoe
-    'https://images.unsplash.com/photo-1605408499391-6368c628ef42?auto=format&fit=crop&w=800&q=80', // White sleek
-    'https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80', // NB Grey
-    'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=800&q=80', // Orange Nike
-    'https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80', // Red High Top
-    'https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=800&q=80'  // White Converse
+// Authentic Allbirds product imagery in 3-image sets
+const allbirdsImageSets = [
+    // 1. Trail Runner Set (Real Angles)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12506_26Q1_Trail-Runner-Deep-Red-Dark-Anthracite_PDP_LEFT_875428f9-f820-4a33-8cd5-01b830f99546.png',
+        'https://www.allbirds.com/cdn/shop/files/A12506_26Q1_Trail-Runner-Deep-Red-Dark-Anthracite_PDP_PAIR_3Q_bf0e3177-0b1f-43f3-8913-96aa0a9c751e.png',
+        'https://www.allbirds.com/cdn/shop/files/A12506_26Q1_Trail-Runner-Deep-Red-Dark-Anthracite_PDP_SOLE_95ddd79f-bb44-43bd-ab27-9e82bab07ccf.png'
+    ],
+    // 2. Cruiser Colors (Verdant Green, Deep Navy, Toasted Coconut)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12335_26Q1_Cruiser-Verdant-Green-Blizzard-Sole_PDP_LEFT_129905ba-94b9-4762-bfd9-68d58131ed07.png',
+        'https://www.allbirds.com/cdn/shop/files/A12504_26Q1_Cruiser-Slip-On-Deep-Navy-Natural-White-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12310_26Q1_Cruiser-Terralux-Toasted-Coconut-Medium-Gum-Sole_PDP_LEFT.png'
+    ],
+    // 3. Dasher Colors (Blizzard/Anthracite, Deep Navy, Auburn)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12453_26Q1_Golf-Dasher-Blizzard-Anthra-Blizz_PDP_LEFT_c7fcb8a8-226a-4a78-9f5c-69b3c40ee3e4.png',
+        'https://www.allbirds.com/cdn/shop/files/A12464_26Q1_Dasher-NZ-Blizzard-Deep-Navy-Blizzard_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12423_26Q1_Dasher-NZ-Relay-Auburn-Auburn_PDP_LEFT.png'
+    ],
+    // 4. Wool Runner Colors (Stony Cream, Dark Grey, Dapple Grey)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12061_25Q3_Wool-Runner-NZ-Mid-Waterproof-Stony-Cream-Rugged-Beige-Stony-Cream-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12007_25Q3_Wool-Runner-NZ-Waterproof-Dark-Grey-Light-Grey-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/WR3MDPG_SHOE_LEFT_GLOBAL_MENS_WOOL_RUNNER_DAPPLE_GREY_CREAM_a125cf03-f7cb-481e-af35-bdeecca29882.png'
+    ],
+    // 5. Varsity Colors (Light Grey, Mushroom, Parchment)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12526_26Q2_Varsity-Terralux-Light-Grey-Light-Grey-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12569_26Q1_Mens-Varsity-Airy-Mushroom-Blizzard-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12270_26Q1_Mens-Varsity-Parchment-Blizzard-Sole_PDP_LEFT.png'
+    ],
+    // 6. Tree Runner / Glider (Mushroom, Burnt Olive, Warm Red)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12587_26Q1_Tree-Glider-Mushroom-Light-Mushroom_PDP_LEFT_82f54d05-e967-45f0-9956-264c9bee1244.png',
+        'https://www.allbirds.com/cdn/shop/files/A12485_26Q1_Tree-Runner-NZ-Burnt-Olive-Burnt-Olive-Sole_PDP_LEFT_9487ac29-5786-4fd4-8b61-1f9430bdd42b.png',
+        'https://www.allbirds.com/cdn/shop/files/A12329_26Q1_Strider-Warm-Red-Mushroom_PDP_LEFT.png'
+    ],
+    // 7. Terralux / Slip Ons (Anthracite, Burnt Olive, Canvas White)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12422_26Q1_Runner-NZ-Terralux-Anthracite-Dark-Anthr_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12471_26Q1_Runner-NZ-Slip-On-Burnt-Olive-Burnt-Olive-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12344_26Q1_Cruiser-Canvas-Warm-White-Natural-White_PDP_LEFT_e95df9c3-e2cb-48df-b472-8c3edfb74fce.png'
+    ],
+    // 8. Clogs / Slippers / Mizzle (Dark Camel, Natural White, Medium Grey)
+    [
+        'https://www.allbirds.com/cdn/shop/files/A12147_25Q4_Kiwi-Clog-Dark-Camel-Stony-Cream-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A12034_25Q4_Wool-Slipper-Natural-White-Natural-White-Sole_PDP_LEFT.png',
+        'https://www.allbirds.com/cdn/shop/files/A11092_24Q2_Wool-Dasher-2-Mizzle-Medium-Grey-Natural-Black_PDP_LEFT.png'
+    ]
 ];
 
 export function useProducts() {
@@ -49,7 +74,8 @@ export function useProducts() {
     originalProducts.forEach((product, index) => {
       // 1. Original (Augmented)
       // Cycle through our high-quality image list
-      const originalImage = sneakerImages[index % sneakerImages.length] || '';
+      const imageSet = allbirdsImageSets[index % allbirdsImageSets.length] || allbirdsImageSets[0] as string[];
+      const originalImage = imageSet[0] || '';
       
       const basePrice = product.price; // Use raw price for direct conversion
       const randomDiscount = Math.floor(seededRandom(product.id) * 30 + 10);
@@ -59,7 +85,7 @@ export function useProducts() {
         price: basePrice,
         discountPercentage: product.discountPercentage || (seededRandom(product.id + 1) > 0.5 ? randomDiscount : 0),
         thumbnail: originalImage,
-        images: [originalImage, originalImage, originalImage] // Ensure gallery has images
+        images: imageSet // The 3 images
       };
       transformed.push(transformedOriginal);
 
@@ -71,7 +97,8 @@ export function useProducts() {
         
         const cloneId = parseInt(`${product.id}${i + 1}${Math.floor(seededRandom(seed + 2) * 100)}`);
         // Offset image index so clones don't look exactly like the original right next to it
-        const cloneImage = sneakerImages[(index + 5 + i) % sneakerImages.length] || '';
+        const cloneImageSet = allbirdsImageSets[(index + 5 + i) % allbirdsImageSets.length] || allbirdsImageSets[0] as string[];
+        const cloneImage = cloneImageSet[0] || '';
         const cloneBasePrice = basePrice + (priceVariation);
 
         // Assign tags for 'Edit' filter
@@ -91,7 +118,7 @@ export function useProducts() {
           price: Math.max(0, cloneBasePrice),
           discountPercentage: seededRandom(cloneId) > 0.5 ? Math.floor(seededRandom(cloneId + 1) * 30 + 10) : 0,
           thumbnail: cloneImage, 
-          images: [cloneImage, cloneImage, cloneImage],
+          images: cloneImageSet,
           tags: tags
         });
       }
