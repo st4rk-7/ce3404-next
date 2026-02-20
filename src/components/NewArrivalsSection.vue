@@ -27,7 +27,7 @@ const womensProducts = computed(() =>
     <!-- Allbirds: Banner with font-serif text-2xl leading-7 lg:text-4xl lg:leading-12 -->
     <div class="relative rounded overflow-hidden mb-6 aspect-[3/1] md:aspect-[4/1]">
       <img
-        src="https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1600&q=80"
+        src="https://www.allbirds.com/cdn/shop/files/26Q1_Terralux_Site_ProductGrid_Desktop-Mobile_9x16_M_v2_57cea5bb-913d-4995-bfb3-f2b866972fb6.jpg?v=1771541746&width=1280"
         alt="Men's New Arrivals"
         class="w-full h-full object-cover brightness-[0.6]"
       />
@@ -69,7 +69,7 @@ const womensProducts = computed(() =>
   <section class="mt-12 px-2.5">
     <div class="relative rounded overflow-hidden mb-6 aspect-[3/1] md:aspect-[4/1]">
       <img
-        src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=1600&q=80"
+        src="https://www.allbirds.com/cdn/shop/files/26Q1_Terralux_Homepage_HowToStyle-01_Desktop-Mobile-2x3.jpg?v=1771356114&width=1280"
         alt="Women's New Arrivals"
         class="w-full h-full object-cover brightness-[0.6]"
       />

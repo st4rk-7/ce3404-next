@@ -12,17 +12,12 @@ const slides: Slide[] = [
   {
     subtitle: 'INTRODUCING: VARSITY AIRY',
     headline: 'Fresh Air For Your Feet',
-    image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1920&q=80'
+    image: 'https://www.allbirds.com/cdn/shop/files/26Q1_VarsityAiry_Site_Homepage_Hero_Desktop_16x9_v4_022426345.jpg?v=1771960393&width=2560'
   },
   {
     subtitle: 'NO MORE BUSINESS AS USUAL',
     headline: 'Step Into Something New',
-    image: 'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?auto=format&fit=crop&w=1920&q=80'
-  },
-  {
-    subtitle: 'MADE FROM NATURE',
-    headline: 'Comfort Without Compromise',
-    image: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1920&q=80'
+    image: 'https://www.allbirds.com/cdn/shop/files/26Q1_Terralux_Site_Homepage_Hero_Desktop_16x9_Mens.jpg?v=1771355695&width=2560'
   }
 ];
 
@@ -49,7 +44,6 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer); });
 </script>
 
 <template>
-  <!-- Allbirds: hero-height-dynamic relative m-2.5 overflow-hidden rounded text-white -->
   <div class="relative m-2.5 overflow-hidden rounded text-white" style="height: calc(100vh - 140px);">
     <!-- Slides -->
     <div
@@ -68,17 +62,15 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer); });
       <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"></div>
     </div>
 
-    <!-- Content — Allbirds: z-content relative, positioned bottom-center -->
+    <!-- Content Overlay -->
     <div class="absolute inset-0 z-20 flex flex-col items-center justify-end pb-20 md:pb-28 text-white text-center px-6">
       <p class="text-[10px] md:text-xs font-medium tracking-wider uppercase mb-4 opacity-90">
         {{ slides[currentSlide].subtitle }}
       </p>
-      <!-- Allbirds: z-content relative mb-6 text-2xl/8 tracking-wide, font-serif -->
       <h1 class="font-serif text-2xl md:text-[40px] lg:text-5xl leading-8 md:leading-10 tracking-wide mb-8 max-w-2xl">
         {{ slides[currentSlide].headline }}
       </h1>
       <div class="flex gap-3">
-        <!-- Allbirds: btn btn-white, which is bg-white text-black rounded-full uppercase text-xs tracking-wider font-medium -->
         <RouterLink
           to="/shop?gender=men"
           class="bg-white/80 backdrop-blur-sm text-black text-xs font-medium tracking-wider uppercase px-6 py-3 rounded-full hover:bg-white transition-colors"
@@ -107,7 +99,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer); });
       ></button>
     </div>
 
-    <!-- Pause Button — Allbirds: bottom-right, size-6 -->
+    <!-- Pause Button -->
     <button
       @click="togglePause"
       class="absolute bottom-6 right-6 z-20 size-6 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
