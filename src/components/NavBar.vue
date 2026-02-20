@@ -56,7 +56,7 @@ const handleLogout = () => {
         <!-- Center: Navigation (Desktop) -->
         <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-8 text-xs font-bold tracking-wide text-black items-center h-full">
           <div class="h-full flex items-center group/men">
-            <RouterLink to="/?gender=men" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
+            <RouterLink to="/shop?gender=men" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
             
             <!-- Mega Menu Dropdown -->
             <div class="absolute top-[70px] left-0 w-full bg-white shadow-xl flex z-50 opacity-0 invisible group-hover/men:opacity-100 group-hover/men:visible transition-all duration-300 ease-in-out">
@@ -88,10 +88,10 @@ const handleLogout = () => {
             </div>
           </div>
           <div class="h-full flex items-center">
-            <RouterLink to="/?gender=women" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">WOMEN</RouterLink>
+            <RouterLink to="/shop?gender=women" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">WOMEN</RouterLink>
           </div>
           <div class="h-full flex items-center">
-            <RouterLink to="/?sale=true" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">SALE</RouterLink>
+            <RouterLink to="/shop?sale=true" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">SALE</RouterLink>
           </div>
         </nav>
 
@@ -200,12 +200,12 @@ const handleLogout = () => {
             <!-- Navigation Links -->
             <nav class="flex-grow px-5 py-6 space-y-1">
               <RouterLink 
-                to="/?gender=men" 
+                to="/shop?gender=men" 
                 @click="isMobileMenuOpen = false"
                 class="block py-3 text-sm font-bold tracking-[0.2em] uppercase text-brand-blue dark:text-white hover:text-brand-red transition-colors border-b border-gray-100 dark:border-gray-800"
               >MEN'S</RouterLink>
               <RouterLink 
-                to="/?gender=women" 
+                to="/shop?gender=women" 
                 @click="isMobileMenuOpen = false"
                 class="block py-3 text-sm font-bold tracking-[0.2em] uppercase text-brand-blue dark:text-white hover:text-brand-red transition-colors border-b border-gray-100 dark:border-gray-800"
               >WOMEN'S</RouterLink>
