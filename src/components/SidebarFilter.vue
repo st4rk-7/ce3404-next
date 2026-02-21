@@ -39,9 +39,9 @@ const isFilterSelected = (sectionId: string, optionId: string) => {
 </script>
 
 <template>
-  <div class="w-full flex flex-col font-mono text-gray-800 dark:text-gray-100">
+  <div class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-x-8 gap-y-12 font-sans text-gray-800 dark:text-gray-100">
     
-    <div class="flex-1">
+    <div>
       <h3 class="text-sm font-bold uppercase tracking-widest mb-4">Size</h3>
       <p class="text-xs text-gray-500 mb-4 leading-relaxed max-w-[200px]">
         Most of our shoes only come in full sizes. If you're a half size, select your nearest whole size too.
@@ -79,7 +79,7 @@ const isFilterSelected = (sectionId: string, optionId: string) => {
     </div>
 
     <!-- Column 2: COLOR -->
-    <div class="flex-1 md:max-w-[180px]">
+    <div>
       <h3 class="text-sm font-bold uppercase tracking-widest mb-4">Color</h3>
       <div v-for="section in filters.filter(f => f.id === 'color')" :key="section.id" class="grid grid-cols-2 gap-y-4 gap-x-2">
          <label 
@@ -105,7 +105,7 @@ const isFilterSelected = (sectionId: string, optionId: string) => {
     </div>
 
     <!-- Column 3: PRICE -->
-    <div class="flex-1 md:max-w-[180px]">
+    <div>
       <h3 class="text-sm font-bold uppercase tracking-widest mb-4">Price</h3>
       <div class="space-y-4">
           <label class="flex items-center gap-3 cursor-pointer group">
@@ -132,7 +132,7 @@ const isFilterSelected = (sectionId: string, optionId: string) => {
     </div>
 
     <!-- Column 4: PRODUCT TYPE -->
-    <div class="flex-1 md:max-w-[200px]">
+    <div>
       <h3 class="text-sm font-bold uppercase tracking-widest mb-4">Product Type</h3>
       <div class="space-y-4">
           <label v-for="type in ['Everyday Sneakers', 'Fluffs', 'Golf', 'High Tops', 'Hiking Shoes', 'Running Shoes', 'Slip Ons', 'Water-Repellent Shoes']" :key="type" class="flex items-center gap-3 cursor-pointer group">
@@ -143,7 +143,7 @@ const isFilterSelected = (sectionId: string, optionId: string) => {
     </div>
 
     <!-- Column 5: MATERIAL -->
-    <div class="flex-1 md:max-w-[200px]">
+    <div>
       <h3 class="text-sm font-bold uppercase tracking-widest mb-4">Material</h3>
       <div class="space-y-4">
           <label v-for="mat in ['Alternative-Leather', 'Canvas', 'Tree-Fiber-Blend', 'Wool']" :key="mat" class="flex items-center gap-3 cursor-pointer group">

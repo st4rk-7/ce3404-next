@@ -71,18 +71,47 @@ onMounted(async () => {
                 <!-- Left: Filter Toggle -->
                 <button 
                     @click="isFilterOpen = !isFilterOpen"
-                    class="flex items-center gap-2 text-xs font-bold tracking-widest px-4 py-2 rounded-full hover:bg-gray-200 transition-colors"
+                    class="flex items-center gap-2 text-xs font-bold tracking-widest px-4 py-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-black dark:text-white"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
                     <span>FILTER</span>
                     <span class="font-normal text-gray-500 lowercase ml-1">({{ filteredProducts.length }} products)</span>
                 </button>
 
-                <!-- Right: Sort Dropdown (Mock for now) -->
-                <button class="bg-charcoal text-white flex items-center gap-2 text-[10px] md:text-xs font-bold tracking-widest px-6 py-3 rounded-full hover:bg-black transition-colors">
-                    FEATURED
-                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
+                <!-- Right: MEN/WOMEN Toggle & Sort Dropdown -->
+                <div class="flex items-center gap-4">
+                    <!-- MEN / WOMEN Toggle -->
+                    <div class="hidden md:flex border border-gray-300 dark:border-gray-600 rounded-full overflow-hidden bg-transparent">
+                        <button class="bg-charcoal text-white text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 uppercase hover:opacity-90 transition-colors">
+                            MEN
+                        </button>
+                        <button class="text-charcoal dark:text-gray-300 text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 uppercase hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            WOMEN
+                        </button>
+                    </div>
+
+                    <!-- FEATURED Dropdown -->
+                    <div class="relative group">
+                        <button class="bg-charcoal text-white flex items-center gap-2 text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 rounded-full hover:bg-black transition-colors border border-charcoal">
+                            FEATURED
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 top-full mt-2 w-64 bg-charcoal text-white rounded-md shadow-2xl hidden group-hover:block z-50 overflow-hidden border border-gray-700">
+                            <ul class="text-xs font-bold tracking-widest uppercase py-2">
+                                <li class="px-6 py-3 bg-[#1F51FF] cursor-pointer hover:bg-blue-600 transition-colors">FEATURED</li>
+                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">BEST SELLING</li>
+                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">ALPHABETICALLY, A-Z</li>
+                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">ALPHABETICALLY, Z-A</li>
+                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">PRICE, LOW TO HIGH</li>
+                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">PRICE, HIGH TO LOW</li>
+                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">DATE, OLD TO NEW</li>
+                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">DATE, NEW TO OLD</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Filter Drawer (Appears below filter bar) -->
@@ -99,11 +128,8 @@ onMounted(async () => {
                     </button>
                 </div>
                 
-                <!-- Temporary SidebarFilter placement before rewriting it into columns -->
-                <div class="opacity-50 pointer-events-none">
-                    <p class="text-xs text-red-500 mb-4 font-bold uppercase">Placeholder: Working on the columnar filter layout next</p>
-                    <SidebarFilter />
-                </div>
+                <!-- Filter Body: The 5-column Layout -->
+                <SidebarFilter />
             </div>
 
             <!-- Product Grid -->
