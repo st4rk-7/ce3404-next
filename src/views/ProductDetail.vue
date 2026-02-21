@@ -45,10 +45,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-[#f5f4f0] dark:bg-gray-900 min-h-screen">
+  <div class="bg-[#f5f4f0] dark:bg-charcoal min-h-screen transition-colors duration-200">
     <!-- Loading State -->
     <div v-if="isLoading" class="flex justify-center items-center h-[50vh]">
-      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
     </div>
 
     <!-- Error State -->
@@ -59,7 +59,7 @@ onMounted(async () => {
     <!-- Product Content -->
     <div v-if="product" class="w-full">
       <!-- Breadcrumb - Allbirds style -->
-      <div class="container mx-auto px-4 md:px-8 py-4 top-0 z-10 text-xs text-gray-500 font-medium">
+      <div class="container mx-auto px-4 md:px-8 py-4 top-0 z-10 text-xs text-gray-500 dark:text-gray-400 font-medium">
         Home > {{ product.title }}
       </div>
       
@@ -79,7 +79,7 @@ onMounted(async () => {
       </div>
 
       <!-- Recommendations Section -->
-      <div class="container mx-auto mt-20 pt-10 border-t border-gray-200 dark:border-gray-800 px-4 md:px-8">
+      <div class="container mx-auto mt-20 pt-10 border-t border-gray-200 dark:border-white/10 px-4 md:px-8">
         <h3 class="text-xl font-bold uppercase tracking-widest text-center mb-10 text-black dark:text-white">You Might Also Like</h3>
         <ProductGrid :products="relatedProducts" :columns="4" />
       </div>

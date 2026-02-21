@@ -51,29 +51,29 @@ const isFilterSelected = (sectionId: string, optionId: string) => {
       <div class="grid grid-cols-5 gap-2">
         <template v-for="section in filters.filter(f => f.id === 'size' || f.id === 'additional_sizes')" :key="section.id">
             <!-- For demonstration, using hardcoded typical sizes matching the image instead of dynamic just for layout accuracy -->
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">XS</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">S</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">M</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">L</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">XL</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">XXL</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">XS</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">S</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">M</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">L</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">XL</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">XXL</button>
             
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">8</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">8.5</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">9</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">9.5</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">8</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">8.5</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">9</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">9.5</button>
             
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">10</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">10.5</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">11</button>
-            <button class="border border-gray-200 bg-gray-50 text-gray-400 py-3 flex justify-center items-center relative overflow-hidden text-xs">
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">10</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">10.5</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">11</button>
+            <button class="border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500 py-3 flex justify-center items-center relative overflow-hidden text-xs">
                 11.5
                 <!-- diagonal line crossing out disabled size -->
-                <div class="absolute inset-0 w-full h-[1px] bg-gray-200 rotate-45 top-1/2 -translate-y-1/2 origin-center"></div>
+                <div class="absolute inset-0 w-full h-[1px] bg-gray-200 dark:bg-gray-600 rotate-45 top-1/2 -translate-y-1/2 origin-center"></div>
             </button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">12</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">12.5</button>
-            <button class="border border-gray-200 py-3 flex justify-center items-center hover:border-black transition-colors text-xs">13</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">12</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">12.5</button>
+            <button class="border border-gray-200 dark:border-gray-700 py-3 flex justify-center items-center hover:border-black dark:hover:border-white transition-colors text-xs">13</button>
         </template>
       </div>
     </div>
@@ -95,7 +95,7 @@ const isFilterSelected = (sectionId: string, optionId: string) => {
              :checked="isFilterSelected(section.id, option.id)"
            />
            <div 
-             class="w-5 h-5 rounded-full border border-gray-200 flex items-center justify-center peer-checked:ring-1 peer-checked:ring-black peer-checked:ring-offset-1 transition-all"
+             class="w-5 h-5 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center peer-checked:ring-1 peer-checked:ring-black dark:peer-checked:ring-white peer-checked:ring-offset-1 dark:peer-checked:ring-offset-charcoal transition-all"
            >
              <div class="w-full h-full rounded-full" :style="{ backgroundColor: option.color }"></div>
            </div>
