@@ -36,36 +36,36 @@ const handleLogout = () => {
     </div>
 
     <!-- Main Header -->
-    <header class="w-full bg-white sticky top-0 z-40 h-[60px] md:h-[70px] flex items-center shadow-sm relative transition-all duration-300">
+    <header class="w-full bg-white dark:bg-charcoal dark:border-b dark:border-white/10 sticky top-0 z-40 h-[60px] md:h-[70px] flex items-center shadow-sm relative transition-all duration-300">
       <div class="w-full px-4 md:px-8 h-full flex justify-between items-center group/header">
         
         <!-- Left: Logo -->
         <div class="flex-shrink-0 flex items-center">
           <!-- Mobile Menu Button -->
-          <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="md:hidden p-2 -ml-2 text-black">
+          <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="md:hidden p-2 -ml-2 text-black dark:text-white">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </button>
           
-          <RouterLink to="/" class="block text-black hover:opacity-70 transition-opacity ml-2 md:ml-0">
+          <RouterLink to="/" class="block text-black dark:text-white hover:opacity-70 transition-opacity ml-2 md:ml-0">
              <span class="text-3xl font-extrabold tracking-widest uppercase">NEXT</span>
           </RouterLink>
         </div>
 
         <!-- Center: Navigation (Desktop) -->
-        <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-8 text-xs font-bold tracking-wide text-black items-center h-full">
+        <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-8 text-xs font-bold tracking-wide text-black dark:text-white items-center h-full">
           <div class="h-full flex items-center group/men">
-            <RouterLink to="/shop?gender=men" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
+            <RouterLink to="/shop?gender=men" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
             
             <!-- Mega Menu Dropdown -->
-            <div class="absolute top-[70px] left-0 w-full bg-white shadow-xl flex z-50 opacity-0 invisible group-hover/men:opacity-100 group-hover/men:visible transition-all duration-300 ease-in-out">
+            <div class="absolute top-[70px] left-0 w-full bg-white dark:bg-charcoal dark:border-t dark:border-white/10 shadow-xl flex z-50 opacity-0 invisible group-hover/men:opacity-100 group-hover/men:visible transition-all duration-300 ease-in-out">
               <div class="w-full max-w-[1240px] mx-auto flex p-10 min-h-[400px]">
                  <!-- Left Column links -->
                  <div class="w-1/4 space-y-6">
                     <div>
-                      <h4 class="text-xs font-bold mb-4 uppercase tracking-wider">Shoes</h4>
-                      <ul class="space-y-3 text-sm font-normal text-gray-700">
+                      <h4 class="text-xs font-bold mb-4 uppercase tracking-wider dark:text-white">Shoes</h4>
+                      <ul class="space-y-3 text-sm font-normal text-gray-700 dark:text-gray-300">
                         <li><a href="#" class="hover:underline">Shop All</a></li>
                         <li><a href="#" class="hover:underline">Sneakers</a></li>
                         <li><a href="#" class="hover:underline">Slip-Ons</a></li>
@@ -88,15 +88,15 @@ const handleLogout = () => {
             </div>
           </div>
           <div class="h-full flex items-center">
-            <RouterLink to="/shop?gender=women" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">WOMEN</RouterLink>
+            <RouterLink to="/shop?gender=women" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all">WOMEN</RouterLink>
           </div>
           <div class="h-full flex items-center">
-            <RouterLink to="/shop?sale=true" class="hover:border-b-2 hover:border-black h-full flex items-center px-1 border-b-2 border-transparent transition-all">SALE</RouterLink>
+            <RouterLink to="/shop?sale=true" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all text-brand-red">SALE</RouterLink>
           </div>
         </nav>
 
         <!-- Right: Actions -->
-        <div v-if="!searchStore.isSearchOpen" class="flex items-center space-x-4 md:space-x-5 text-black">
+        <div v-if="!searchStore.isSearchOpen" class="flex items-center space-x-4 md:space-x-5 text-black dark:text-white">
           <RouterLink to="/" class="hidden md:block text-xs font-bold hover:underline">About</RouterLink>
           <RouterLink to="/" class="hidden md:block text-xs font-bold hover:underline">ReRun</RouterLink>
           <!-- Country/Currency Selector -->
@@ -128,9 +128,9 @@ const handleLogout = () => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
               </button>
-              <div class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 shadow-lg rounded-md p-2 hidden group-hover/account:block">
-                 <div class="px-4 py-2 text-sm font-bold border-b border-gray-100">{{ authStore.user.firstName }}</div>
-                 <button @click="handleLogout" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 text-red-600">Logout</button>
+              <div class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-charcoal border border-gray-100 dark:border-gray-700 shadow-lg rounded-md p-2 hidden group-hover/account:block">
+                 <div class="px-4 py-2 text-sm font-bold border-b border-gray-100 dark:border-gray-700">{{ authStore.user.firstName }}</div>
+                 <button @click="handleLogout" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800 text-red-600">Logout</button>
               </div>
             </div>
           </template>

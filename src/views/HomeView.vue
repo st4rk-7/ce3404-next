@@ -52,21 +52,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-offwhite flex flex-col font-sans text-black">
+  <div class="min-h-screen bg-natural-white dark:bg-charcoal flex flex-col font-sans text-black dark:text-natural-white transition-colors duration-200">
     
     <main class="flex-grow pt-10 md:pt-16">
         <div class="w-full mx-auto px-4 md:px-8 lg:px-12 mb-20">
             
             <!-- Page Header: Title & Subtitle -->
             <div class="text-center mb-10 max-w-2xl mx-auto">
-                <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Men's Sale</h1>
-                <p class="text-sm md:text-base text-gray-600">
+                <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-black dark:text-white">Men's Sale</h1>
+                <p class="text-sm md:text-base text-gray-600 dark:text-gray-400">
                     Stock up and shop these last-chance styles and colors before they're gone for good.
                 </p>
             </div>
 
             <!-- New Filter/Sort Bar (Allbirds style) -->
-            <div class="bg-[#ebebe4] rounded-full px-4 py-2 flex justify-between items-center mb-10 relative">
+            <div class="bg-[#ebebe4] dark:bg-gray-800 rounded-full px-4 py-2 flex justify-between items-center mb-10 relative">
                 
                 <!-- Left: Filter Toggle -->
                 <button 
@@ -86,15 +86,15 @@ onMounted(async () => {
             </div>
 
             <!-- Filter Drawer (Appears below filter bar) -->
-            <div v-show="isFilterOpen" class="bg-white rounded-3xl shadow-xl w-full p-6 md:p-10 mb-10 relative z-30 animate-fade-in-down">
-                <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100">
-                    <button @click="isFilterOpen = false" class="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-black transition-colors uppercase tracking-widest">
+            <div v-show="isFilterOpen" class="bg-white dark:bg-[#2A2A2A] rounded-3xl shadow-xl w-full p-6 md:p-10 mb-10 relative z-30 animate-fade-in-down">
+                <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100 dark:border-gray-700">
+                    <button @click="isFilterOpen = false" class="flex items-center gap-2 text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors uppercase tracking-widest">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         COLLAPSE FILTERS <span class="font-normal lowercase ml-1">({{ filteredProducts.length }} products)</span>
                     </button>
-                    <button class="text-xs font-bold underline hover:text-gray-600 transition-colors uppercase tracking-widest">
+                    <button class="text-xs font-bold underline hover:text-gray-600 dark:hover:text-gray-400 transition-colors uppercase tracking-widest text-black dark:text-white">
                         Clear All
                     </button>
                 </div>

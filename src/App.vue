@@ -4,7 +4,7 @@ import SiteFooter from './components/SiteFooter.vue';
 </script>
 
 <template>
-  <div class="min-h-screen bg-offwhite text-black font-sans flex flex-col">
+  <div class="min-h-screen bg-natural-white dark:bg-charcoal text-black dark:text-natural-white font-sans flex flex-col transition-colors duration-200">
     <NavBar />
 
     <main class="flex-grow pt-0">

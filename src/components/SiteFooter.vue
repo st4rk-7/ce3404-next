@@ -25,11 +25,11 @@ const subscribe = () => {
                     type="email" 
                     placeholder="Email Address" 
                     required
-                    class="w-full bg-white text-black rounded-full py-3 md:py-4 pl-6 pr-24 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    class="w-full bg-white text-black dark:bg-[#1a1a1a] dark:text-white dark:border dark:border-gray-700 rounded-full py-3 md:py-4 pl-6 pr-24 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500"
                 />
                 <button 
                     type="submit" 
-                    class="absolute text-[10px] md:text-xs right-2 top-2 bottom-2 font-bold uppercase tracking-wider text-black hover:text-gray-600 px-4 transition-colors"
+                    class="absolute text-[10px] md:text-xs right-2 top-2 bottom-2 font-bold uppercase tracking-wider text-black hover:text-gray-600 dark:text-white dark:hover:text-gray-300 px-4 transition-colors"
                 >
                     Sign Up
                 </button>
