@@ -71,21 +71,46 @@ export function useProducts() {
         return x - Math.floor(x);
     };
 
+    // Filter Mock Data Pools
+    const allColors = ['#000000', '#ffffff', '#8B4513', '#FFC0CB', '#FFD700', '#0000FF', '#808080', '#F5F5DC', '#FF0000', '#FFA500', '#008000'];
+    const allSizes = ['8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '12.5', '13'];
+    const allMaterials = ['Alternative-Leather', 'Canvas', 'Tree-Fiber-Blend', 'Wool'];
+    const allProductTypes = ['Everyday Sneakers', 'Fluffs', 'Golf', 'High Tops', 'Hiking Shoes', 'Running Shoes', 'Slip Ons', 'Water-Repellent Shoes'];
+
     originalProducts.forEach((product, index) => {
       // 1. Original (Augmented)
       // Cycle through our high-quality image list
       const imageSet = allbirdsImageSets[index % allbirdsImageSets.length] || allbirdsImageSets[0] as string[];
-      const originalImage = imageSet[0] || '';
+      const originalImage: string = imageSet[0] || '';
       
       const basePrice = product.price; // Use raw price for direct conversion
       const randomDiscount = Math.floor(seededRandom(product.id) * 30 + 10);
       
-      const transformedOriginal = {
+      // Mock Data Assignment for Original
+      const numColors = Math.floor(seededRandom(product.id + 10) * 4) + 1; // 1 to 4 colors
+      const productColors = [...allColors].sort(() => seededRandom(product.id) - 0.5).slice(0, numColors);
+      
+      const numSizes = Math.floor(seededRandom(product.id + 11) * 6) + 3; // 3 to 8 sizes available
+      const productSizes = [...allSizes].sort(() => seededRandom(product.id + 1) - 0.5).slice(0, numSizes);
+      
+      const productMaterial: string = allMaterials[Math.floor(seededRandom(product.id + 12) * allMaterials.length)] || allMaterials[0] || 'Wool';
+      const productType: string = allProductTypes[Math.floor(seededRandom(product.id + 13) * allProductTypes.length)] || allProductTypes[0] || 'Everyday Sneakers';
+      
+      // Generate a random date in the past year for sorting
+      const daysAgo = Math.floor(seededRandom(product.id + 14) * 365);
+      const createdAt = new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000).toISOString();
+
+      const transformedOriginal: Product = {
         ...product,
         price: basePrice,
         discountPercentage: product.discountPercentage || (seededRandom(product.id + 1) > 0.5 ? randomDiscount : 0),
         thumbnail: originalImage,
-        images: imageSet // The 3 images
+        images: imageSet, // The 3 images
+        colors: productColors,
+        sizes: productSizes,
+        material: productMaterial,
+        productType: productType,
+        createdAt: createdAt
       };
       transformed.push(transformedOriginal);
 
@@ -111,6 +136,15 @@ export function useProducts() {
         // Ensure at least one tag is present for testing some variety
         if (tags.length === 0) tags.push('vintage');
 
+        // Mock Data Assignment for Clones
+        const cloneColors = [...allColors].sort(() => seededRandom(cloneId + 10) - 0.5).slice(0, Math.floor(seededRandom(cloneId + 11) * 3) + 1);
+        const cloneSizes = [...allSizes].sort(() => seededRandom(cloneId + 12) - 0.5).slice(0, Math.floor(seededRandom(cloneId + 13) * 5) + 4);
+        const cloneMaterial: string = allMaterials[Math.floor(seededRandom(cloneId + 14) * allMaterials.length)] || allMaterials[0] || 'Wool';
+        const cloneProductType: string = allProductTypes[Math.floor(seededRandom(cloneId + 15) * allProductTypes.length)] || allProductTypes[0] || 'Everyday Sneakers';
+        
+        const cloneDaysAgo = Math.floor(seededRandom(cloneId + 16) * 365);
+        const cloneCreatedAt = new Date(Date.now() - cloneDaysAgo * 24 * 60 * 60 * 1000).toISOString();
+
         transformed.push({
           ...product,
           id: cloneId,
@@ -119,7 +153,12 @@ export function useProducts() {
           discountPercentage: seededRandom(cloneId) > 0.5 ? Math.floor(seededRandom(cloneId + 1) * 30 + 10) : 0,
           thumbnail: cloneImage, 
           images: cloneImageSet,
-          tags: tags
+          tags: tags,
+          colors: cloneColors,
+          sizes: cloneSizes,
+          material: cloneMaterial,
+          productType: cloneProductType,
+          createdAt: cloneCreatedAt
         });
       }
     });

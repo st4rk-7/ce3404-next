@@ -5,13 +5,15 @@ import ProductGrid from '../components/ProductGrid.vue';
 import SidebarFilter from '../components/SidebarFilter.vue'; // Will refactor this inside the new filter drawer soon
 import { useProducts } from '../composables/useProducts';
 import { useSearchStore } from '../stores/search';
+import { useFilterStore } from '../stores/filter';
 
 const { products, isLoading, fetchProducts } = useProducts();
 const searchStore = useSearchStore();
+const filterStore = useFilterStore();
 const route = useRoute();
 const isFilterOpen = ref(false);
 
-// Filter Logic: Search + Category
+// Filter Logic: Search + Category + Sidebar Filters
 const filteredProducts = computed(() => {
     let result = products.value;
 
@@ -31,16 +33,67 @@ const filteredProducts = computed(() => {
         result = result.filter(p => p.tags && tagArray.some(t => p.tags!.includes(t)));
     }
 
-    // Filter by Price
-    const minPrice = Number(route.query.minPrice);
-    const maxPrice = Number(route.query.maxPrice);
-    if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-        result = result.filter(p => p.price >= minPrice && p.price <= maxPrice);
-    }
-
     if (searchStore.query) {
         const query = searchStore.query.toLowerCase();
         result = result.filter(p => p.title.toLowerCase().includes(query));
+    }
+
+    // Note: The legacy price filter based on route.query.minPrice is overridden by the new UI sidebar, 
+    // but leaving it intact below wouldn't hurt. We'll skip it in favor of the Sidebar logic.
+
+    // ----------------------------------------
+    // Pinia FilterStore (New UI Mega Filter)
+    // ----------------------------------------
+    const { size, color, price, productType, material } = filterStore.activeFilters;
+
+    if (size && size.length > 0) {
+        result = result.filter(p => p.sizes && p.sizes.some(s => size.includes(s)));
+    }
+    if (color && color.length > 0) {
+        result = result.filter(p => p.colors && p.colors.some(c => color.includes(c)));
+    }
+    if (productType && productType.length > 0) {
+        result = result.filter(p => p.productType && productType.includes(p.productType));
+    }
+    if (material && material.length > 0) {
+        result = result.filter(p => p.material && material.includes(p.material));
+    }
+    if (price && price.length > 0) {
+        result = result.filter(p => {
+             return price.some(rangeLabel => {
+                 const range = filterStore.priceRanges.find(r => r.label === rangeLabel);
+                 if (!range) return false;
+                 return p.price >= range.min && p.price <= range.max;
+             });
+        });
+    }
+
+    // ----------------------------------------
+    // Sorting Logic
+    // ----------------------------------------
+    switch (filterStore.activeSort) {
+        case 'PRICE, LOW TO HIGH':
+            result = [...result].sort((a, b) => a.price - b.price);
+            break;
+        case 'PRICE, HIGH TO LOW':
+            result = [...result].sort((a, b) => b.price - a.price);
+            break;
+        case 'ALPHABETICALLY, A-Z':
+            result = [...result].sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case 'ALPHABETICALLY, Z-A':
+            result = [...result].sort((a, b) => b.title.localeCompare(a.title));
+            break;
+        case 'DATE, OLD TO NEW':
+            result = [...result].sort((a, b) => new Date(a.createdAt || '').getTime() - new Date(b.createdAt || '').getTime());
+            break;
+        case 'DATE, NEW TO OLD':
+            result = [...result].sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
+            break;
+        case 'BEST SELLING':
+            result = [...result].sort((a, b) => (b.discountPercentage || 0) - (a.discountPercentage || 0)); // mock best selling mostly by discount popularity
+            break;
+        // 'FEATURED' falls through to default API array order
     }
 
     return result;
@@ -92,22 +145,22 @@ onMounted(async () => {
 
                     <!-- FEATURED Dropdown -->
                     <div class="relative group">
-                        <button class="bg-charcoal text-white flex items-center gap-2 text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 rounded-full hover:bg-black transition-colors border border-charcoal">
-                            FEATURED
+                        <button class="bg-charcoal text-white flex items-center gap-2 text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 rounded-full hover:bg-black transition-colors border border-charcoal uppercase">
+                            {{ filterStore.activeSort }}
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
 
                         <!-- Dropdown Menu -->
                         <div class="absolute right-0 top-full mt-2 w-64 bg-charcoal text-white rounded-md shadow-2xl hidden group-hover:block z-50 overflow-hidden border border-gray-700">
                             <ul class="text-xs font-bold tracking-widest uppercase py-2">
-                                <li class="px-6 py-3 bg-[#1F51FF] cursor-pointer hover:bg-blue-600 transition-colors">FEATURED</li>
-                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">BEST SELLING</li>
-                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">ALPHABETICALLY, A-Z</li>
-                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">ALPHABETICALLY, Z-A</li>
-                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">PRICE, LOW TO HIGH</li>
-                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">PRICE, HIGH TO LOW</li>
-                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">DATE, OLD TO NEW</li>
-                                <li class="px-6 py-3 cursor-pointer hover:bg-gray-800 transition-colors">DATE, NEW TO OLD</li>
+                                <li @click="filterStore.setSort(option)" 
+                                    v-for="option in ['FEATURED', 'BEST SELLING', 'ALPHABETICALLY, A-Z', 'ALPHABETICALLY, Z-A', 'PRICE, LOW TO HIGH', 'PRICE, HIGH TO LOW', 'DATE, OLD TO NEW', 'DATE, NEW TO OLD']" 
+                                    :key="option" 
+                                    :class="option === filterStore.activeSort ? 'bg-[#1F51FF] hover:bg-blue-600' : 'hover:bg-gray-800'"
+                                    class="px-6 py-3 cursor-pointer transition-colors"
+                                >
+                                    {{ option }}
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -123,7 +176,7 @@ onMounted(async () => {
                         </svg>
                         COLLAPSE FILTERS <span class="font-normal lowercase ml-1">({{ filteredProducts.length }} products)</span>
                     </button>
-                    <button class="text-xs font-bold underline hover:text-gray-600 dark:hover:text-gray-400 transition-colors uppercase tracking-widest text-black dark:text-white">
+                    <button @click="filterStore.clearAllFilters()" class="text-xs font-bold underline hover:text-gray-600 dark:hover:text-gray-400 transition-colors uppercase tracking-widest text-black dark:text-white">
                         Clear All
                     </button>
                 </div>
