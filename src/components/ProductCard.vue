@@ -8,7 +8,7 @@ const addedSize = ref<string | null>(null);
 
 const handleQuickAdd = (size: string) => {
     addedSize.value = size;
-    cartStore.addToCart(props.product);
+    cartStore.addToCart(props.product, size);
     cartStore.openDrawer();
     
     // Reset checkmark after 1.5s

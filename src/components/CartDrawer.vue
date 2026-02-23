@@ -64,7 +64,7 @@ const { formatPrice } = useCurrency();
                 </h3>
                 <span class="text-[13px] font-medium">{{ formatPrice(item.product.price) }}</span>
               </div>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 mb-1.5">{{ item.product.color || 'Auburn (Auburn Sole)' }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 mb-1.5">{{ item.product.colors?.[0] || 'Auburn (Auburn Sole)' }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400">Size: {{ item.size }}</p>
 
               <!-- Actions/Quantity -->

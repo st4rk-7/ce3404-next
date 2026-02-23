@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { RouterLink } from 'vue-router';
 
 interface Slide {
@@ -41,6 +41,8 @@ const togglePause = () => {
 
 onMounted(() => startAutoplay());
 onBeforeUnmount(() => { if (timer) clearInterval(timer); });
+
+const currentSlideData = computed(() => slides[currentSlide.value]!);
 </script>
 
 <template>
@@ -65,10 +67,10 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer); });
     <!-- Content Overlay -->
     <div class="absolute inset-0 z-20 flex flex-col items-center justify-end pb-20 md:pb-28 text-white text-center px-6">
       <p class="text-[10px] md:text-xs font-medium tracking-wider uppercase mb-4 opacity-90">
-        {{ slides[currentSlide].subtitle }}
+        {{ currentSlideData.subtitle }}
       </p>
       <h1 class="font-serif text-2xl md:text-[40px] lg:text-5xl leading-8 md:leading-10 tracking-wide mb-8 max-w-2xl">
-        {{ slides[currentSlide].headline }}
+        {{ currentSlideData.headline }}
       </h1>
       <div class="flex gap-3">
         <RouterLink

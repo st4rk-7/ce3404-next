@@ -16,7 +16,7 @@ const isLoading = ref(true);
 const error = ref('');
 
 const handleAddToCart = (payload: { product: Product; size: string; quantity: number }) => {
-  cartStore.addToCart(payload.product);
+  cartStore.addToCart(payload.product, payload.size, payload.quantity);
   // Open the cart drawer to show the newly added item
   cartStore.openDrawer();
 };

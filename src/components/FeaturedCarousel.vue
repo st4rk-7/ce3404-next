@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const currentIndex = ref(0);
@@ -31,13 +31,15 @@ const prev = () => {
 const next = () => {
   currentIndex.value = (currentIndex.value + 1) % featuredProducts.length;
 };
+
+const currentProduct = computed(() => featuredProducts[currentIndex.value]!);
 </script>
 
 <template>
   <section class="relative mt-24 mb-2.5 overflow-x-clip px-2.5">
     <div class="text-center mb-10">
       <h3 class="font-serif text-[30px] leading-[1.875rem] md:text-[40px] md:leading-10 text-black dark:text-white">
-        {{ featuredProducts[currentIndex].name }}
+        {{ currentProduct.name }}
       </h3>
     </div>
 
@@ -46,14 +48,14 @@ const next = () => {
         <Transition name="fade" mode="out-in">
           <img
             :key="currentIndex"
-            :src="featuredProducts[currentIndex].image"
-            :alt="featuredProducts[currentIndex].name"
+            :src="currentProduct.image"
+            :alt="currentProduct.name"
             class="w-full h-full object-contain"
           />
         </Transition>
         <div class="absolute bottom-6 left-6 z-10">
-          <p class="text-charcoal dark:text-gray-300 text-sm font-medium mb-1">{{ featuredProducts[currentIndex].color }}</p>
-          <p class="text-charcoal dark:text-white text-xl font-medium">${{ featuredProducts[currentIndex].price }}</p>
+          <p class="text-charcoal dark:text-gray-300 text-sm font-medium mb-1">{{ currentProduct.color }}</p>
+          <p class="text-charcoal dark:text-white text-xl font-medium">${{ currentProduct.price }}</p>
         </div>
       </div>
 

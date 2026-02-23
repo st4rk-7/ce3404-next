@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import type { Product } from '../types/product';
 
 export interface CartItem {
@@ -96,6 +96,7 @@ export const useCartStore = defineStore('cart', () => {
     updateQuantity,
     clearCart,
     openDrawer,
-    closeDrawer
+    closeDrawer,
+    toggleDrawer
   };
 });
