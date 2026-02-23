@@ -18,7 +18,7 @@ onMounted(async () => {
 
 <template>
   <!-- Allbirds: bg-natural-white-60 min-h-full -->
-  <div class="min-h-screen bg-natural-white font-sans text-black">
+  <div class="min-h-screen bg-natural-white dark:bg-charcoal font-sans text-black dark:text-white transition-colors duration-200">
     <!-- 1. Hero Carousel -->
     <HeroCarousel />
 

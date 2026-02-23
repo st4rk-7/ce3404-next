@@ -119,35 +119,32 @@ onMounted(async () => {
             </div>
 
             <!-- New Filter/Sort Bar (Allbirds style) -->
-            <div class="bg-[#ebebe4] dark:bg-gray-800 rounded-full px-4 py-2 flex justify-between items-center mb-10 relative">
+            <div class="bg-[#EAE8E2] dark:bg-[#2A2A2A] rounded-full px-3 py-2 flex justify-between items-center mb-10 relative shadow-sm">
                 
                 <!-- Left: Filter Toggle -->
                 <button 
                     @click="isFilterOpen = !isFilterOpen"
-                    class="flex items-center gap-2 text-xs font-bold tracking-widest px-4 py-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-black dark:text-white"
+                    class="flex items-center gap-3 text-[13px] font-bold tracking-tight px-2 py-1 rounded-full hover:bg-white/50 dark:hover:bg-gray-700 transition-colors text-[#111111] dark:text-white"
                 >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                    <span>FILTER</span>
-                    <span class="font-normal text-gray-500 lowercase ml-1">({{ filteredProducts.length }} products)</span>
+                    <div class="w-8 h-8 rounded-full border border-[#111111] dark:border-white flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    </div>
+                    <div>
+                        <span class="uppercase tracking-widest text-[#111111] dark:text-white text-xs font-extrabold mr-1">FILTER</span>
+                        <span class="font-normal text-[#555555] dark:text-gray-300 text-xs">({{ filteredProducts.length }} products)</span>
+                    </div>
                 </button>
 
                 <!-- Right: MEN/WOMEN Toggle & Sort Dropdown -->
                 <div class="flex items-center gap-4">
-                    <!-- MEN / WOMEN Toggle -->
-                    <div class="hidden md:flex border border-gray-300 dark:border-gray-600 rounded-full overflow-hidden bg-transparent">
-                        <button class="bg-charcoal text-white text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 uppercase hover:opacity-90 transition-colors">
-                            MEN
-                        </button>
-                        <button class="text-charcoal dark:text-gray-300 text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 uppercase hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                            WOMEN
-                        </button>
-                    </div>
-
+                    
                     <!-- FEATURED Dropdown -->
                     <div class="relative group">
-                        <button class="bg-charcoal text-white flex items-center gap-2 text-[10px] md:text-[11px] font-bold tracking-widest px-6 py-3 rounded-full hover:bg-black transition-colors border border-charcoal uppercase">
+                        <button class="bg-transparent text-[#111111] dark:text-white flex items-center gap-2 text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-2 rounded-full hover:bg-white/50 dark:hover:bg-gray-700 transition-colors border border-[#111111] dark:border-white uppercase shadow-sm">
                             {{ filterStore.activeSort }}
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <div class="w-5 h-5 rounded-full border border-[#111111] dark:border-white flex items-center justify-center ml-2">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
                         </button>
 
                         <!-- Dropdown Menu -->
@@ -164,6 +161,17 @@ onMounted(async () => {
                             </ul>
                         </div>
                     </div>
+
+                    <!-- MEN / WOMEN Toggle -->
+                    <div class="hidden md:flex items-center border border-[#111111] dark:border-white rounded-full p-1 bg-transparent shadow-sm">
+                        <button class="bg-[#111111] dark:bg-white text-white dark:text-black text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full hover:opacity-90 transition-opacity">
+                            MEN
+                        </button>
+                        <button class="text-[#111111] dark:text-white text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full hover:bg-black/5 dark:hover:bg-white/20 transition-colors">
+                            WOMEN
+                        </button>
+                    </div>
+
                 </div>
             </div>
 

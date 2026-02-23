@@ -43,19 +43,19 @@ const womensProducts = computed(() =>
         v-for="product in mensProducts"
         :key="product.id"
         :to="`/product/${product.id}`"
-        class="group bg-natural-white rounded-lg overflow-hidden relative"
+        class="group bg-natural-white dark:bg-[#2A2A2A] rounded-lg overflow-hidden relative"
       >
         <div class="aspect-square overflow-hidden relative">
-          <span class="absolute top-3 left-3 z-10 bg-white text-[9px] font-medium tracking-wider uppercase px-2.5 py-1 rounded-full">NEW</span>
+          <span class="absolute top-3 left-3 z-10 bg-white dark:bg-black text-black dark:text-white text-[9px] font-medium tracking-wider uppercase px-2.5 py-1 rounded-full">NEW</span>
           <img :src="product.images[0]" :alt="product.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         </div>
         <div class="p-3.5">
-          <h3 class="text-xs font-medium tracking-wider uppercase text-black mb-1 line-clamp-1">{{ product.title }}</h3>
-          <p class="text-xs text-light-charcoal mb-2">{{ product.brand }}</p>
+          <h3 class="text-xs font-medium tracking-wider uppercase text-black dark:text-white mb-1 line-clamp-1">{{ product.title }}</h3>
+          <p class="text-xs text-light-charcoal dark:text-gray-400 mb-2">{{ product.brand }}</p>
           <div class="flex justify-between items-center">
-            <span class="text-sm font-medium text-black">{{ formatPrice(product.price) }}</span>
+            <span class="text-sm font-medium text-black dark:text-white">{{ formatPrice(product.price) }}</span>
             <!-- Allbirds: pill ADD button with border border-black -->
-            <span class="border border-black text-black text-[9px] font-medium tracking-wider uppercase pl-3 pr-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+            <span class="border border-black dark:border-white text-black dark:text-white text-[9px] font-medium tracking-wider uppercase pl-3 pr-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
               <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
               ADD
             </span>
@@ -84,18 +84,18 @@ const womensProducts = computed(() =>
         v-for="product in womensProducts"
         :key="product.id"
         :to="`/product/${product.id}`"
-        class="group bg-natural-white rounded-lg overflow-hidden relative"
+        class="group bg-natural-white dark:bg-[#2A2A2A] rounded-lg overflow-hidden relative"
       >
         <div class="aspect-square overflow-hidden relative">
-          <span class="absolute top-3 left-3 z-10 bg-white text-[9px] font-medium tracking-wider uppercase px-2.5 py-1 rounded-full">NEW</span>
+          <span class="absolute top-3 left-3 z-10 bg-white dark:bg-black text-black dark:text-white text-[9px] font-medium tracking-wider uppercase px-2.5 py-1 rounded-full">NEW</span>
           <img :src="product.images[0]" :alt="product.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         </div>
         <div class="p-3.5">
-          <h3 class="text-xs font-medium tracking-wider uppercase text-black mb-1 line-clamp-1">{{ product.title }}</h3>
-          <p class="text-xs text-light-charcoal mb-2">{{ product.brand }}</p>
+          <h3 class="text-xs font-medium tracking-wider uppercase text-black dark:text-white mb-1 line-clamp-1">{{ product.title }}</h3>
+          <p class="text-xs text-light-charcoal dark:text-gray-400 mb-2">{{ product.brand }}</p>
           <div class="flex justify-between items-center">
-            <span class="text-sm font-medium text-black">{{ formatPrice(product.price) }}</span>
-            <span class="border border-black text-black text-[9px] font-medium tracking-wider uppercase pl-3 pr-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+            <span class="text-sm font-medium text-black dark:text-white">{{ formatPrice(product.price) }}</span>
+            <span class="border border-black dark:border-white text-black dark:text-white text-[9px] font-medium tracking-wider uppercase pl-3 pr-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
               <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
               ADD
             </span>

@@ -1,7 +1,7 @@
 <template>
   <!-- Allbirds: Follow The Flock section, font-mono text-xs tracking-wider uppercase -->
-  <section class="px-5 md:px-10 pt-16 pb-10 bg-white">
-    <h3 class="font-mono text-xs tracking-wider uppercase text-center mb-8 text-black max-md:text-center">
+  <section class="px-5 md:px-10 pt-16 pb-10 bg-white dark:bg-charcoal">
+    <h3 class="font-mono text-xs tracking-wider uppercase text-center mb-8 text-black dark:text-white max-md:text-center">
       Follow The Flock
     </h3>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2">

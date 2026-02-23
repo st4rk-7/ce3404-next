@@ -4,12 +4,12 @@
       <div
         v-for="val in values"
         :key="val.title"
-        class="bg-white rounded p-8 md:p-10 text-center flex flex-col items-center"
+        class="bg-white dark:bg-[#2A2A2A] rounded p-8 md:p-10 text-center flex flex-col items-center"
       >
         <span class="text-4xl mb-4">{{ val.icon }}</span>
         <!-- Allbirds: font-serif style headings -->
-        <h3 class="font-serif text-xl md:text-2xl text-black mb-3">{{ val.title }}</h3>
-        <p class="font-sans text-sm text-light-charcoal leading-relaxed max-w-xs">{{ val.description }}</p>
+        <h3 class="font-serif text-xl md:text-2xl text-black dark:text-white mb-3">{{ val.title }}</h3>
+        <p class="font-sans text-sm text-light-charcoal dark:text-gray-400 leading-relaxed max-w-xs">{{ val.description }}</p>
       </div>
     </div>
   </section>

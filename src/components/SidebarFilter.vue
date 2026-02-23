@@ -76,7 +76,7 @@ const materials = ['Alternative-Leather', 'Canvas', 'Tree-Fiber-Blend', 'Wool'];
            >
              <div class="w-full h-full rounded-full" :style="{ backgroundColor: option.color }"></div>
            </div>
-           <span class="text-xs text-gray-600 group-hover:text-black">{{ option.label }}</span>
+           <span class="text-xs text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white">{{ option.label }}</span>
          </label>
       </div>
     </div>
