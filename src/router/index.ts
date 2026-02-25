@@ -22,6 +22,16 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: () => import('../views/CheckoutView.vue')
+    },
+    {
+      path: '/order-confirmation',
+      name: 'order-confirmation',
+      component: () => import('../views/OrderConfirmationView.vue')
     }
   ],
   scrollBehavior() {

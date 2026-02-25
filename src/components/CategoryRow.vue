@@ -32,17 +32,20 @@ const categories = [
         v-for="cat in categories"
         :key="cat.label"
         :to="cat.to"
-        class="group relative rounded overflow-hidden aspect-[4/5] md:aspect-[3/4]"
+        class="group relative bg-[#F5F4F0] overflow-hidden aspect-[4/5] md:aspect-[3/4] transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-lg hover:rounded-[150px] shadow-sm hover:shadow-lg"
       >
         <img
           :src="cat.image"
           :alt="cat.label"
-          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-        <div class="absolute bottom-6 left-0 right-0 flex justify-center z-10">
-          <span class="border border-white text-white text-xs font-medium tracking-wider uppercase px-4 py-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center translate-y-6 md:translate-y-8 pointer-events-none transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-0">
+          <span class="text-white text-sm md:text-base font-extrabold tracking-[0.2em] uppercase mb-4 opacity-100 transition-opacity duration-300 drop-shadow-md">
             {{ cat.label }}
+          </span>
+          <span class="border-2 border-white text-white text-[10px] md:text-xs font-bold tracking-widest uppercase px-6 py-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 scale-95 group-hover:scale-100">
+            SHOP {{ cat.label }}
           </span>
         </div>
       </RouterLink>

@@ -13,6 +13,14 @@ const filterStore = useFilterStore();
 const route = useRoute();
 const isFilterOpen = ref(false);
 
+// Dynamic Page Title
+const pageTitle = computed(() => {
+    const gender = route.query.gender;
+    if (gender === 'women') return "Women's Sale";
+    if (gender === 'men') return "Men's Sale";
+    return "New Arrivals";
+});
+
 // Filter Logic: Search + Category + Sidebar Filters
 const filteredProducts = computed(() => {
     let result = products.value;
@@ -112,7 +120,7 @@ onMounted(async () => {
             
             <!-- Page Header: Title & Subtitle -->
             <div class="text-center mb-10 max-w-2xl mx-auto">
-                <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-black dark:text-white">Men's Sale</h1>
+                <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-black dark:text-white">{{ pageTitle }}</h1>
                 <p class="text-sm md:text-base text-gray-600 dark:text-gray-400">
                     Stock up and shop these last-chance styles and colors before they're gone for good.
                 </p>

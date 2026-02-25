@@ -2,8 +2,10 @@
 import { computed, ref } from 'vue';
 import type { Product } from '../types/product';
 import { useCartStore } from '../stores/cart';
+import { useCurrency } from '../composables/useCurrency';
 
 const cartStore = useCartStore();
+const { formatPrice } = useCurrency();
 const addedSize = ref<string | null>(null);
 
 const handleQuickAdd = (size: string) => {
@@ -99,10 +101,10 @@ const handleImageError = (e: Event) => {
          <!-- Price -->
          <div class="flex items-center space-x-2 text-sm mt-3 font-medium">
              <span :class="{'text-brand-red dark:text-red-400': hasDiscount, 'text-black dark:text-white': !hasDiscount}">
-                 ${{ Math.floor(product.price) }}
+                 {{ formatPrice(product.price) }}
              </span>
              <span v-if="hasDiscount" class="text-gray-500 dark:text-gray-400 line-through text-xs font-normal">
-                 ${{ Math.floor(originalPrice) }}
+                 {{ formatPrice(originalPrice) }}
              </span>
          </div>
       </RouterLink>

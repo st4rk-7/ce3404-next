@@ -45,12 +45,10 @@ const subscribe = () => {
             <div class="space-y-4">
                 <h3 class="text-xs font-bold uppercase tracking-widest font-sans">Help</h3>
                 <ul class="space-y-3 font-normal text-gray-300">
-                    <li><a href="#" class="hover:text-white transition-colors">1-888-963-8944</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">1-814-251-9966 (Text)</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">94712121201</a></li>
                     <li><a href="#" class="hover:text-white transition-colors">help@next.com</a></li>
                     <li><a href="#" class="hover:text-white transition-colors">Returns/Exchanges</a></li>
                     <li><a href="#" class="hover:text-white transition-colors">FAQ/Contact Us</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Afterpay</a></li>
                 </ul>
             </div>
 
@@ -60,11 +58,6 @@ const subscribe = () => {
                 <ul class="space-y-3 font-normal text-gray-300">
                     <li><a href="#" class="hover:text-white transition-colors">Men's Shoes</a></li>
                     <li><a href="#" class="hover:text-white transition-colors">Women's Shoes</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Men's Apparel</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Women's Apparel</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Socks</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Gift Cards</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Refer a Friend</a></li>
                     <li><a href="#" class="hover:text-white transition-colors">Download the App</a></li>
                 </ul>
             </div>
@@ -73,17 +66,7 @@ const subscribe = () => {
             <div class="space-y-4">
                 <h3 class="text-xs font-bold uppercase tracking-widest font-sans">Company</h3>
                 <ul class="space-y-3 font-normal text-gray-300">
-                    <li><a href="#" class="hover:text-white transition-colors">Our Stores</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Our Story</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Our Materials</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Sustainability</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Investors</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Shoe Care</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Affiliates</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Bulk Orders</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">California Transparency Act</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">hapugala</a></li>
                 </ul>
             </div>
 
@@ -116,7 +99,7 @@ const subscribe = () => {
 
               <!-- Badges / Extras (Placeholder for B Corp, etc) -->
               <div class="flex gap-4">
-                  <p class="text-gray-400">&copy; 2026 NEXT style mimicked shop. All Rights Reserved.</p>
+                  <p class="text-gray-400">&copy; 2026 NEXT by shewon ss 5893. All Rights Reserved.</p>
                   <a href="#" class="text-gray-400 hover:text-white underline">Terms</a>
                   <a href="#" class="text-gray-400 hover:text-white underline">Privacy</a>
               </div>

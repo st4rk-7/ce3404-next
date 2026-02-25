@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useCurrency } from '../composables/useCurrency';
+
+const { formatPrice } = useCurrency();
 
 const currentIndex = ref(0);
 
@@ -55,7 +58,7 @@ const currentProduct = computed(() => featuredProducts[currentIndex.value]!);
         </Transition>
         <div class="absolute bottom-6 left-6 z-10">
           <p class="text-charcoal dark:text-gray-300 text-sm font-medium mb-1">{{ currentProduct.color }}</p>
-          <p class="text-charcoal dark:text-white text-xl font-medium">${{ currentProduct.price }}</p>
+          <p class="text-charcoal dark:text-white text-xl font-medium">{{ formatPrice(currentProduct.price) }}</p>
         </div>
       </div>
 

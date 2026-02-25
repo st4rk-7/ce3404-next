@@ -97,7 +97,7 @@ const { formatPrice } = useCurrency();
               <p class="text-[10px] text-gray-600 dark:text-gray-400 leading-snug">Buy returns protection to qualify for free returns. Does not apply to Final Sale items.</p>
             </div>
             <button class="bg-black text-white dark:bg-white dark:text-black text-[9px] font-bold tracking-widest px-3 py-1.5 rounded-full uppercase shrink-0 hover:bg-gray-800 dark:hover:bg-gray-200 transition">
-              ADD - $3
+              ADD - Rs 990
             </button>
           </div>
         </div>
@@ -115,7 +115,7 @@ const { formatPrice } = useCurrency();
                         <img src="https://cdn.shopify.com/s/files/1/1104/4168/products/Mens_Anytime_No_Show_Sock_-_True_Black_e417cd9c-c0c1-4bcf-a87f-a636eb01389c.png?v=1676991599" alt="Sock" class="w-12 h-12 object-contain mix-blend-multiply dark:mix-blend-normal" />
                         <div class="text-right">
                            <p class="text-[11px] font-bold text-black dark:text-white">Anytime No Show Sock</p>
-                           <p class="text-[11px] font-medium"><span class="text-red-600 dark:text-red-400">$5</span> <span class="line-through text-gray-400 dark:text-gray-500">$14</span></p>
+                           <p class="text-[11px] font-medium"><span class="text-red-600 dark:text-red-400">Rs 1,650</span> <span class="line-through text-gray-400 dark:text-gray-500">Rs 4,620</span></p>
                         </div>
                     </div>
                     <div class="flex items-center gap-1 mb-3">
@@ -139,7 +139,7 @@ const { formatPrice } = useCurrency();
                         <img src="https://cdn.shopify.com/s/files/1/1104/4168/products/Mens_Anytime_No_Show_Sock_-_White_eb30e7cc-8b83-4903-b0fc-fb41bfecb53a.png?v=1676991605" alt="Sock" class="w-12 h-12 object-contain mix-blend-multiply dark:mix-blend-normal" />
                         <div class="text-right">
                            <p class="text-[11px] font-bold text-black dark:text-white">Anytime No Show Sock</p>
-                           <p class="text-[11px] font-medium"><span class="text-red-600 dark:text-red-400">$5</span> <span class="line-through text-gray-400 dark:text-gray-500">$14</span></p>
+                           <p class="text-[11px] font-medium"><span class="text-red-600 dark:text-red-400">Rs 1,650</span> <span class="line-through text-gray-400 dark:text-gray-500">Rs 4,620</span></p>
                         </div>
                     </div>
                     <div class="flex items-center gap-1 mb-3">
@@ -169,11 +169,11 @@ const { formatPrice } = useCurrency();
           <div class="flex justify-between text-[13px] font-bold text-black dark:text-white mb-4">
             <span>Shipping</span>
             <span class="flex items-center gap-1">
-              <span class="line-through text-gray-400 dark:text-gray-500 font-normal">$5.00</span> FREE
+              <span class="line-through text-gray-400 dark:text-gray-500 font-normal">Rs 1,650</span> FREE
             </span>
           </div>
           
-          <button @click="cartStore.closeDrawer" class="w-full bg-black text-white dark:bg-white dark:text-black font-bold tracking-widest uppercase text-xs rounded-full py-4 transition hover:bg-gray-800 dark:hover:bg-gray-200 flex justify-center items-center h-12 shadow-md">
+          <button @click="$router.push('/checkout'); cartStore.closeDrawer()" class="w-full bg-black text-white dark:bg-white dark:text-black font-bold tracking-widest uppercase text-xs rounded-full py-4 transition hover:bg-gray-800 dark:hover:bg-gray-200 flex justify-center items-center h-12 shadow-md">
             CHECKOUT
           </button>
           

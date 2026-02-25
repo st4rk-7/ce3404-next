@@ -12,12 +12,6 @@ const authStore = useAuthStore();
 const router = useRouter();
 const isMobileMenuOpen = ref(false);
 
-import { useCurrency } from '../composables/useCurrency';
-const { currency, setCurrency } = useCurrency();
-
-const toggleCurrency = () => {
-    setCurrency(currency.value === 'LKR' ? 'EUR' : 'LKR');
-};
 
 import { useTheme } from '../composables/useTheme';
 const { isDark, toggleTheme } = useTheme();
@@ -36,8 +30,9 @@ const handleLogout = () => {
     </div>
 
     <!-- Main Header -->
-    <header class="w-full bg-white dark:bg-charcoal dark:border-b dark:border-white/10 sticky top-0 z-40 h-[60px] md:h-[70px] flex items-center shadow-sm relative transition-all duration-300">
-      <div class="w-full px-4 md:px-8 h-full flex justify-between items-center group/header">
+    <div class="sticky top-0 z-40 w-full px-3 md:px-5 pt-4 pb-2 pointer-events-none transition-all duration-300">
+      <header class="w-full mx-auto bg-white dark:bg-[#1a1a1a] dark:border dark:border-gray-800 rounded-[24px] md:rounded-[32px] h-[60px] md:h-[64px] flex items-center shadow-md relative pointer-events-auto">
+        <div class="w-full px-6 md:px-10 h-full flex justify-between items-center group/header">
         
         <!-- Left: Logo -->
         <div class="flex-shrink-0 flex items-center">
@@ -54,7 +49,7 @@ const handleLogout = () => {
         </div>
 
         <!-- Center: Navigation (Desktop) -->
-        <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-8 text-xs font-bold tracking-wide text-black dark:text-white items-center h-full">
+        <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-6 lg:space-x-8 text-[13px] font-extrabold tracking-widest text-black dark:text-white items-center h-full absolute left-1/2 transform -translate-x-1/2">
           <div class="h-full flex items-center group/men">
             <RouterLink to="/shop?gender=men" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
             
@@ -96,35 +91,34 @@ const handleLogout = () => {
         </nav>
 
         <!-- Right: Actions -->
-        <div v-if="!searchStore.isSearchOpen" class="flex items-center space-x-4 md:space-x-5 text-black dark:text-white">
-          <RouterLink to="/" class="hidden md:block text-xs font-bold hover:underline">About</RouterLink>
-          <RouterLink to="/" class="hidden md:block text-xs font-bold hover:underline">ReRun</RouterLink>
-          <!-- Country/Currency Selector -->
-          <div 
-            @click="toggleCurrency"
-            class="hidden md:flex items-center space-x-1 text-[11px] font-bold cursor-pointer tracking-widest hover:text-brand-red"
-          >
-             <span v-if="currency === 'LKR'">🇱🇰 LKR Rs</span>
-             <span v-else>🇪🇺 EUR €</span>
-             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        <div v-if="!searchStore.isSearchOpen" class="flex items-center space-x-4 md:space-x-5 lg:space-x-6 text-black dark:text-white">
+          <div class="hidden md:flex items-center space-x-6 mr-4 lg:mr-8">
+            <RouterLink to="/" class="text-xs font-bold hover:text-gray-600 transition-colors">About</RouterLink>
+            <RouterLink to="/" class="text-xs font-bold hover:text-gray-600 transition-colors">ReRun</RouterLink>
           </div>
 
-          <!-- Theme Toggle -->
-          <button @click="toggleTheme" class="p-1 hover:text-gray-600 transition-colors">
-            <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          <!-- Search Icon -->
+          <button @click="searchStore.toggleSearch" class="hidden md:flex p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Search">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
-            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button @click="toggleTheme" class="p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+            <svg v-if="isDark" class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <svg v-else class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
             </svg>
           </button>
 
           <!-- Account (Auth-aware) -->
           <template v-if="authStore.isAuthenticated && authStore.user">
-            <!-- Logged in: User icon specific to Allbirds style -->
             <div class="relative group/account">
-              <button class="p-1 hover:text-gray-600 transition-colors flex items-center focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <button class="p-1 hover:text-gray-600 transition-colors flex items-center focus:outline-none cursor-pointer">
+                <svg class="w-[26px] h-[26px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
               </button>
@@ -135,28 +129,29 @@ const handleLogout = () => {
             </div>
           </template>
           <template v-else>
-            <!-- Not logged in: Account icon -->
-            <RouterLink to="/login" class="p-1 hover:text-gray-600 transition-colors tooltip" aria-label="Account">
-               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <RouterLink to="/login" class="p-1 hover:text-gray-600 transition-colors tooltip flex items-center focus:outline-none" aria-label="Account">
+               <svg class="w-[26px] h-[26px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                </svg>
             </RouterLink>
           </template>
 
-          <RouterLink to="/help" class="hidden md:block p-1 hover:text-gray-600 transition-colors" aria-label="Help">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+          <RouterLink to="/help" class="hidden md:block p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Help">
+            <svg class="w-[26px] h-[26px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
             </svg>
           </RouterLink>
 
-          <!-- Cart -->
-          <button @click="cartStore.openDrawer()" class="p-1 hover:text-gray-600 transition-colors relative flex items-center">
-             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-             </svg>
-             <span v-if="cartStore.totalItems > 0" class="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
-                 {{ cartStore.totalItems }}
-             </span>
+          <!-- Cart Toggle -->
+          <button @click="cartStore.openDrawer()" class="relative p-1 hover:text-gray-600 transition-colors focus:outline-none flex items-center" aria-label="Cart">
+            <div class="relative">
+              <svg class="w-[28px] h-[28px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+              </svg>
+              <span v-if="cartStore.totalItems > 0" class="absolute -bottom-1 -right-2 bg-[#212121] dark:bg-white text-white dark:text-black text-[10px] font-bold flex items-center justify-center w-[20px] h-[20px] rounded-full border-2 border-white dark:border-[#1a1a1a]">
+                {{ cartStore.totalItems }}
+              </span>
+            </div>
           </button>
         </div>
 
@@ -179,6 +174,7 @@ const handleLogout = () => {
 
       </div>
     </header>
+    </div>
 
     <!-- Mobile Slide-Out Navigation Drawer -->
     <Teleport to="body">
@@ -224,12 +220,9 @@ const handleLogout = () => {
             <!-- Bottom: Currency Selector -->
             <div class="mt-auto px-5 py-5 border-t border-gray-100 dark:border-gray-800">
               <div 
-                @click="toggleCurrency"
-                class="flex items-center justify-between text-xs font-bold cursor-pointer tracking-widest text-brand-blue dark:text-white hover:text-brand-red py-2"
+                class="flex items-center justify-between text-xs font-bold cursor-default tracking-widest text-brand-blue dark:text-white py-2"
               >
-                <span v-if="currency === 'LKR'">🇱🇰 LKR Rs</span>
-                <span v-else>🇪🇺 EUR €</span>
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                <span>🇱🇰 LKR Rs</span>
               </div>
             </div>
           </div>
