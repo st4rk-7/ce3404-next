@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { RouterLink, useRouter, useRoute } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import { useSearchStore } from '../stores/search';
 import { useAuthStore } from '../stores/auth';
@@ -10,7 +10,26 @@ const cartStore = useCartStore();
 const searchStore = useSearchStore();
 const authStore = useAuthStore();
 const router = useRouter();
+const route = useRoute();
 const isMobileMenuOpen = ref(false);
+
+import { watch, onUnmounted } from 'vue';
+
+watch(isMobileMenuOpen, (isOpen) => {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
+
+watch(route, () => {
+  isMobileMenuOpen.value = false;
+});
+
+onUnmounted(() => {
+  document.body.style.overflow = '';
+});
 
 
 import { useTheme } from '../composables/useTheme';
@@ -37,7 +56,7 @@ const handleLogout = () => {
         <!-- Left: Logo -->
         <div class="flex-shrink-0 flex items-center">
           <!-- Mobile Menu Button -->
-          <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="md:hidden p-2 -ml-2 text-black dark:text-white">
+          <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="lg:hidden p-2 -ml-2 text-black dark:text-white">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
@@ -49,7 +68,7 @@ const handleLogout = () => {
         </div>
 
         <!-- Center: Navigation (Desktop) -->
-        <nav v-if="!searchStore.isSearchOpen" class="hidden md:flex space-x-6 lg:space-x-8 text-[13px] font-extrabold tracking-widest text-black dark:text-white items-center h-full absolute left-1/2 transform -translate-x-1/2">
+        <nav v-if="!searchStore.isSearchOpen" class="hidden lg:flex space-x-6 xl:space-x-8 text-[13px] font-extrabold tracking-widest text-black dark:text-white items-center h-full absolute left-1/2 transform -translate-x-1/2">
           <div class="h-full flex items-center group/men">
             <RouterLink to="/shop?gender=men" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
             
@@ -95,7 +114,7 @@ const handleLogout = () => {
 
 
           <!-- Search Icon -->
-          <button @click="searchStore.toggleSearch" class="hidden md:flex p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Search">
+          <button @click="searchStore.toggleSearch" class="hidden lg:flex p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Search">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
