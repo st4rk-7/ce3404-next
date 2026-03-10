@@ -1,9 +1,25 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useCartStore } from '../stores/cart';
 import { useCurrency } from '../composables/useCurrency';
 
 const cartStore = useCartStore();
 const { formatPrice } = useCurrency();
+
+const returnsAdded = ref(false);
+const isRecommendationsOpen = ref(true);
+const addedRecommendation = ref<number | null>(null);
+
+const toggleReturnsProtection = () => {
+  returnsAdded.value = !returnsAdded.value;
+};
+
+const handleRecommendationAdd = (index: number) => {
+  addedRecommendation.value = index;
+  setTimeout(() => {
+    addedRecommendation.value = null;
+  }, 1500);
+};
 </script>
 
 <template>
@@ -90,25 +106,29 @@ const { formatPrice } = useCurrency();
             </div>
           </div>
 
-          <!-- Mock Returns Protection block -->
-          <div v-if="cartStore.items.length > 0" class="mt-6 bg-[#f5f4f0] dark:bg-[#2c2c2c] p-4 rounded-md flex justify-between items-center border border-transparent">
+          <!-- Returns Protection block -->
+          <div v-if="cartStore.items.length > 0" class="mt-6 bg-[#f5f4f0] dark:bg-[#2c2c2c] p-4 rounded-md flex justify-between items-center border transition-colors" :class="returnsAdded ? 'border-green-400 dark:border-green-600' : 'border-transparent'">
             <div class="pr-2">
               <h4 class="text-[11px] font-bold text-black dark:text-white mb-0.5">Returns Protection</h4>
               <p class="text-[10px] text-gray-600 dark:text-gray-400 leading-snug">Buy returns protection to qualify for free returns. Does not apply to Final Sale items.</p>
             </div>
-            <button class="bg-black text-white dark:bg-white dark:text-black text-[9px] font-bold tracking-widest px-3 py-1.5 rounded-full uppercase shrink-0 hover:bg-gray-800 dark:hover:bg-gray-200 transition">
-              ADD - Rs 990
+            <button 
+              @click="toggleReturnsProtection"
+              :class="returnsAdded ? 'bg-green-600 dark:bg-green-500 hover:bg-green-700 text-white' : 'bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200'"
+              class="text-[9px] font-bold tracking-widest px-3 py-1.5 rounded-full uppercase shrink-0 transition-all"
+            >
+              {{ returnsAdded ? '✓ ADDED' : 'ADD - Rs 990' }}
             </button>
           </div>
         </div>
 
         <!-- Recommendations Accordion Mock -->
         <div v-if="cartStore.items.length > 0" class="border-t border-gray-200 dark:border-gray-800 bg-[#f5f4f0] dark:bg-charcoal">
-            <button class="w-full px-6 py-4 flex justify-between items-center text-[10px] font-bold tracking-widest uppercase text-black dark:text-white hover:bg-gray-200/50 dark:hover:bg-gray-800/50 transition">
+            <button @click="isRecommendationsOpen = !isRecommendationsOpen" class="w-full px-6 py-4 flex justify-between items-center text-[10px] font-bold tracking-widest uppercase text-black dark:text-white hover:bg-gray-200/50 dark:hover:bg-gray-800/50 transition">
                 RECOMMENDED FOR YOU
-                <svg class="w-4 h-4 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                <svg :class="isRecommendationsOpen ? 'rotate-180' : ''" class="w-4 h-4 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div class="px-6 pb-4 flex gap-4 overflow-x-auto snap-x">
+            <div v-show="isRecommendationsOpen" class="px-6 pb-4 flex gap-4 overflow-x-auto snap-x">
                 <!-- Mock item 1 -->
                 <div class="bg-white dark:bg-[#2c2c2c] p-3 rounded-md min-w-[200px] shrink-0 snap-start flex flex-col justify-between shadow-sm">
                     <div class="flex justify-between items-start mb-2">
@@ -130,7 +150,12 @@ const { formatPrice } = useCurrency();
                             <span>Size: S (M5-7)</span>
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
-                        <button class="text-[11px] font-bold text-black dark:text-white hover:opacity-70">Add+</button>
+                        <button @click="handleRecommendationAdd(0)" class="text-[11px] font-bold text-black dark:text-white hover:opacity-70 transition-opacity">
+                            <template v-if="addedRecommendation === 0">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </template>
+                            <template v-else>Add+</template>
+                        </button>
                     </div>
                 </div>
                  <!-- Mock item 2 -->
@@ -153,7 +178,12 @@ const { formatPrice } = useCurrency();
                             <span>Size: S (M5-7)</span>
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
-                        <button class="text-[11px] font-bold text-black dark:text-white hover:opacity-70">Add+</button>
+                        <button @click="handleRecommendationAdd(1)" class="text-[11px] font-bold text-black dark:text-white hover:opacity-70 transition-opacity">
+                            <template v-if="addedRecommendation === 1">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </template>
+                            <template v-else>Add+</template>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -177,15 +207,15 @@ const { formatPrice } = useCurrency();
             CHECKOUT
           </button>
           
-          <!-- Mock payment buttons -->
+          <!-- Payment buttons -->
           <div class="grid grid-cols-3 gap-2 mt-3">
-            <button class="bg-[#fad676] rounded-full py-2 flex items-center justify-center hover:opacity-90 transition h-10 shadow-sm">
+            <button @click="$router.push('/checkout'); cartStore.closeDrawer()" class="bg-[#fad676] rounded-full py-2 flex items-center justify-center hover:opacity-90 transition h-10 shadow-sm">
               <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg" alt="Amazon Pay" class="h-[14px] opacity-80" /> <span class="text-[10px] font-bold ml-1 text-black opacity-80 mt-0.5">pay</span>
             </button>
-            <button class="bg-[#ffc439] rounded-full py-2 flex items-center justify-center hover:opacity-90 transition h-10 shadow-sm">
+            <button @click="$router.push('/checkout'); cartStore.closeDrawer()" class="bg-[#ffc439] rounded-full py-2 flex items-center justify-center hover:opacity-90 transition h-10 shadow-sm">
               <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-4" />
             </button>
-            <button class="bg-[#5a31f4] rounded-full py-2 flex items-center justify-center hover:opacity-90 transition h-10 shadow-sm">
+            <button @click="$router.push('/checkout'); cartStore.closeDrawer()" class="bg-[#5a31f4] rounded-full py-2 flex items-center justify-center hover:opacity-90 transition h-10 shadow-sm">
               <span class="text-white font-bold text-[13px] tracking-wide mt-0.5">shop <span class="bg-white text-[#5a31f4] text-[9px] px-1 rounded-sm ml-0.5 pb-[2px] align-middle inline-block">Pay</span></span>
             </button>
           </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const email = ref('');
 
@@ -45,10 +46,10 @@ const subscribe = () => {
             <div class="space-y-4">
                 <h3 class="text-xs font-bold uppercase tracking-widest font-sans">Help</h3>
                 <ul class="space-y-3 font-normal text-gray-300">
-                    <li><a href="#" class="hover:text-white transition-colors">94712121201</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">help@next.com</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Returns/Exchanges</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">FAQ/Contact Us</a></li>
+                    <li><a href="tel:94712121201" class="hover:text-white transition-colors">94712121201</a></li>
+                    <li><a href="mailto:help@next.com" class="hover:text-white transition-colors">help@next.com</a></li>
+                    <li><RouterLink to="/shop" class="hover:text-white transition-colors">Returns/Exchanges</RouterLink></li>
+                    <li><RouterLink to="/shop" class="hover:text-white transition-colors">FAQ/Contact Us</RouterLink></li>
                 </ul>
             </div>
 
@@ -56,9 +57,8 @@ const subscribe = () => {
             <div class="space-y-4">
                 <h3 class="text-xs font-bold uppercase tracking-widest font-sans">Shop</h3>
                 <ul class="space-y-3 font-normal text-gray-300">
-                    <li><a href="#" class="hover:text-white transition-colors">Men's Shoes</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Women's Shoes</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Download the App</a></li>
+                    <li><RouterLink to="/shop?gender=men" class="hover:text-white transition-colors">Men's Shoes</RouterLink></li>
+                    <li><RouterLink to="/shop?gender=women" class="hover:text-white transition-colors">Women's Shoes</RouterLink></li>
                 </ul>
             </div>
 
@@ -66,7 +66,7 @@ const subscribe = () => {
             <div class="space-y-4">
                 <h3 class="text-xs font-bold uppercase tracking-widest font-sans">Company</h3>
                 <ul class="space-y-3 font-normal text-gray-300">
-                    <li><a href="#" class="hover:text-white transition-colors">hapugala</a></li>
+                    <li><span class="text-gray-300">hapugala</span></li>
                 </ul>
             </div>
 

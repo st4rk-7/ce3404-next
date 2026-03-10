@@ -185,8 +185,8 @@ export function useProducts() {
         
         products.value = transformProducts(combined);
         hasLoaded.value = true;
-    } catch (err: any) {
-        error.value = err.message || 'Failed to fetch products';
+    } catch (err: unknown) {
+        error.value = err instanceof Error ? err.message : 'Failed to fetch products';
         console.error(err);
     } finally {
         isLoading.value = false;

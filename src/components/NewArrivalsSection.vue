@@ -3,9 +3,16 @@ import { computed, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useProducts } from '../composables/useProducts';
 import { useCurrency } from '../composables/useCurrency';
+import { useCartStore } from '../stores/cart';
 
 const { products, fetchProducts } = useProducts();
 const { formatPrice } = useCurrency();
+const cartStore = useCartStore();
+
+const handleQuickAdd = (product: typeof products.value[0]) => {
+  cartStore.addToCart(product, '10');
+  cartStore.openDrawer();
+};
 
 onMounted(async () => {
   await fetchProducts();
@@ -55,10 +62,13 @@ const womensProducts = computed(() =>
           <div class="flex justify-between items-center">
             <span class="text-sm font-medium text-black dark:text-white">{{ formatPrice(product.price) }}</span>
             <!-- Allbirds: pill ADD button with border border-black -->
-            <span class="border border-black dark:border-white text-black dark:text-white text-[9px] font-medium tracking-wider uppercase pl-3 pr-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+            <button 
+              @click.prevent="handleQuickAdd(product)" 
+              class="border border-black dark:border-white text-black dark:text-white text-[9px] font-medium tracking-wider uppercase pl-3 pr-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black"
+            >
               <svg class="size-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
               ADD
-            </span>
+            </button>
           </div>
         </div>
       </RouterLink>

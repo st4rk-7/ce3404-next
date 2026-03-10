@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import { useCurrency } from '../composables/useCurrency';
@@ -10,9 +10,26 @@ const { formatPrice } = useCurrency();
 
 const subtotal = computed(() => cartStore.subtotal);
 const itemCount = computed(() => cartStore.totalItems);
+const discountCode = ref('');
+const discountStatus = ref<'idle' | 'applied' | 'invalid'>('idle');
 
 const handlePayNow = () => {
   router.push('/order-confirmation');
+};
+
+const applyDiscount = () => {
+  if (!discountCode.value.trim()) return;
+  const validCodes = ['NEXT10', 'WELCOME', 'SAVE20'];
+  if (validCodes.includes(discountCode.value.trim().toUpperCase())) {
+    discountStatus.value = 'applied';
+  } else {
+    discountStatus.value = 'invalid';
+  }
+  setTimeout(() => {
+    if (discountStatus.value === 'invalid') {
+      discountStatus.value = 'idle';
+    }
+  }, 3000);
 };
 </script>
 
@@ -35,10 +52,10 @@ const handlePayNow = () => {
         <div class="mb-8">
           <p class="text-center text-xs text-gray-500 dark:text-gray-400 mb-3 font-medium tracking-wider uppercase">Express checkout</p>
           <div class="grid grid-cols-2 gap-3">
-            <button class="bg-[#5a31f4] rounded-full py-3 flex items-center justify-center hover:opacity-90 transition h-11 shadow-sm">
+            <button @click="handlePayNow" class="bg-[#5a31f4] rounded-full py-3 flex items-center justify-center hover:opacity-90 transition h-11 shadow-sm">
               <span class="text-white font-bold text-[13px] tracking-wide">shop <span class="bg-white text-[#5a31f4] text-[9px] px-1 rounded-sm ml-0.5 pb-[2px] align-middle inline-block">Pay</span></span>
             </button>
-            <button class="bg-[#ffc439] rounded-full py-3 flex items-center justify-center hover:opacity-90 transition h-11 shadow-sm">
+            <button @click="handlePayNow" class="bg-[#ffc439] rounded-full py-3 flex items-center justify-center hover:opacity-90 transition h-11 shadow-sm">
               <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-4" />
             </button>
           </div>
@@ -246,8 +263,25 @@ const handlePayNow = () => {
 
         <!-- Discount Code -->
         <div class="flex gap-2 mt-8">
-          <input type="text" placeholder="Discount code or gift card" class="flex-1 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2.5 text-sm bg-white dark:bg-[#2A2A2A] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white" />
-          <button class="border border-gray-300 dark:border-gray-600 rounded-md px-5 py-2.5 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium">Apply</button>
+          <div class="flex-1 relative">
+            <input 
+              v-model="discountCode"
+              type="text" 
+              placeholder="Discount code or gift card" 
+              class="w-full border rounded-md px-4 py-2.5 text-sm bg-white dark:bg-[#2A2A2A] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-black dark:focus:ring-white transition"
+              :class="discountStatus === 'applied' ? 'border-green-400 dark:border-green-500' : discountStatus === 'invalid' ? 'border-red-400 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'"
+              @keyup.enter="applyDiscount"
+            />
+            <p v-if="discountStatus === 'applied'" class="text-green-600 dark:text-green-400 text-[10px] mt-1 font-medium">✓ Discount applied!</p>
+            <p v-if="discountStatus === 'invalid'" class="text-red-500 text-[10px] mt-1 font-medium">Invalid discount code</p>
+          </div>
+          <button 
+            @click="applyDiscount" 
+            class="border border-gray-300 dark:border-gray-600 rounded-md px-5 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium h-fit"
+            :class="discountStatus === 'applied' ? 'text-green-600 dark:text-green-400 border-green-400' : 'text-gray-500 dark:text-gray-400'"
+          >
+            {{ discountStatus === 'applied' ? '✓ Applied' : 'Apply' }}
+          </button>
         </div>
 
         <!-- Totals -->

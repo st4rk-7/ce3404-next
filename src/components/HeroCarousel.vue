@@ -29,6 +29,10 @@ const nextSlide = () => {
   currentSlide.value = (currentSlide.value + 1) % slides.length;
 };
 
+const prevSlide = () => {
+  currentSlide.value = currentSlide.value === 0 ? slides.length - 1 : currentSlide.value - 1;
+};
+
 const startAutoplay = () => {
   timer = setInterval(() => {
     if (!isPaused.value) nextSlide();
@@ -100,6 +104,22 @@ const currentSlideData = computed(() => slides[currentSlide.value]!);
         ]"
       ></button>
     </div>
+
+    <!-- Navigation Arrows -->
+    <button
+      @click="prevSlide"
+      class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 size-10 bg-white/20 backdrop-blur-sm hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-colors"
+      aria-label="Previous slide"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+    </button>
+    <button
+      @click="nextSlide"
+      class="absolute right-16 md:right-20 top-1/2 -translate-y-1/2 z-20 size-10 bg-white/20 backdrop-blur-sm hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-colors"
+      aria-label="Next slide"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    </button>
 
     <!-- Pause Button -->
     <button

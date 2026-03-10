@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import ProductGrid from '../components/ProductGrid.vue';
 import SidebarFilter from '../components/SidebarFilter.vue'; // Will refactor this inside the new filter drawer soon
 import { useProducts } from '../composables/useProducts';
@@ -11,6 +11,7 @@ const { products, isLoading, fetchProducts } = useProducts();
 const searchStore = useSearchStore();
 const filterStore = useFilterStore();
 const route = useRoute();
+const router = useRouter();
 const isFilterOpen = ref(false);
 
 // Dynamic Page Title
@@ -172,10 +173,18 @@ onMounted(async () => {
 
                     <!-- MEN / WOMEN Toggle -->
                     <div class="hidden md:flex items-center border border-[#111111] dark:border-white rounded-full p-1 bg-transparent shadow-sm">
-                        <button class="bg-[#111111] dark:bg-white text-white dark:text-black text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full hover:opacity-90 transition-opacity">
+                        <button 
+                            @click="router.push('/shop?gender=men')"
+                            :class="route.query.gender === 'men' || !route.query.gender ? 'bg-[#111111] dark:bg-white text-white dark:text-black' : 'text-[#111111] dark:text-white hover:bg-black/5 dark:hover:bg-white/20'"
+                            class="text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full transition-all"
+                        >
                             MEN
                         </button>
-                        <button class="text-[#111111] dark:text-white text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full hover:bg-black/5 dark:hover:bg-white/20 transition-colors">
+                        <button 
+                            @click="router.push('/shop?gender=women')"
+                            :class="route.query.gender === 'women' ? 'bg-[#111111] dark:bg-white text-white dark:text-black' : 'text-[#111111] dark:text-white hover:bg-black/5 dark:hover:bg-white/20'"
+                            class="text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full transition-all"
+                        >
                             WOMEN
                         </button>
                     </div>

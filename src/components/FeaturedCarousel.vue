@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useCurrency } from '../composables/useCurrency';
 
@@ -34,6 +34,19 @@ const prev = () => {
 const next = () => {
   currentIndex.value = (currentIndex.value + 1) % featuredProducts.length;
 };
+
+// Autoplay
+let timer: ReturnType<typeof setInterval> | null = null;
+
+onMounted(() => {
+  timer = setInterval(() => {
+    next();
+  }, 5000);
+});
+
+onBeforeUnmount(() => {
+  if (timer) clearInterval(timer);
+});
 
 const currentProduct = computed(() => featuredProducts[currentIndex.value]!);
 </script>

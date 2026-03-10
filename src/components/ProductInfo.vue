@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { Product } from '../types/product';
 
 import { useCurrency } from '../composables/useCurrency';
@@ -11,8 +11,18 @@ const props = defineProps<{
 }>();
 
 const selectedSize = ref<string | null>(null);
+const selectedColor = ref('#8c8474');
+const activeColorTab = ref('ALL');
+const activeSizeTab = ref<'men' | 'women'>('men');
 const btnState = ref<'idle' | 'loading' | 'done'>('idle');
 const activeAccordion = ref<string | null>(null);
+
+const colorTabs = ['ALL', 'LIMITED', 'CLASSIC', 'SALE'];
+
+const menSizes = ['8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '12.5', '13', '13.5', '14', '15'];
+const womenSizes = ['5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5'];
+
+const currentSizes = computed(() => activeSizeTab.value === 'men' ? menSizes : womenSizes);
 
 const emit = defineEmits<{
   (e: 'add-to-cart', payload: { product: Product; size: string; quantity: number }): void;
@@ -46,13 +56,13 @@ const toggleAccordion = (tab: string) => {
 
 <template>
   <div class="product-info bg-white dark:bg-[#2A2A2A] rounded-md shadow-sm p-6 md:p-8 flex flex-col space-y-6 sticky top-24 font-sans text-black dark:text-gray-100 transition-colors duration-200">
-    <!-- Title / Brand / Rating -->
-    <div class="space-y-1 pb-2">
+    <!-- Title / Brand / Rating (Hidden on mobile, defined in ProductDetail) -->
+    <div class="hidden md:block space-y-1 pb-2">
       <h1 class="text-[28px] font-medium tracking-tight text-gray-900 dark:text-white leading-tight" style="font-family: Georgia, serif;">
         {{ product.title }}
       </h1>
       <div class="text-[10px] tracking-widest font-bold uppercase text-gray-500 dark:text-gray-400 mt-2 mb-2">
-        Also Available In: <a href="#" class="underline hover:text-black dark:hover:text-white">Women's Sizes</a>
+        Also Available In: <span class="underline cursor-pointer hover:text-black dark:hover:text-white">Women's Sizes</span>
       </div>
       <div class="text-xl font-medium mt-1">
         <span>{{ formatPrice(product.price) }}</span>
@@ -61,25 +71,34 @@ const toggleAccordion = (tab: string) => {
         <span class="text-black dark:text-white text-[10px]">★★★★★</span>
         <span class="text-black dark:text-white font-bold">(50)</span>
       </div>
+      <div v-if="product.tags?.[0]" class="inline-block mt-3 mb-1 bg-white dark:bg-[#2A2A2A] border-[1.5px] border-gray-900 dark:border-white px-3 py-1.5 rounded-full text-[10.5px] font-bold tracking-widest uppercase text-black dark:text-white">
+        {{ product.tags[0] }}
+      </div>
     </div>
 
     <!-- Color Selector -->
     <div class="space-y-3 pb-2 pt-2 border-t border-gray-100 dark:border-gray-700">
       <div class="text-xs font-bold tracking-widest uppercase flex gap-4 text-gray-400 dark:text-gray-500">
-        <span class="text-black dark:text-white border-b border-black dark:border-white pb-0.5">ALL</span>
-        <span>LIMITED</span>
-        <span>CLASSIC</span>
-        <span>SALE</span>
+        <button 
+          v-for="tab in colorTabs" 
+          :key="tab" 
+          @click="activeColorTab = tab"
+          :class="activeColorTab === tab ? 'text-black dark:text-white border-b border-black dark:border-white pb-0.5' : 'hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer'"
+          class="transition-colors"
+        >{{ tab }}</button>
       </div>
       <div class="text-sm mt-3">
-        Burnt Olive
+        {{ selectedColor === '#8c8474' ? 'Burnt Olive' : selectedColor === '#9e3b33' ? 'Auburn' : selectedColor === '#e3dccf' ? 'Natural White' : selectedColor === '#1c4d3b' ? 'Deep Forest' : selectedColor === '#60645c' ? 'Slate' : selectedColor === '#d2b988' ? 'Sand' : selectedColor === '#b5b6b8' ? 'Light Grey' : selectedColor === '#111827' ? 'Black' : selectedColor === '#172747' ? 'Navy' : selectedColor === '#1b1b1b' ? 'Jet Black' : selectedColor === '#e6eade' ? 'Sage' : selectedColor === '#d9d9d9' ? 'Cloud' : selectedColor === '#636544' ? 'Olive' : selectedColor === '#bfa175' ? 'Camel' : 'Heather Grey' }}
       </div>
       <div class="flex flex-wrap gap-2.5 mt-2">
-        <!-- Mock swatches matching the image -->
-        <button v-for="color in ['#8c8474', '#9e3b33', '#e3dccf', '#1c4d3b', '#60645c', '#d2b988', '#b5b6b8', '#111827', '#172747', '#1b1b1b', '#e6eade', '#d9d9d9', '#636544', '#bfa175', '#a19c96']" :key="color" 
-                class="w-6 h-6 rounded-full border border-gray-300 dark:border-gray-600 hover:border-black dark:hover:border-white transition-all relative flex items-center justify-center"
-                :style="{ backgroundColor: color }">
-            <span v-if="color === '#8c8474'" class="absolute -inset-[3px] border border-black dark:border-white rounded-full pointer-events-none"></span>
+        <button 
+          v-for="color in ['#8c8474', '#9e3b33', '#e3dccf', '#1c4d3b', '#60645c', '#d2b988', '#b5b6b8', '#111827', '#172747', '#1b1b1b', '#e6eade', '#d9d9d9', '#636544', '#bfa175', '#a19c96']" 
+          :key="color" 
+          @click="selectedColor = color"
+          class="w-6 h-6 rounded-full border border-gray-300 dark:border-gray-600 hover:border-black dark:hover:border-white transition-all relative flex items-center justify-center cursor-pointer"
+          :style="{ backgroundColor: color }"
+        >
+            <span v-if="selectedColor === color" class="absolute -inset-[3px] border border-black dark:border-white rounded-full pointer-events-none"></span>
         </button>
       </div>
     </div>
@@ -87,23 +106,29 @@ const toggleAccordion = (tab: string) => {
     <!-- Size Selector -->
     <div class="space-y-4 pt-4">
       <div class="flex text-xs font-bold tracking-widest uppercase gap-4 text-gray-400 dark:text-gray-500">
-        <button class="text-black dark:text-white border-b border-black dark:border-white pb-0.5">Men's Sizes</button>
-        <button class="hover:text-black dark:hover:text-white transition-colors">Women's Sizes</button>
+        <button 
+          @click="activeSizeTab = 'men'; selectedSize = null" 
+          :class="activeSizeTab === 'men' ? 'text-black dark:text-white border-b border-black dark:border-white pb-0.5' : 'hover:text-black dark:hover:text-white transition-colors cursor-pointer'"
+        >Men's Sizes</button>
+        <button 
+          @click="activeSizeTab = 'women'; selectedSize = null" 
+          :class="activeSizeTab === 'women' ? 'text-black dark:text-white border-b border-black dark:border-white pb-0.5' : 'hover:text-black dark:hover:text-white transition-colors cursor-pointer'"
+        >Women's Sizes</button>
       </div>
       <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 mt-3">
         <button 
-          v-for="size in ['8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '12.5', '13', '13.5', '14', '15']" 
-          :key="size"
-          @click="size !== '15' ? selectedSize = size : null"
+          v-for="size in currentSizes" 
+          :key="activeSizeTab + '-' + size"
+          @click="size !== '15' && size !== '11.5' ? selectedSize = size : null"
           class="h-10 border flex items-center justify-center text-sm transition-colors rounded-sm bg-white dark:bg-[#2A2A2A] relative overflow-hidden"
           :class="[
-            size === '15' ? 'border-gray-200 dark:border-gray-700 text-gray-300 dark:text-gray-600 cursor-not-allowed bg-gray-50 dark:bg-gray-800' : 
+            (size === '15' || size === '11.5') ? 'border-gray-200 dark:border-gray-700 text-gray-300 dark:text-gray-600 cursor-not-allowed bg-gray-50 dark:bg-gray-800' : 
             selectedSize === size 
               ? 'border-black dark:border-white border-[1.5px] font-bold text-black dark:text-white' 
               : 'border-gray-300 dark:border-gray-600 text-black dark:text-white hover:border-black dark:hover:border-white'
           ]"
         >
-          <span v-if="size === '15'" class="absolute w-[150%] h-[1px] bg-gray-200 dark:bg-gray-600 transform rotate-[25deg] top-1/2 left-[-25%]"></span>
+          <span v-if="size === '15' || size === '11.5'" class="absolute w-[150%] h-[1px] bg-gray-200 dark:bg-gray-600 transform rotate-[25deg] top-1/2 left-[-25%]"></span>
           {{ size }}
         </button>
       </div>
@@ -142,7 +167,7 @@ const toggleAccordion = (tab: string) => {
       </button>
       
       <p class="text-[11px] text-center text-black dark:text-white font-medium mt-4">
-        Free Shipping on Orders over $75 <br>
+        Free Shipping on Orders over Rs 5,000 <br>
         <span class="text-gray-500 dark:text-gray-400 font-normal">Easy Returns</span>
       </p>
     </div>

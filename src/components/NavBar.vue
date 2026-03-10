@@ -26,7 +26,7 @@ const handleLogout = () => {
   <div class="font-sans antialiased text-brand-blue dark:text-gray-100">
     <!-- Announcement Bar -->
     <div class="bg-charcoal text-white text-[10px] md:text-sm font-bold text-center py-2 tracking-wide relative z-50">
-      Free Shipping on Orders over $75. Easy Returns.
+      Free Shipping on Orders over Rs 5,000. Easy Returns.
     </div>
 
     <!-- Main Header -->
@@ -61,10 +61,10 @@ const handleLogout = () => {
                     <div>
                       <h4 class="text-xs font-bold mb-4 uppercase tracking-wider dark:text-white">Shoes</h4>
                       <ul class="space-y-3 text-sm font-normal text-gray-700 dark:text-gray-300">
-                        <li><a href="#" class="hover:underline">Shop All</a></li>
-                        <li><a href="#" class="hover:underline">Sneakers</a></li>
-                        <li><a href="#" class="hover:underline">Slip-Ons</a></li>
-                        <li><a href="#" class="hover:underline">Active Shoes</a></li>
+                        <li><RouterLink to="/shop" class="hover:underline">Shop All</RouterLink></li>
+                        <li><RouterLink to="/shop" class="hover:underline">Sneakers</RouterLink></li>
+                        <li><RouterLink to="/shop" class="hover:underline">Slip-Ons</RouterLink></li>
+                        <li><RouterLink to="/shop" class="hover:underline">Active Shoes</RouterLink></li>
                       </ul>
                     </div>
                  </div>
@@ -92,10 +92,7 @@ const handleLogout = () => {
 
         <!-- Right: Actions -->
         <div v-if="!searchStore.isSearchOpen" class="flex items-center space-x-4 md:space-x-5 lg:space-x-6 text-black dark:text-white">
-          <div class="hidden md:flex items-center space-x-6 mr-4 lg:mr-8">
-            <RouterLink to="/" class="text-xs font-bold hover:text-gray-600 transition-colors">About</RouterLink>
-            <RouterLink to="/" class="text-xs font-bold hover:text-gray-600 transition-colors">ReRun</RouterLink>
-          </div>
+
 
           <!-- Search Icon -->
           <button @click="searchStore.toggleSearch" class="hidden md:flex p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Search">
@@ -136,11 +133,7 @@ const handleLogout = () => {
             </RouterLink>
           </template>
 
-          <RouterLink to="/help" class="hidden md:block p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Help">
-            <svg class="w-[26px] h-[26px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-            </svg>
-          </RouterLink>
+
 
           <!-- Cart Toggle -->
           <button @click="cartStore.openDrawer()" class="relative p-1 hover:text-gray-600 transition-colors focus:outline-none flex items-center" aria-label="Cart">
@@ -155,92 +148,99 @@ const handleLogout = () => {
           </button>
         </div>
 
-        <!-- Search Overlay -->
-        <div v-if="searchStore.isSearchOpen" class="absolute inset-0 bg-white dark:bg-gray-900 z-50 flex items-center px-4 md:px-8 border-b border-gray-100 dark:border-gray-800">
-            <svg class="w-5 h-5 text-gray-400 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      <!-- Search Bar Dropdown Overlay -->
+      <Transition name="fade">
+        <div v-if="searchStore.isSearchOpen" class="w-full absolute left-0 bg-white dark:bg-[#1a1a1a] border-b border-gray-100 dark:border-gray-800 shadow-xl z-50 px-6 py-6 font-sans">
+          <div class="max-w-[700px] mx-auto flex items-center relative">
+            <svg class="absolute left-4 w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
             <input 
-              v-model="searchStore.query"
+              v-model="searchStore.query" 
               type="text" 
-              placeholder="SEARCH..." 
-              class="flex-grow text-sm font-bold placeholder-gray-400 outline-none text-brand-blue dark:text-white uppercase tracking-widest bg-transparent font-sans"
+              placeholder="Search products, materials, and more..." 
+              class="w-full h-14 pl-12 pr-12 text-lg text-black dark:text-white bg-gray-50 dark:bg-gray-800 border-none rounded-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white transition-shadow"
+              @keyup.enter="router.push('/shop'); searchStore.toggleSearch()"
               autofocus
             >
-            <button @click="searchStore.toggleSearch()" class="p-2 text-gray-400 hover:text-brand-red ml-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button @click="searchStore.toggleSearch()" class="absolute right-4 text-gray-500 hover:text-black dark:hover:text-white p-1">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
+          </div>
         </div>
-
+      </Transition>
       </div>
     </header>
     </div>
 
-    <!-- Mobile Slide-Out Navigation Drawer -->
-    <Teleport to="body">
-      <Transition name="mobile-menu">
-        <div v-if="isMobileMenuOpen" class="fixed inset-0 z-[100] md:hidden" role="dialog" aria-modal="true">
-          <!-- Overlay -->
-          <div class="fixed inset-0 bg-black/50 transition-opacity" @click="isMobileMenuOpen = false"></div>
-          
-          <!-- Drawer Panel (slides from left) -->
-          <div class="fixed inset-y-0 left-0 w-[280px] max-w-[85vw] bg-white dark:bg-gray-900 shadow-2xl flex flex-col overflow-y-auto transform transition-transform duration-300">
-            <!-- Drawer Header -->
-            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800">
-              <span class="text-lg font-bold tracking-[0.15em] text-brand-blue dark:text-white">NEXT</span>
-              <button @click="isMobileMenuOpen = false" class="p-1 text-gray-400 hover:text-black dark:hover:text-white">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <!-- Mobile Menu Overlay -->
+    <Transition name="fade">
+      <div v-if="isMobileMenuOpen" class="fixed inset-0 z-[200] bg-[#f5f4f0] dark:bg-charcoal flex flex-col h-screen w-screen overflow-hidden text-black dark:text-white font-sans">
+        
+        <!-- Top Bar inside Menu (Mimicking Navbar pill) -->
+        <div class="px-3 md:px-5 pt-4 pb-2 w-full shrink-0">
+          <div class="w-full mx-auto bg-white dark:bg-[#1a1a1a] rounded-[24px] h-[60px] flex items-center shadow-sm relative px-6">
+            <button @click="isMobileMenuOpen = false" class="p-2 -ml-2 text-gray-500 dark:text-gray-400" aria-label="Close menu">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            <span class="text-3xl font-serif lowercase tracking-tighter font-extrabold absolute left-1/2 -translate-x-1/2">next</span>
+            
+            <div class="absolute right-6 flex items-center space-x-3">
+              <button @click="searchStore.toggleSearch(); isMobileMenuOpen = false" class="p-1 text-black dark:text-white">
+                <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
               </button>
-            </div>
-
-            <!-- Navigation Links -->
-            <nav class="flex-grow px-5 py-6 space-y-1">
-              <RouterLink 
-                to="/shop?gender=men" 
-                @click="isMobileMenuOpen = false"
-                class="block py-3 text-sm font-bold tracking-[0.2em] uppercase text-brand-blue dark:text-white hover:text-brand-red transition-colors border-b border-gray-100 dark:border-gray-800"
-              >MEN'S</RouterLink>
-              <RouterLink 
-                to="/shop?gender=women" 
-                @click="isMobileMenuOpen = false"
-                class="block py-3 text-sm font-bold tracking-[0.2em] uppercase text-brand-blue dark:text-white hover:text-brand-red transition-colors border-b border-gray-100 dark:border-gray-800"
-              >WOMEN'S</RouterLink>
-              <RouterLink 
-                to="/" 
-                @click="isMobileMenuOpen = false"
-                class="block py-3 text-sm font-bold tracking-[0.2em] uppercase text-brand-blue dark:text-white hover:text-brand-red transition-colors border-b border-gray-100 dark:border-gray-800"
-              >ABOUT</RouterLink>
-              <RouterLink 
-                to="/login" 
-                @click="isMobileMenuOpen = false"
-                class="block py-3 text-sm font-bold tracking-[0.2em] uppercase text-brand-blue dark:text-white hover:text-brand-red transition-colors border-b border-gray-100 dark:border-gray-800"
-              >ACCOUNT</RouterLink>
-            </nav>
-
-            <!-- Bottom: Currency Selector -->
-            <div class="mt-auto px-5 py-5 border-t border-gray-100 dark:border-gray-800">
-              <div 
-                class="flex items-center justify-between text-xs font-bold cursor-default tracking-widest text-brand-blue dark:text-white py-2"
-              >
-                <span>🇱🇰 LKR Rs</span>
-              </div>
+              <button @click="cartStore.openDrawer(); isMobileMenuOpen = false" class="relative p-1 text-black dark:text-white flex items-center">
+                <svg class="w-[24px] h-[24px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+                </svg>
+                <div v-if="cartStore.totalItems > 0" class="absolute bottom-0 right-0 translate-x-1 -translate-y-1 bg-[#1a1a1a] dark:bg-white text-white dark:text-black text-[9px] font-bold h-[15px] w-[15px] rounded-full flex items-center justify-center border border-white dark:border-[#1a1a1a]">
+                  {{ cartStore.totalItems }}
+                </div>
+              </button>
             </div>
           </div>
         </div>
-      </Transition>
-    </Teleport>
 
-    <!-- Cart Drawer -->
+        <!-- Main Links List -->
+        <div class="flex-1 overflow-y-auto w-full px-6 flex flex-col pt-2">
+          <RouterLink @click="isMobileMenuOpen = false" to="/shop?gender=men" class="w-full flex justify-between items-center py-6 border-b border-[#e5e5e5] dark:border-gray-800 text-[13px] font-extrabold tracking-widest uppercase text-black dark:text-white">
+            MEN
+            <svg class="w-4 h-4 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </RouterLink>
+          <RouterLink @click="isMobileMenuOpen = false" to="/shop?gender=women" class="w-full flex justify-between items-center py-6 border-b border-[#e5e5e5] dark:border-gray-800 text-[13px] font-extrabold tracking-widest uppercase text-black dark:text-white">
+            WOMEN
+            <svg class="w-4 h-4 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </RouterLink>
+          <RouterLink @click="isMobileMenuOpen = false" to="/shop?sale=true" class="w-full flex justify-between items-center py-6 text-[13px] font-extrabold tracking-widest uppercase text-black dark:text-white">
+            SALE
+            <svg class="w-4 h-4 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </RouterLink>
+        </div>
+
+        <!-- Bottom Box Links -->
+        <div class="bg-white dark:bg-[#1a1a1a] w-[calc(100%-24px)] mx-auto mb-6 p-6 rounded-md shadow-sm">
+          <ul class="space-y-6 text-[15px] font-normal tracking-wide text-black dark:text-white">
+            <li><RouterLink @click="isMobileMenuOpen = false" to="/login" class="hover:underline">My Account</RouterLink></li>
+            <li><RouterLink @click="isMobileMenuOpen = false" to="/shop" class="hover:underline">Shop All</RouterLink></li>
+          </ul>
+        </div>
+      </div>
+    </Transition>
+
     <CartDrawer />
   </div>
 </template>
 
-<style scoped>
-/* Ensure font is correct */
-:deep(.font-sans) {
-  font-family: "Anonymous Pro", monospace;
-}
 
+
+<style scoped>
 /* Mobile menu transitions */
 .mobile-menu-enter-active,
 .mobile-menu-leave-active {

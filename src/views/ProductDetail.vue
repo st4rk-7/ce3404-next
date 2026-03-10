@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import type { Product } from '../types/product';
 import { useProducts } from '../composables/useProducts';
+import { useCurrency } from '../composables/useCurrency';
 import ProductGallery from '../components/ProductGallery.vue';
 import ProductInfo from '../components/ProductInfo.vue';
 import ProductGrid from '../components/ProductGrid.vue';
@@ -11,6 +12,7 @@ import ProductGrid from '../components/ProductGrid.vue';
 const route = useRoute();
 const cartStore = useCartStore();
 const { getProductById, fetchProducts, products } = useProducts();
+const { formatPrice } = useCurrency();
 const product = ref<Product | null>(null);
 const isLoading = ref(true);
 const error = ref('');
@@ -36,8 +38,8 @@ onMounted(async () => {
     if (!product.value) {
         throw new Error('Product not found');
     }
-  } catch (err: any) {
-    error.value = err.message || 'Failed to load product';
+  } catch (err: unknown) {
+    error.value = err instanceof Error ? err.message : 'Failed to load product';
   } finally {
     isLoading.value = false;
   }
@@ -61,6 +63,22 @@ onMounted(async () => {
       <!-- Breadcrumb - Allbirds style -->
       <div class="container mx-auto px-4 md:px-8 py-4 top-0 z-10 text-xs text-gray-500 dark:text-gray-400 font-medium">
         Home > {{ product.title }}
+      </div>
+      <!-- Mobile Info Header -->
+      <div class="w-full px-4 md:hidden mb-4 mt-2 font-sans">
+        <h1 class="text-[28px] font-medium tracking-tight text-gray-900 dark:text-white leading-tight" style="font-family: Georgia, serif;">
+          {{ product.title }}
+        </h1>
+        <div class="text-xl font-medium mt-1 text-black dark:text-white pb-1">
+          <span>{{ formatPrice(product.price) }}</span>
+        </div>
+        <div class="flex items-center gap-1 text-xs mt-1 mb-2">
+          <span class="text-black dark:text-white text-[10px]">★★★★★</span>
+          <span class="text-black dark:text-white font-bold">(50)</span>
+        </div>
+        <div v-if="product.tags?.[0]" class="inline-block mt-2 mb-2 bg-white dark:bg-[#1a1a1a] border-[1.5px] border-gray-900 dark:border-white px-3 py-1.5 rounded-full text-[10.5px] font-bold tracking-widest uppercase text-black dark:text-white">
+          {{ product.tags[0] }}
+        </div>
       </div>
       
       <div class="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto px-0 sm:px-4 md:px-8 pb-12">

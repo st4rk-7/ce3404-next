@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import type { Product } from '../types/product';
 
 export interface CartItem {
@@ -9,9 +9,28 @@ export interface CartItem {
   quantity: number;
 }
 
+const CART_STORAGE_KEY = 'next-cart-items';
+
+function loadCartFromStorage(): CartItem[] {
+  try {
+    const saved = localStorage.getItem(CART_STORAGE_KEY);
+    if (saved) {
+      return JSON.parse(saved) as CartItem[];
+    }
+  } catch {
+    // Ignore parse errors
+  }
+  return [];
+}
+
 export const useCartStore = defineStore('cart', () => {
-  const items = ref<CartItem[]>([]);
+  const items = ref<CartItem[]>(loadCartFromStorage());
   const isDrawerOpen = ref(false);
+
+  // Persist cart to localStorage on every change
+  watch(items, (newItems) => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newItems));
+  }, { deep: true });
 
   const totalItems = computed(() => {
     return items.value.reduce((total, item) => total + item.quantity, 0);
