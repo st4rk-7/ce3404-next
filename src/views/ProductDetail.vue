@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import type { Product } from '../types/product';
@@ -11,16 +11,14 @@ import ProductGrid from '../components/ProductGrid.vue';
 
 const route = useRoute();
 const cartStore = useCartStore();
-const { getProductById, fetchProducts, products } = useProducts();
+const { getProductById, fetchProducts, products, error: productsError } = useProducts();
 const { formatPrice } = useCurrency();
 const product = ref<Product | null>(null);
 const isLoading = ref(true);
 const error = ref('');
 
-const handleAddToCart = (payload: { product: Product; size: string; quantity: number }) => {
-  cartStore.addToCart(payload.product, payload.size, payload.quantity);
-  // Open the cart drawer to show the newly added item
-  cartStore.openDrawer();
+const handleAddToCart = (payload: { product: Product; size: string; color: string; quantity: number }) => {
+  cartStore.addToCart(payload.product, payload.size, payload.quantity, payload.color);
 };
 
 // Mock related products (just filter out current product and take 4)
@@ -29,10 +27,15 @@ const relatedProducts = computed(() => {
     return products.value.filter(p => p.id !== product.value?.id).slice(0, 4);
 });
 
-onMounted(async () => {
+const loadProduct = async () => {
+  isLoading.value = true;
+  error.value = '';
+  product.value = null;
   try {
-    const productId = Number(route.params.id); // Changed parseInt to Number
-    await fetchProducts(); // Ensure products are loaded for grid/recommendations
+    const productId = Number(route.params.id);
+    if (!Number.isInteger(productId)) throw new Error('Product not found');
+    await fetchProducts();
+    if (productsError.value) throw new Error(productsError.value);
     product.value = getProductById(productId) || null;
 
     if (!product.value) {
@@ -43,7 +46,9 @@ onMounted(async () => {
   } finally {
     isLoading.value = false;
   }
-});
+};
+
+watch(() => route.params.id, loadProduct, { immediate: true });
 </script>
 
 <template>
@@ -60,7 +65,7 @@ onMounted(async () => {
 
     <!-- Product Content -->
     <div v-if="product" class="w-full">
-      <!-- Breadcrumb - Allbirds style -->
+      <!-- Breadcrumb -->
       <div class="container mx-auto px-4 md:px-8 py-4 top-0 z-10 text-xs text-gray-500 dark:text-gray-400 font-medium">
         Home > {{ product.title }}
       </div>
@@ -74,7 +79,7 @@ onMounted(async () => {
         </div>
         <div class="flex items-center gap-1 text-xs mt-1 mb-2">
           <span class="text-black dark:text-white text-[10px]">★★★★★</span>
-          <span class="text-black dark:text-white font-bold">(50)</span>
+          <span class="text-black dark:text-white font-bold">{{ product.rating.toFixed(1) }}</span>
         </div>
         <div v-if="product.tags?.[0]" class="inline-block mt-2 mb-2 bg-white dark:bg-[#1a1a1a] border-[1.5px] border-gray-900 dark:border-white px-3 py-1.5 rounded-full text-[10.5px] font-bold tracking-widest uppercase text-black dark:text-white">
           {{ product.tags[0] }}
@@ -99,7 +104,7 @@ onMounted(async () => {
       <!-- Recommendations Section -->
       <div class="container mx-auto mt-20 pt-10 border-t border-gray-200 dark:border-white/10 px-4 md:px-8">
         <h3 class="text-xl font-bold uppercase tracking-widest text-center mb-10 text-black dark:text-white">You Might Also Like</h3>
-        <ProductGrid :products="relatedProducts" :columns="4" />
+        <ProductGrid :products="relatedProducts" :show-promo="false" :show-load-more="false" />
       </div>
     </div>
   </div>

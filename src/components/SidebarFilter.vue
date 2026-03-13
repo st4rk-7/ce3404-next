@@ -72,7 +72,7 @@ const materials = ['Alternative-Leather', 'Canvas', 'Tree-Fiber-Blend', 'Wool'];
              :checked="filterStore.isFilterActive('color', option.color)"
            />
            <div 
-             class="w-5 h-5 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center peer-checked:ring-1 peer-checked:ring-black dark:peer-checked:ring-white peer-checked:ring-offset-1 dark:peer-checked:ring-offset-charcoal transition-all"
+             class="w-5 h-5 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center peer-checked:ring-1 peer-checked:ring-black dark:peer-checked:ring-white peer-checked:ring-offset-1 dark:peer-checked:ring-offset-charcoal transition-[box-shadow,border-color]"
            >
              <div class="w-full h-full rounded-full" :style="{ backgroundColor: option.color }"></div>
            </div>

@@ -8,56 +8,24 @@ const isLoading = ref(false);
 const error = ref<string | null>(null);
 const hasLoaded = ref(false); // Track if we've already fetched
 
-// Authentic Allbirds product imagery in 3-image sets
-const allbirdsImageSets = [
-    // 1. Trail Runner Set (Real Angles)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12506_26Q1_Trail-Runner-Deep-Red-Dark-Anthracite_PDP_LEFT_875428f9-f820-4a33-8cd5-01b830f99546.png',
-        'https://www.allbirds.com/cdn/shop/files/A12506_26Q1_Trail-Runner-Deep-Red-Dark-Anthracite_PDP_PAIR_3Q_bf0e3177-0b1f-43f3-8913-96aa0a9c751e.png',
-        'https://www.allbirds.com/cdn/shop/files/A12506_26Q1_Trail-Runner-Deep-Red-Dark-Anthracite_PDP_SOLE_95ddd79f-bb44-43bd-ab27-9e82bab07ccf.png'
-    ],
-    // 2. Cruiser Colors (Verdant Green, Deep Navy, Toasted Coconut)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12335_26Q1_Cruiser-Verdant-Green-Blizzard-Sole_PDP_LEFT_129905ba-94b9-4762-bfd9-68d58131ed07.png',
-        'https://www.allbirds.com/cdn/shop/files/A12504_26Q1_Cruiser-Slip-On-Deep-Navy-Natural-White-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12310_26Q1_Cruiser-Terralux-Toasted-Coconut-Medium-Gum-Sole_PDP_LEFT.png'
-    ],
-    // 3. Dasher Colors (Blizzard/Anthracite, Deep Navy, Auburn)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12453_26Q1_Golf-Dasher-Blizzard-Anthra-Blizz_PDP_LEFT_c7fcb8a8-226a-4a78-9f5c-69b3c40ee3e4.png',
-        'https://www.allbirds.com/cdn/shop/files/A12464_26Q1_Dasher-NZ-Blizzard-Deep-Navy-Blizzard_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12423_26Q1_Dasher-NZ-Relay-Auburn-Auburn_PDP_LEFT.png'
-    ],
-    // 4. Wool Runner Colors (Stony Cream, Dark Grey, Dapple Grey)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12061_25Q3_Wool-Runner-NZ-Mid-Waterproof-Stony-Cream-Rugged-Beige-Stony-Cream-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12007_25Q3_Wool-Runner-NZ-Waterproof-Dark-Grey-Light-Grey-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/WR3MDPG_SHOE_LEFT_GLOBAL_MENS_WOOL_RUNNER_DAPPLE_GREY_CREAM_a125cf03-f7cb-481e-af35-bdeecca29882.png'
-    ],
-    // 5. Varsity Colors (Light Grey, Mushroom, Parchment)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12526_26Q2_Varsity-Terralux-Light-Grey-Light-Grey-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12569_26Q1_Mens-Varsity-Airy-Mushroom-Blizzard-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12270_26Q1_Mens-Varsity-Parchment-Blizzard-Sole_PDP_LEFT.png'
-    ],
-    // 6. Tree Runner / Glider (Mushroom, Burnt Olive, Warm Red)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12587_26Q1_Tree-Glider-Mushroom-Light-Mushroom_PDP_LEFT_82f54d05-e967-45f0-9956-264c9bee1244.png',
-        'https://www.allbirds.com/cdn/shop/files/A12485_26Q1_Tree-Runner-NZ-Burnt-Olive-Burnt-Olive-Sole_PDP_LEFT_9487ac29-5786-4fd4-8b61-1f9430bdd42b.png',
-        'https://www.allbirds.com/cdn/shop/files/A12329_26Q1_Strider-Warm-Red-Mushroom_PDP_LEFT.png'
-    ],
-    // 7. Terralux / Slip Ons (Anthracite, Burnt Olive, Canvas White)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12422_26Q1_Runner-NZ-Terralux-Anthracite-Dark-Anthr_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12471_26Q1_Runner-NZ-Slip-On-Burnt-Olive-Burnt-Olive-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12344_26Q1_Cruiser-Canvas-Warm-White-Natural-White_PDP_LEFT_e95df9c3-e2cb-48df-b472-8c3edfb74fce.png'
-    ],
-    // 8. Clogs / Slippers / Mizzle (Dark Camel, Natural White, Medium Grey)
-    [
-        'https://www.allbirds.com/cdn/shop/files/A12147_25Q4_Kiwi-Clog-Dark-Camel-Stony-Cream-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A12034_25Q4_Wool-Slipper-Natural-White-Natural-White-Sole_PDP_LEFT.png',
-        'https://www.allbirds.com/cdn/shop/files/A11092_24Q2_Wool-Dasher-2-Mizzle-Medium-Grey-Natural-Black_PDP_LEFT.png'
-    ]
+// Product imagery stored locally — each set has 3 angle variants
+const shoeImageSets = [
+    // 1. Red/Dark Runner
+    ['/shoes/shoe-01a.webp', '/shoes/shoe-01b.webp', '/shoes/shoe-01c.webp'],
+    // 2. Green / Navy / Coconut
+    ['/shoes/shoe-02a.webp', '/shoes/shoe-02b.webp', '/shoes/shoe-02c.webp'],
+    // 3. Blizzard / Deep Navy / Auburn
+    ['/shoes/shoe-03a.webp', '/shoes/shoe-03b.webp', '/shoes/shoe-03c.webp'],
+    // 4. Stony Cream / Dark Grey / Dapple Grey
+    ['/shoes/shoe-04a.webp', '/shoes/shoe-04b.webp', '/shoes/shoe-04c.webp'],
+    // 5. Light Grey / Mushroom / Parchment
+    ['/shoes/shoe-05a.webp', '/shoes/shoe-05b.webp', '/shoes/shoe-05c.webp'],
+    // 6. Mushroom / Burnt Olive / Warm Red
+    ['/shoes/shoe-06a.webp', '/shoes/shoe-06b.webp', '/shoes/shoe-06c.webp'],
+    // 7. Anthracite / Burnt Olive / Canvas White
+    ['/shoes/shoe-07a.webp', '/shoes/shoe-07b.webp', '/shoes/shoe-07c.webp'],
+    // 8. Camel / Natural White / Medium Grey
+    ['/shoes/shoe-08a.webp', '/shoes/shoe-08b.webp', '/shoes/shoe-08c.webp']
 ];
 
 export function useProducts() {
@@ -80,7 +48,7 @@ export function useProducts() {
     originalProducts.forEach((product, index) => {
       // 1. Original (Augmented)
       // Cycle through our high-quality image list
-      const imageSet = allbirdsImageSets[index % allbirdsImageSets.length] || allbirdsImageSets[0] as string[];
+      const imageSet = shoeImageSets[index % shoeImageSets.length] || shoeImageSets[0] as string[];
       const originalImage: string = imageSet[0] || '';
       
       const basePrice = product.price; // Use raw price for direct conversion
@@ -122,7 +90,7 @@ export function useProducts() {
         
         const cloneId = parseInt(`${product.id}${i + 1}${Math.floor(seededRandom(seed + 2) * 100)}`);
         // Offset image index so clones don't look exactly like the original right next to it
-        const cloneImageSet = allbirdsImageSets[(index + 5 + i) % allbirdsImageSets.length] || allbirdsImageSets[0] as string[];
+        const cloneImageSet = shoeImageSets[(index + 5 + i) % shoeImageSets.length] || shoeImageSets[0] as string[];
         const cloneImage = cloneImageSet[0] || '';
         const cloneBasePrice = basePrice + (priceVariation);
 
@@ -180,8 +148,6 @@ export function useProducts() {
 
         // Combine categories
         let combined = [...mensRes.data.products, ...womensRes.data.products];
-        
-        // Remove non-shoe items if any sneaked in (unlikely with specific categories)
         
         products.value = transformProducts(combined);
         hasLoaded.value = true;

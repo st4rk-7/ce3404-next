@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { RouterLink, useRouter, useRoute } from 'vue-router';
 import { useCartStore } from '../stores/cart';
 import { useSearchStore } from '../stores/search';
 import { useAuthStore } from '../stores/auth';
 import CartDrawer from './CartDrawer.vue';
+import { lockBodyScroll, unlockBodyScroll } from '../utils/bodyScrollLock';
 
 const cartStore = useCartStore();
 const searchStore = useSearchStore();
@@ -13,22 +14,29 @@ const router = useRouter();
 const route = useRoute();
 const isMobileMenuOpen = ref(false);
 
-import { watch, onUnmounted } from 'vue';
-
 watch(isMobileMenuOpen, (isOpen) => {
   if (isOpen) {
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll('mobile-menu');
   } else {
-    document.body.style.overflow = '';
+    unlockBodyScroll('mobile-menu');
   }
 });
 
-watch(route, () => {
+watch(() => route.fullPath, () => {
   isMobileMenuOpen.value = false;
 });
 
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    isMobileMenuOpen.value = false;
+    searchStore.closeSearch();
+  }
+};
+
+onMounted(() => document.addEventListener('keydown', handleKeydown));
 onUnmounted(() => {
-  document.body.style.overflow = '';
+  document.removeEventListener('keydown', handleKeydown);
+  unlockBodyScroll('mobile-menu');
 });
 
 
@@ -38,6 +46,11 @@ const { isDark, toggleTheme } = useTheme();
 const handleLogout = () => {
   authStore.logout();
   router.push('/');
+};
+
+const submitSearch = async () => {
+  await router.push('/shop');
+  searchStore.closeSearch();
 };
 </script>
 
@@ -49,63 +62,64 @@ const handleLogout = () => {
     </div>
 
     <!-- Main Header -->
-    <div class="sticky top-0 z-40 w-full px-3 md:px-5 pt-4 pb-2 pointer-events-none transition-all duration-300">
+    <div class="sticky top-0 z-40 w-full px-3 md:px-5 pt-4 pb-2 pointer-events-none transition-[padding,background-color] duration-300">
       <header class="w-full mx-auto bg-white dark:bg-[#1a1a1a] dark:border dark:border-gray-800 rounded-[24px] md:rounded-[32px] h-[60px] md:h-[64px] flex items-center shadow-md relative pointer-events-auto">
         <div class="w-full px-6 md:px-10 h-full flex justify-between items-center group/header">
         
         <!-- Left: Logo -->
         <div class="flex-shrink-0 flex items-center">
           <!-- Mobile Menu Button -->
-          <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="lg:hidden p-2 -ml-2 text-black dark:text-white">
+          <button v-if="!searchStore.isSearchOpen" @click="isMobileMenuOpen = true" class="lg:hidden size-10 -ml-2 text-black dark:text-white flex items-center justify-center" aria-label="Open menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </button>
           
-          <RouterLink to="/" class="block text-black dark:text-white hover:opacity-70 transition-opacity ml-2 md:ml-0">
-             <span class="text-3xl font-extrabold tracking-widest uppercase">NEXT</span>
+          <RouterLink to="/" class="block hover:opacity-70 transition-opacity ml-2 md:ml-0">
+             <img src="/logo-light.jpg" alt="Starz" class="h-8 md:h-9 object-contain dark:hidden" />
+             <img src="/logo-dark.jpg" alt="Starz" class="h-8 md:h-9 object-contain mix-blend-screen hidden dark:block" />
           </RouterLink>
         </div>
 
         <!-- Center: Navigation (Desktop) -->
         <nav v-if="!searchStore.isSearchOpen" class="hidden lg:flex space-x-6 xl:space-x-8 text-[13px] font-extrabold tracking-widest text-black dark:text-white items-center h-full absolute left-1/2 transform -translate-x-1/2">
           <div class="h-full flex items-center group/men">
-            <RouterLink to="/shop?gender=men" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all">MEN</RouterLink>
+            <RouterLink to="/shop?gender=men" class="hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-colors">MEN</RouterLink>
             
             <!-- Mega Menu Dropdown -->
-            <div class="absolute top-[70px] left-0 w-full bg-white dark:bg-charcoal dark:border-t dark:border-white/10 shadow-xl flex z-50 opacity-0 invisible group-hover/men:opacity-100 group-hover/men:visible transition-all duration-300 ease-in-out">
+            <div class="absolute top-[70px] left-0 w-full bg-white dark:bg-charcoal dark:border-t dark:border-white/10 shadow-xl flex z-50 opacity-0 invisible group-hover/men:opacity-100 group-hover/men:visible group-focus-within/men:opacity-100 group-focus-within/men:visible transition-[opacity,visibility] duration-300 ease-in-out">
               <div class="w-full max-w-[1240px] mx-auto flex p-10 min-h-[400px]">
                  <!-- Left Column links -->
                  <div class="w-1/4 space-y-6">
                     <div>
                       <h4 class="text-xs font-bold mb-4 uppercase tracking-wider dark:text-white">Shoes</h4>
                       <ul class="space-y-3 text-sm font-normal text-gray-700 dark:text-gray-300">
-                        <li><RouterLink to="/shop" class="hover:underline">Shop All</RouterLink></li>
-                        <li><RouterLink to="/shop" class="hover:underline">Sneakers</RouterLink></li>
-                        <li><RouterLink to="/shop" class="hover:underline">Slip-Ons</RouterLink></li>
-                        <li><RouterLink to="/shop" class="hover:underline">Active Shoes</RouterLink></li>
+                        <li><RouterLink to="/shop?gender=men" class="hover:underline">Shop All</RouterLink></li>
+                        <li><RouterLink :to="{ path: '/shop', query: { gender: 'men', type: 'Everyday Sneakers' } }" class="hover:underline">Sneakers</RouterLink></li>
+                        <li><RouterLink :to="{ path: '/shop', query: { gender: 'men', type: 'Slip Ons' } }" class="hover:underline">Slip-Ons</RouterLink></li>
+                        <li><RouterLink :to="{ path: '/shop', query: { gender: 'men', type: 'Running Shoes' } }" class="hover:underline">Active Shoes</RouterLink></li>
                       </ul>
                     </div>
                  </div>
                  <!-- Right Content Images (Placeholder) -->
                  <div class="w-3/4 flex gap-4">
-                    <div class="flex-1 bg-gray-100 rounded-xl p-6 relative overflow-hidden group/card cursor-pointer">
+                    <RouterLink to="/shop?gender=men" class="flex-1 bg-gray-100 rounded-xl p-6 relative overflow-hidden group/card">
                        <span class="relative z-10 font-bold text-white text-lg">NEW ARRIVALS</span>
-                       <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover/card:scale-105 transition-transform duration-500" alt="New Arrivals">
-                    </div>
-                    <div class="flex-1 bg-gray-100 rounded-xl p-6 relative overflow-hidden group/card cursor-pointer">
+                       <img src="/banners/mega-new-arrivals.jpg" loading="lazy" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover/card:scale-105 transition-transform duration-500" alt="New Arrivals">
+                    </RouterLink>
+                    <RouterLink :to="{ path: '/shop', query: { gender: 'men', sort: 'BEST SELLING' } }" class="flex-1 bg-gray-100 rounded-xl p-6 relative overflow-hidden group/card">
                        <span class="relative z-10 font-bold text-white text-lg">BESTSELLERS</span>
-                       <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover/card:scale-105 transition-transform duration-500" alt="Bestsellers">
-                    </div>
+                       <img src="/banners/mega-bestsellers.jpg" loading="lazy" class="absolute inset-0 w-full h-full object-cover brightness-75 group-hover/card:scale-105 transition-transform duration-500" alt="Bestsellers">
+                    </RouterLink>
                  </div>
               </div>
             </div>
           </div>
           <div class="h-full flex items-center">
-            <RouterLink to="/shop?gender=women" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all">WOMEN</RouterLink>
+            <RouterLink to="/shop?gender=women" class="hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-colors">WOMEN</RouterLink>
           </div>
           <div class="h-full flex items-center">
-            <RouterLink to="/shop?sale=true" class="hover:border-b-2 hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-all text-brand-red">SALE</RouterLink>
+            <RouterLink to="/shop?sale=true" class="hover:border-black dark:hover:border-white h-full flex items-center px-1 border-b-2 border-transparent transition-colors text-brand-red">SALE</RouterLink>
           </div>
         </nav>
 
@@ -114,14 +128,14 @@ const handleLogout = () => {
 
 
           <!-- Search Icon -->
-          <button @click="searchStore.toggleSearch" class="hidden lg:flex p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Search">
+          <button @click="searchStore.toggleSearch" class="hidden lg:flex size-10 items-center justify-center hover:text-gray-600 transition-colors focus:outline-none" aria-label="Search">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
           </button>
 
           <!-- Theme Toggle -->
-          <button @click="toggleTheme" class="p-1 hover:text-gray-600 transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+          <button @click="toggleTheme" class="size-10 flex items-center justify-center hover:text-gray-600 transition-colors focus:outline-none" :aria-label="isDark ? 'Use light mode' : 'Use dark mode'">
             <svg v-if="isDark" class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
             </svg>
@@ -133,19 +147,19 @@ const handleLogout = () => {
           <!-- Account (Auth-aware) -->
           <template v-if="authStore.isAuthenticated && authStore.user">
             <div class="relative group/account">
-              <button class="p-1 hover:text-gray-600 transition-colors flex items-center focus:outline-none cursor-pointer">
+              <button class="size-10 hover:text-gray-600 transition-colors flex items-center justify-center focus:outline-none cursor-pointer" aria-label="Account menu">
                 <svg class="w-[26px] h-[26px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
               </button>
-              <div class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-charcoal border border-gray-100 dark:border-gray-700 shadow-lg rounded-md p-2 hidden group-hover/account:block">
+              <div class="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-charcoal border border-gray-100 dark:border-gray-700 shadow-lg rounded-md p-2 hidden group-hover/account:block group-focus-within/account:block">
                  <div class="px-4 py-2 text-sm font-bold border-b border-gray-100 dark:border-gray-700">{{ authStore.user.firstName }}</div>
                  <button @click="handleLogout" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800 text-red-600">Logout</button>
               </div>
             </div>
           </template>
           <template v-else>
-            <RouterLink to="/login" class="p-1 hover:text-gray-600 transition-colors tooltip flex items-center focus:outline-none" aria-label="Account">
+            <RouterLink to="/login" class="size-10 hover:text-gray-600 transition-colors tooltip flex items-center justify-center focus:outline-none" aria-label="Account">
                <svg class="w-[26px] h-[26px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                </svg>
@@ -155,7 +169,7 @@ const handleLogout = () => {
 
 
           <!-- Cart Toggle -->
-          <button @click="cartStore.openDrawer()" class="relative p-1 hover:text-gray-600 transition-colors focus:outline-none flex items-center" aria-label="Cart">
+          <button @click="cartStore.openDrawer()" class="relative size-10 hover:text-gray-600 transition-colors focus:outline-none flex items-center justify-center" aria-label="Cart">
             <div class="relative">
               <svg class="w-[28px] h-[28px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
@@ -179,10 +193,10 @@ const handleLogout = () => {
               type="text" 
               placeholder="Search products, materials, and more..." 
               class="w-full h-14 pl-12 pr-12 text-lg text-black dark:text-white bg-gray-50 dark:bg-gray-800 border-none rounded-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-black dark:focus:ring-white transition-shadow"
-              @keyup.enter="router.push('/shop'); searchStore.toggleSearch()"
+              @keyup.enter="submitSearch"
               autofocus
             >
-            <button @click="searchStore.toggleSearch()" class="absolute right-4 text-gray-500 hover:text-black dark:hover:text-white p-1">
+            <button @click="searchStore.closeSearch()" class="absolute right-4 size-10 text-gray-500 hover:text-black dark:hover:text-white flex items-center justify-center" aria-label="Close search">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -201,21 +215,22 @@ const handleLogout = () => {
         <!-- Top Bar inside Menu (Mimicking Navbar pill) -->
         <div class="px-3 md:px-5 pt-4 pb-2 w-full shrink-0">
           <div class="w-full mx-auto bg-white dark:bg-[#1a1a1a] rounded-[24px] h-[60px] flex items-center shadow-sm relative px-6">
-            <button @click="isMobileMenuOpen = false" class="p-2 -ml-2 text-gray-500 dark:text-gray-400" aria-label="Close menu">
+            <button @click="isMobileMenuOpen = false" class="size-10 -ml-2 text-gray-500 dark:text-gray-400 flex items-center justify-center" aria-label="Close menu">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
             
-            <span class="text-3xl font-serif lowercase tracking-tighter font-extrabold absolute left-1/2 -translate-x-1/2">next</span>
+            <img src="/logo-light.jpg" alt="Starz" class="h-7 object-contain absolute left-1/2 -translate-x-1/2 dark:hidden" />
+            <img src="/logo-dark.jpg" alt="Starz" class="h-7 object-contain mix-blend-screen absolute left-1/2 -translate-x-1/2 hidden dark:block" />
             
             <div class="absolute right-6 flex items-center space-x-3">
-              <button @click="searchStore.toggleSearch(); isMobileMenuOpen = false" class="p-1 text-black dark:text-white">
+              <button @click="searchStore.openSearch(); isMobileMenuOpen = false" class="size-10 text-black dark:text-white flex items-center justify-center" aria-label="Search">
                 <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
               </button>
-              <button @click="cartStore.openDrawer(); isMobileMenuOpen = false" class="relative p-1 text-black dark:text-white flex items-center">
+              <button @click="cartStore.openDrawer(); isMobileMenuOpen = false" class="relative size-10 text-black dark:text-white flex items-center justify-center" aria-label="Open cart">
                 <svg class="w-[24px] h-[24px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
                 </svg>

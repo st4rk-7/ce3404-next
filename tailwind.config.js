@@ -23,8 +23,8 @@ export default {
         'card': '0.75rem',
       },
       letterSpacing: {
-        'allbirds': '0.1em',
-        'allbirds-wide': '0.15em',
+        'wide-brand': '0.1em',
+        'wider-brand': '0.15em',
       },
     },
   },

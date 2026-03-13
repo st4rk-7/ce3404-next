@@ -26,12 +26,19 @@ const router = createRouter({
     {
       path: '/checkout',
       name: 'checkout',
-      component: () => import('../views/CheckoutView.vue')
+      component: () => import('../views/CheckoutView.vue'),
+      meta: { standalone: true }
     },
     {
       path: '/order-confirmation',
       name: 'order-confirmation',
-      component: () => import('../views/OrderConfirmationView.vue')
+      component: () => import('../views/OrderConfirmationView.vue'),
+      meta: { standalone: true }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFoundView.vue')
     }
   ],
   scrollBehavior() {

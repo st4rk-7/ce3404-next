@@ -5,16 +5,28 @@ export const useSearchStore = defineStore('search', () => {
     const query = ref('');
     const isSearchOpen = ref(false);
 
+    const openSearch = () => {
+        isSearchOpen.value = true;
+    };
+
+    const closeSearch = () => {
+        isSearchOpen.value = false;
+    };
+
+    const clearSearch = () => {
+        query.value = '';
+    };
+
     const toggleSearch = () => {
         isSearchOpen.value = !isSearchOpen.value;
-        if (!isSearchOpen.value) {
-            query.value = ''; // Optional: clear on close? User might want to keep it.
-        }
     };
 
     return {
         query,
         isSearchOpen,
+        openSearch,
+        closeSearch,
+        clearSearch,
         toggleSearch
     };
 });

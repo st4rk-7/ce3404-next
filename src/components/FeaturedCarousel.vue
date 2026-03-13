@@ -2,29 +2,31 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useCurrency } from '../composables/useCurrency';
+import { usePreferredReducedMotion } from '@vueuse/core';
 
 const { formatPrice } = useCurrency();
 
 const currentIndex = ref(0);
+const reducedMotion = usePreferredReducedMotion();
 
 const featuredProducts = [
   {
-    name: 'Cruiser Terralux™',
+    name: 'Urban Runner',
     color: 'Anthracite',
     price: 135,
-    image: 'https://www.allbirds.com/cdn/shop/files/A12416_26Q1_Dasher-NZ-Anthracite-Dark-Anthr_PDP_LEFT.png?v=1768948005&width=1024'
+    image: '/featured/featured-01.png'
   },
   {
-    name: 'Varsity Parchment',
+    name: 'Classic Low-Top',
     color: 'Parchment',
     price: 120,
-    image: 'https://www.allbirds.com/cdn/shop/files/A12270_26Q1_Mens-Varsity-Parchment-Blizzard-Sole_PDP_LEFT.png?v=1765307399&width=1024'
+    image: '/featured/featured-02.png'
   },
   {
-    name: 'Varsity Terralux™',
+    name: 'Premium Lace-Up',
     color: 'Toasted Coconut',
     price: 145,
-    image: 'https://www.allbirds.com/cdn/shop/files/A12317_26Q2_Varsity-Terralux-Toasted-Coconut-Toasted-Coconut-Sole_PDP_LEFT.png?v=1769456542&width=1024'
+    image: '/featured/featured-03.png'
   }
 ];
 
@@ -39,6 +41,7 @@ const next = () => {
 let timer: ReturnType<typeof setInterval> | null = null;
 
 onMounted(() => {
+  if (reducedMotion.value === 'reduce') return;
   timer = setInterval(() => {
     next();
   }, 5000);
@@ -66,6 +69,7 @@ const currentProduct = computed(() => featuredProducts[currentIndex.value]!);
             :key="currentIndex"
             :src="currentProduct.image"
             :alt="currentProduct.name"
+            loading="lazy"
             class="w-full h-full object-contain"
           />
         </Transition>
@@ -78,12 +82,14 @@ const currentProduct = computed(() => featuredProducts[currentIndex.value]!);
       <button
         @click="prev"
         class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 size-10 bg-white/90 dark:bg-black/60 hover:bg-white dark:hover:bg-black/80 rounded-full flex items-center justify-center shadow-md transition-colors"
+        aria-label="Previous featured product"
       >
         <svg class="w-4 h-4 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
       </button>
       <button
         @click="next"
         class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 size-10 bg-white/90 dark:bg-black/60 hover:bg-white dark:hover:bg-black/80 rounded-full flex items-center justify-center shadow-md transition-colors"
+        aria-label="Next featured product"
       >
         <svg class="w-4 h-4 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
       </button>
@@ -108,5 +114,8 @@ const currentProduct = computed(() => featuredProducts[currentIndex.value]!);
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter-active, .fade-leave-active { transition-duration: 0.01ms; }
 }
 </style>

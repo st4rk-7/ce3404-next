@@ -5,22 +5,22 @@ const categories = [
   {
     label: 'New Arrivals',
     to: '/shop',
-    image: 'https://www.allbirds.com/cdn/shop/files/26Q1_VaristyAiry_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_01_PDP.jpg?v=1771882088&width=1024'
+    image: '/banners/category-01.jpg'
   },
   {
     label: 'Mens',
     to: '/shop?gender=men',
-    image: 'https://www.allbirds.com/cdn/shop/files/26Q1_VaristyAiry_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_02_PDP.jpg?v=1771882088&width=1024'
+    image: '/banners/category-02.jpg'
   },
   {
     label: 'Womens',
     to: '/shop?gender=women',
-    image: 'https://www.allbirds.com/cdn/shop/files/26Q1_VaristyAiry_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_03_PDP_v2.jpg?v=1771882088&width=1024'
+    image: '/banners/category-03.jpg'
   },
   {
     label: 'Bestsellers',
-    to: '/shop',
-    image: 'https://www.allbirds.com/cdn/shop/files/26Q1_VaristyAiry_Site_Homepage_CategoryRow-01_Desktop-Mobile_2x3_04_PDP.jpg?v=1771882088&width=1024'
+    to: '/shop?sort=BEST%20SELLING',
+    image: '/banners/category-04.jpg'
   }
 ];
 </script>
@@ -32,11 +32,12 @@ const categories = [
         v-for="cat in categories"
         :key="cat.label"
         :to="cat.to"
-        class="group relative bg-[#F5F4F0] overflow-hidden aspect-[4/5] md:aspect-[3/4] transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-lg hover:rounded-[150px] shadow-sm hover:shadow-lg"
+        class="group relative bg-[#F5F4F0] overflow-hidden aspect-[4/5] md:aspect-[3/4] transition-[border-radius,box-shadow] duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-lg hover:rounded-3xl shadow-sm hover:shadow-lg"
       >
         <img
           :src="cat.image"
           :alt="cat.label"
+          loading="lazy"
           class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
         />
         <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>

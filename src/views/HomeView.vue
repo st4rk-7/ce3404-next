@@ -1,26 +1,34 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ProductGrid from '../components/ProductGrid.vue';
-import SidebarFilter from '../components/SidebarFilter.vue'; // Will refactor this inside the new filter drawer soon
+import SidebarFilter from '../components/SidebarFilter.vue';
 import { useProducts } from '../composables/useProducts';
 import { useSearchStore } from '../stores/search';
 import { useFilterStore } from '../stores/filter';
 
-const { products, isLoading, fetchProducts } = useProducts();
+const { products, isLoading, error, fetchProducts } = useProducts();
 const searchStore = useSearchStore();
 const filterStore = useFilterStore();
 const route = useRoute();
 const router = useRouter();
 const isFilterOpen = ref(false);
+const sortOptions = ['FEATURED', 'BEST SELLING', 'ALPHABETICALLY, A-Z', 'ALPHABETICALLY, Z-A', 'PRICE, LOW TO HIGH', 'PRICE, HIGH TO LOW', 'DATE, OLD TO NEW', 'DATE, NEW TO OLD'];
 
 // Dynamic Page Title
 const pageTitle = computed(() => {
     const gender = route.query.gender;
-    if (gender === 'women') return "Women's Sale";
-    if (gender === 'men') return "Men's Sale";
+    const isSale = route.query.sale === 'true';
+    if (gender === 'women') return isSale ? "Women's Sale" : "Women's Shoes";
+    if (gender === 'men') return isSale ? "Men's Sale" : "Men's Shoes";
+    if (isSale) return 'Sale';
     return "New Arrivals";
 });
+
+const pageSubtitle = computed(() => route.query.sale === 'true'
+    ? "Shop discounted styles and colors while they're still available."
+    : 'Discover the latest sneakers, colorways, and everyday essentials.'
+);
 
 // Filter Logic: Search + Category + Sidebar Filters
 const filteredProducts = computed(() => {
@@ -42,6 +50,15 @@ const filteredProducts = computed(() => {
         result = result.filter(p => p.tags && tagArray.some(t => p.tags!.includes(t)));
     }
 
+    const productType = route.query.type;
+    if (typeof productType === 'string') {
+        result = result.filter(p => p.productType === productType);
+    }
+
+    if (route.query.sale === 'true') {
+        result = result.filter(p => p.discountPercentage > 0);
+    }
+
     if (searchStore.query) {
         const query = searchStore.query.toLowerCase();
         result = result.filter(p => p.title.toLowerCase().includes(query));
@@ -53,7 +70,7 @@ const filteredProducts = computed(() => {
     // ----------------------------------------
     // Pinia FilterStore (New UI Mega Filter)
     // ----------------------------------------
-    const { size, color, price, productType, material } = filterStore.activeFilters;
+    const { size, color, price, productType: selectedProductTypes, material } = filterStore.activeFilters;
 
     if (size && size.length > 0) {
         result = result.filter(p => p.sizes && p.sizes.some(s => size.includes(s)));
@@ -61,8 +78,8 @@ const filteredProducts = computed(() => {
     if (color && color.length > 0) {
         result = result.filter(p => p.colors && p.colors.some(c => color.includes(c)));
     }
-    if (productType && productType.length > 0) {
-        result = result.filter(p => p.productType && productType.includes(p.productType));
+    if (selectedProductTypes && selectedProductTypes.length > 0) {
+        result = result.filter(p => p.productType && selectedProductTypes.includes(p.productType));
     }
     if (material && material.length > 0) {
         result = result.filter(p => p.material && material.includes(p.material));
@@ -111,6 +128,18 @@ const filteredProducts = computed(() => {
 onMounted(async () => {
     await fetchProducts();
 });
+
+watch(() => route.query.sort, (sort) => {
+    if (typeof sort === 'string' && sortOptions.includes(sort)) {
+        filterStore.setSort(sort);
+    } else if (sort === undefined) {
+        filterStore.setSort('FEATURED');
+    }
+}, { immediate: true });
+
+const handleSortChange = (event: Event) => {
+    filterStore.setSort((event.target as HTMLSelectElement).value);
+};
 </script>
 
 <template>
@@ -121,18 +150,24 @@ onMounted(async () => {
             
             <!-- Page Header: Title & Subtitle -->
             <div class="text-center mb-10 max-w-2xl mx-auto">
-                <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-black dark:text-white">{{ pageTitle }}</h1>
-                <p class="text-sm md:text-base text-gray-600 dark:text-gray-400">
-                    Stock up and shop these last-chance styles and colors before they're gone for good.
-                </p>
+                <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-black dark:text-white text-balance">{{ pageTitle }}</h1>
+                <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 text-pretty">{{ pageSubtitle }}</p>
+                <button
+                    v-if="searchStore.query"
+                    @click="searchStore.clearSearch()"
+                    class="mt-4 text-xs font-bold uppercase tracking-widest underline underline-offset-4"
+                >
+                    Clear search “{{ searchStore.query }}”
+                </button>
             </div>
 
-            <!-- New Filter/Sort Bar (Allbirds style) -->
+            <!-- Filter/Sort Bar -->
             <div class="bg-[#EAE8E2] dark:bg-[#2A2A2A] rounded-full px-3 py-2 flex justify-between items-center mb-10 relative shadow-sm">
                 
                 <!-- Left: Filter Toggle -->
                 <button 
                     @click="isFilterOpen = !isFilterOpen"
+                    :aria-expanded="isFilterOpen"
                     class="flex items-center gap-3 text-[13px] font-bold tracking-tight px-2 py-1 rounded-full hover:bg-white/50 dark:hover:bg-gray-700 transition-colors text-[#111111] dark:text-white"
                 >
                     <div class="w-8 h-8 rounded-full border border-[#111111] dark:border-white flex items-center justify-center">
@@ -147,43 +182,40 @@ onMounted(async () => {
                 <!-- Right: MEN/WOMEN Toggle & Sort Dropdown -->
                 <div class="flex items-center gap-4">
                     
-                    <!-- FEATURED Dropdown -->
-                    <div class="relative group">
-                        <button class="bg-transparent text-[#111111] dark:text-white flex items-center gap-2 text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-2 rounded-full hover:bg-white/50 dark:hover:bg-gray-700 transition-colors border border-[#111111] dark:border-white uppercase shadow-sm">
-                            {{ filterStore.activeSort }}
-                            <div class="w-5 h-5 rounded-full border border-[#111111] dark:border-white flex items-center justify-center ml-2">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </div>
-                        </button>
-
-                        <!-- Dropdown Menu -->
-                        <div class="absolute right-0 top-full mt-2 w-64 bg-charcoal text-white rounded-md shadow-2xl hidden group-hover:block z-50 overflow-hidden border border-gray-700">
-                            <ul class="text-xs font-bold tracking-widest uppercase py-2">
-                                <li @click="filterStore.setSort(option)" 
-                                    v-for="option in ['FEATURED', 'BEST SELLING', 'ALPHABETICALLY, A-Z', 'ALPHABETICALLY, Z-A', 'PRICE, LOW TO HIGH', 'PRICE, HIGH TO LOW', 'DATE, OLD TO NEW', 'DATE, NEW TO OLD']" 
-                                    :key="option" 
-                                    :class="option === filterStore.activeSort ? 'bg-[#1F51FF] hover:bg-blue-600' : 'hover:bg-gray-800'"
-                                    class="px-6 py-3 cursor-pointer transition-colors"
-                                >
-                                    {{ option }}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <label class="relative">
+                        <span class="sr-only">Sort products</span>
+                        <select
+                            :value="filterStore.activeSort"
+                            @change="handleSortChange"
+                            class="h-10 max-w-44 md:max-w-none appearance-none bg-transparent text-[#111111] dark:text-white text-[10px] md:text-[11px] font-bold tracking-widest pl-4 pr-9 rounded-full hover:bg-white/50 dark:hover:bg-gray-700 transition-colors border border-[#111111] dark:border-white uppercase shadow-sm cursor-pointer"
+                        >
+                            <option v-for="option in sortOptions" :key="option" :value="option" class="bg-white text-black">
+                                {{ option }}
+                            </option>
+                        </select>
+                        <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </label>
 
                     <!-- MEN / WOMEN Toggle -->
                     <div class="hidden md:flex items-center border border-[#111111] dark:border-white rounded-full p-1 bg-transparent shadow-sm">
+                        <button
+                            @click="router.push('/shop')"
+                            :class="!route.query.gender ? 'bg-[#111111] dark:bg-white text-white dark:text-black' : 'text-[#111111] dark:text-white hover:bg-black/5 dark:hover:bg-white/20'"
+                            class="text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full transition-[background-color,color]"
+                        >
+                            ALL
+                        </button>
                         <button 
                             @click="router.push('/shop?gender=men')"
-                            :class="route.query.gender === 'men' || !route.query.gender ? 'bg-[#111111] dark:bg-white text-white dark:text-black' : 'text-[#111111] dark:text-white hover:bg-black/5 dark:hover:bg-white/20'"
-                            class="text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full transition-all"
+                            :class="route.query.gender === 'men' ? 'bg-[#111111] dark:bg-white text-white dark:text-black' : 'text-[#111111] dark:text-white hover:bg-black/5 dark:hover:bg-white/20'"
+                            class="text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full transition-[background-color,color]"
                         >
                             MEN
                         </button>
                         <button 
                             @click="router.push('/shop?gender=women')"
                             :class="route.query.gender === 'women' ? 'bg-[#111111] dark:bg-white text-white dark:text-black' : 'text-[#111111] dark:text-white hover:bg-black/5 dark:hover:bg-white/20'"
-                            class="text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full transition-all"
+                            class="text-[10px] md:text-[11px] font-bold tracking-widest px-4 py-1.5 uppercase rounded-full transition-[background-color,color]"
                         >
                             WOMEN
                         </button>
@@ -212,12 +244,10 @@ onMounted(async () => {
 
             <!-- Product Grid -->
             <div class="w-full relative z-20">
-                <ProductGrid :products="filteredProducts" :is-loading="isLoading" />
+                <ProductGrid :products="filteredProducts" :is-loading="isLoading" :error="error" @retry="fetchProducts" />
             </div>
 
         </div>
     </main>
   </div>
 </template>
-
-

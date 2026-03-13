@@ -11,7 +11,6 @@ const addedSize = ref<string | null>(null);
 const handleQuickAdd = (size: string) => {
     addedSize.value = size;
     cartStore.addToCart(props.product, size);
-    cartStore.openDrawer();
     
     // Reset checkmark after 1.5s
     setTimeout(() => {
@@ -43,7 +42,7 @@ const hasDiscount = computed(() => {
 const handleImageError = (e: Event) => {
     const target = e.target as HTMLImageElement;
     // Fallback to a reliable placeholder if the main image fails
-    target.src = 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80';
+    target.src = '/shoes/shoe-01a.webp';
 };
 
 </script>
@@ -61,19 +60,20 @@ const handleImageError = (e: Event) => {
       <img
         :src="product.thumbnail"
         :alt="product.title"
+        loading="lazy"
         @error="handleImageError"
         class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
       />
       
       <!-- Hover Size Selector Overlay (Desktop) -->
-      <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-charcoal bg-opacity-95 dark:bg-opacity-95 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 border-t border-gray-100 dark:border-gray-800 px-4 py-4 z-20">
+      <div class="hidden md:block absolute bottom-0 left-0 w-full bg-white dark:bg-charcoal bg-opacity-95 dark:bg-opacity-95 transform translate-y-full group-hover:translate-y-0 group-focus-within:translate-y-0 transition-transform duration-300 border-t border-gray-100 dark:border-gray-800 px-4 py-4 z-20">
           <p class="text-xs font-bold uppercase tracking-widest text-center mb-3 dark:text-white">Quick Add</p>
           <div class="grid grid-cols-5 gap-2 relative z-30">
               <button 
-                  v-for="size in ['8', '9', '10', '11', '12', '13', '14']" 
+                  v-for="size in product.sizes.slice(0, 5)"
                   :key="size" 
                   @click.prevent="handleQuickAdd(size)"
-                  class="border border-gray-300 dark:border-gray-600 rounded hover:border-black dark:hover:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors text-xs py-1.5 font-bold flex justify-center items-center h-8 dark:text-white"
+                  class="border border-gray-300 dark:border-gray-600 rounded hover:border-black dark:hover:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors text-xs font-bold flex justify-center items-center min-h-10 dark:text-white"
               >
                   <template v-if="addedSize === size">
                       <svg class="w-4 h-4 text-brand-blue dark:text-white animate-fade-in" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -109,12 +109,9 @@ const handleImageError = (e: Event) => {
          </div>
       </RouterLink>
       
-      <!-- Color Swatches (Mock) -->
-      <div class="flex items-center gap-1.5 mt-4">
-          <div class="w-4 h-4 rounded-full bg-[#3d3d3d] border border-gray-200 dark:border-gray-600"></div>
-          <div class="w-4 h-4 rounded-full bg-[#dddcd8] border border-gray-200 dark:border-gray-600"></div>
-          <div class="w-4 h-4 rounded-full bg-[#7a2c2c] border border-gray-200 dark:border-gray-600"></div>
-          <span class="text-[10px] text-gray-500 dark:text-gray-400 ml-1 font-medium tracking-wide">+5 Colors</span>
+      <div class="flex items-center gap-1.5 mt-4" :aria-label="`${product.colors.length} available colors`">
+          <span v-for="color in product.colors.slice(0, 4)" :key="color" class="w-4 h-4 rounded-full border border-gray-300 dark:border-gray-600" :style="{ backgroundColor: color }" />
+          <span class="text-[10px] text-gray-500 dark:text-gray-400 ml-1 font-medium tracking-wide">{{ product.colors.length }} {{ product.colors.length === 1 ? 'Color' : 'Colors' }}</span>
       </div>
     </div>
     

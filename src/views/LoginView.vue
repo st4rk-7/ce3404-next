@@ -18,8 +18,8 @@ const handleLogin = async () => {
   try {
     await authStore.login(username.value, password.value);
     router.push('/');
-  } catch (e) {
-    error.value = 'Invalid username or password';
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : 'Unable to sign in. Please try again.';
   } finally {
     isLoading.value = false;
   }
@@ -33,10 +33,12 @@ const handleLogin = async () => {
 
       <form @submit.prevent="handleLogin" class="space-y-6">
         <div>
-          <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Username</label>
+          <label for="username" class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Username</label>
           <input 
+            id="username"
             v-model="username"
             type="text" 
+            autocomplete="username"
             placeholder="emilys"
             required
             class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"
@@ -44,17 +46,19 @@ const handleLogin = async () => {
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Password</label>
+          <label for="password" class="block text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Password</label>
           <input 
+            id="password"
             v-model="password"
             type="password" 
+            autocomplete="current-password"
             placeholder="emilyspass"
             required
             class="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-4 py-3 text-sm focus:outline-none focus:border-black dark:focus:border-white transition-colors"
           />
         </div>
 
-        <div v-if="error" class="text-red-500 text-xs text-center">
+        <div v-if="error" role="alert" class="text-red-500 text-xs text-center">
           {{ error }}
         </div>
 

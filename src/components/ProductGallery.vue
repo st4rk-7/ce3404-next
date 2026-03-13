@@ -36,6 +36,7 @@ defineProps<{
           :src="image" 
           :alt="`${product.title} - View ${index + 1}`"
           class="w-full h-auto object-cover rounded-xl"
+          loading="lazy"
         />
       </div>
     </div>
@@ -51,4 +52,3 @@ defineProps<{
   scrollbar-width: none;  /* Firefox */
 }
 </style>
-

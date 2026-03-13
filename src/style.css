@@ -6,6 +6,8 @@
   /* Set a nice base font manually or use font-sans later */
   font-family: "Geograph", "Helvetica Neue", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html,
@@ -42,4 +44,15 @@ body {
 /* Scrollbar polish (Bonus point for UI) */
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

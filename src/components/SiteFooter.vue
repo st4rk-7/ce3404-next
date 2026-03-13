@@ -3,10 +3,11 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const email = ref('');
+const subscribed = ref(false);
 
 const subscribe = () => {
-    console.log('Subscribe:', email.value);
     email.value = '';
+    subscribed.value = true;
 };
 </script>
 
@@ -35,6 +36,7 @@ const subscribe = () => {
                     Sign Up
                 </button>
             </form>
+            <p v-if="subscribed" role="status" class="text-xs text-gray-300 text-pretty">Thanks! This portfolio demo does not send or store your email.</p>
         </div>
 
         <div class="hidden lg:block lg:col-span-2"></div>
@@ -47,9 +49,9 @@ const subscribe = () => {
                 <h3 class="text-xs font-bold uppercase tracking-widest font-sans">Help</h3>
                 <ul class="space-y-3 font-normal text-gray-300">
                     <li><a href="tel:94712121201" class="hover:text-white transition-colors">94712121201</a></li>
-                    <li><a href="mailto:help@next.com" class="hover:text-white transition-colors">help@next.com</a></li>
-                    <li><RouterLink to="/shop" class="hover:text-white transition-colors">Returns/Exchanges</RouterLink></li>
-                    <li><RouterLink to="/shop" class="hover:text-white transition-colors">FAQ/Contact Us</RouterLink></li>
+                    <li><a href="mailto:help@starz.com" class="hover:text-white transition-colors">help@starz.com</a></li>
+                    <li><span class="text-gray-400">30-day returns</span></li>
+                    <li><span class="text-gray-400">Customer support</span></li>
                 </ul>
             </div>
 
@@ -77,31 +79,11 @@ const subscribe = () => {
       <div class="mt-16 pt-8 text-[10px] md:text-xs">
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               
-              <!-- Social Links -->
-              <div class="space-y-4">
-                  <h3 class="font-bold uppercase tracking-widest font-sans">Follow the Flock</h3>
-                  <div class="flex items-center gap-4">
-                      <!-- Simplified placeholder icons for socials to match the circles in the inspiration -->
-                      <a href="#" class="w-8 h-8 rounded-full border border-gray-400 flex justify-center items-center hover:bg-white hover:text-black transition-colors" aria-label="Instagram">
-                        <span class="font-serif">IG</span>
-                      </a>
-                      <a href="#" class="w-8 h-8 rounded-full border border-gray-400 flex justify-center items-center hover:bg-white hover:text-black transition-colors" aria-label="Pinterest">
-                        <span class="font-serif">PT</span>
-                      </a>
-                      <a href="#" class="w-8 h-8 rounded-full border border-gray-400 flex justify-center items-center hover:bg-white hover:text-black transition-colors" aria-label="Twitter">
-                        <span class="font-serif">X</span>
-                      </a>
-                      <a href="#" class="w-8 h-8 rounded-full border border-gray-400 flex justify-center items-center hover:bg-white hover:text-black transition-colors" aria-label="Facebook">
-                        <span class="font-serif">FB</span>
-                      </a>
-                  </div>
-              </div>
+              <p class="text-gray-400 text-pretty">A portfolio storefront built to demonstrate a complete shopping flow.</p>
 
               <!-- Badges / Extras (Placeholder for B Corp, etc) -->
               <div class="flex gap-4">
-                  <p class="text-gray-400">&copy; 2026 NEXT by shewon ss 5893. All Rights Reserved.</p>
-                  <a href="#" class="text-gray-400 hover:text-white underline">Terms</a>
-                  <a href="#" class="text-gray-400 hover:text-white underline">Privacy</a>
+                  <p class="text-gray-400">&copy; 2026 Starz by shewon ss 5893. All Rights Reserved.</p>
               </div>
           </div>
       </div>

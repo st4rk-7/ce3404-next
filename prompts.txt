@@ -1,0 +1,116 @@
+The aim 01: Plan the project before I start coding
+Actual prompt: I need to make a small Vue 3 SPA for my CS3404 project. I want to use Tailwind and DummyJSON. Can you help me make a simple step-by-step plan so I understand what to build first?
+
+The aim 02: Set up the project with Bun
+Actual prompt: I want to use Bun for this project. What commands should I use to start a Vue 3 project with TypeScript and Tailwind CSS?
+
+The aim 03: Understand a Tailwind setup error
+Actual prompt: Tailwind gave me an error when I tried to run the init command. I am new to this setup. Can you explain what the error means and what I should try next?
+
+The aim 04: Replace the default Vite styles
+Actual prompt: I have the default Vite CSS file. How do I replace it with the Tailwind directives and connect it to my Vue app?
+
+The aim 05: Type the product data from DummyJSON
+Actual prompt: I am fetching products from DummyJSON. Can you help me write TypeScript interfaces for the fields I will use, such as id, title, price, image, and category?
+
+The aim 06: Make a small products composable
+Actual prompt: I want to keep the API code out of my components. How can I make a useProducts composable with loading, error, and product data using Axios?
+
+The aim 07: Build my first product card
+Actual prompt: Can you show me how to make a ProductCard component that receives one product as a prop and displays its image, name, and price with a small hover effect?
+
+The aim 08: Add search and a category filter
+Actual prompt: I have a list of products on the page. What is a clear Vue computed-property approach for searching by title and filtering by category?
+
+The aim 09: Understand what pages an SPA needs
+Actual prompt: I am confused about the term single-page application. Should my shop and checkout still be separate Vue Router views, or should everything be inside App.vue?
+
+The aim 10: Learn the Vue ideas I need for the viva
+Actual prompt: I want to understand my own code for the viva. Which Vue ideas should I practise first, especially props, emits, computed values, lifecycle hooks, and Pinia?
+
+The aim 11: Choose a suitable shop design
+Actual prompt: I am making a shoe shop and want it to look focused rather than like a general store. What simple design direction would be realistic for a student project?
+
+The aim 12: Show more products when the API has few shoes
+Actual prompt: DummyJSON does not give me enough shoe products for a full grid. Is it acceptable to make local presentation copies, and how can I do that without pretending they came from a different API?
+
+The aim 13: Keep the layout simple and clean
+Actual prompt: I am deciding between a complicated product layout and a simpler grid. Which one is easier to make responsive and polished with Tailwind?
+
+The aim 14: Deploy the Vue app to Netlify
+Actual prompt: I want to deploy this Vue app with Bun to Netlify. What build settings should I use, and how do I stop a direct product URL from showing a page-not-found error after refresh?
+
+The aim 15: Check my progress against the project requirements
+Actual prompt: I have made several commits and the main pages are starting to work. Can you help me compare what I have with the CS3404 requirements and make a sensible list of what is still missing?
+
+The aim 16: Add a simple login simulation
+Actual prompt: I want to try the DummyJSON login endpoint. Can you explain how to keep the logged-in user and token in a Pinia store and localStorage without making this a real security system?
+
+The aim 17: Add small, useful transitions
+Actual prompt: My pages work but feel abrupt. What small Vue or Tailwind transitions would make the cart and buttons feel smoother without adding complicated animation code?
+
+The aim 18: Improve the small details of the interface
+Actual prompt: Can you point out a few practical details that would make my shoe shop feel more finished, such as loading states, breadcrumbs, focus states, and clear empty states?
+
+The aim 19: Make the shop page easier to browse
+Actual prompt: My shop page is crowded. How can I add a clear heading, a filter area, and a comfortable product grid while keeping it usable on a phone?
+
+The aim 20: Build the home page sections in order
+Actual prompt: I want to build the home page one section at a time. What is a sensible order for a hero, categories, featured products, new arrivals, and collection links?
+
+The aim 21: Connect the sidebar to Pinia filters
+Actual prompt: I already have a filter store, but changing a checkbox does not update the products correctly. Can you help me trace the state and make the size, color, price, type, material, and sort options work?
+
+The aim 22: Organise the Figma file
+Actual prompt: I need a Figma prototype for this project. How should I organise the pages and screens so a marker can understand the desktop and mobile versions?
+
+The aim 23: Make a small visual style guide
+Actual prompt: I am using charcoal, natural white, red, and a serif heading font. What should I include in a simple Figma style guide so my screens stay consistent?
+
+The aim 24: Explain the local presentation data honestly
+Actual prompt: I changed some API presentation data and used local shoe images because the API is limited. How can I explain that clearly in my report without claiming the data came directly from DummyJSON?
+
+The aim 25: Show light and dark screens in Figma
+Actual prompt: What is a clear way to arrange my Figma screens for desktop, mobile, light mode, and dark mode so I do not lose track of the different versions?
+
+The aim 26: Remember where I left the project
+Actual prompt: I have not opened this project for a while and I cannot remember where I stopped. Can you read the project context and tell me what is already complete and what I should do next?
+
+The aim 27: Confirm the unfinished home hero work
+Actual prompt: Before we make a new plan, was I working on the home page hero with custom shoe videos?
+
+The aim 28: Decide how to handle different video shapes
+Actual prompt: I am confused about which hero videos to use. Their aspect ratios are different and I am not sure they belong in the same carousel. What would look best on the page?
+
+The aim 29: Preview the two hero videos
+Actual prompt: I added two candidate videos. Can you run the project with them so I can see how they look before I decide?
+
+The aim 30: Use the new hero files for now
+Actual prompt: I added heroo1, heroo2, and heroo3 MP4 files in the image folder. Please use heroo1 and heroo3 for the current hero so I can test them.
+
+The aim 31: Apply the hero plan
+Actual prompt: I have chosen the two videos. Please implement the plan we discussed for using them in the home page hero.
+
+The aim 32: Continue after checking the first result
+Actual prompt: Please continue with the remaining changes.
+
+The aim 33: Fix the carousel not changing videos
+Actual prompt: Only one video seems to play. When I use the slider or an arrow, the video does not switch. Can you find out why and fix it?
+
+The aim 34: Make the dark logo fit the dark header
+Actual prompt: The dark-mode logo has a pure black background, but the dark header is a softer grey. How can I make the logo look like it belongs there?
+
+The aim 35: Remove the section I no longer want
+Actual prompt: I do not want this value-proposition section on the home page anymore. Please remove it without breaking the rest of the layout.
+
+The aim 36: Look for unfinished parts and bugs
+Actual prompt: The main pages are working now, but I want to submit a better project. Can you inspect it and list the unfinished features, fake buttons, confusing states, and accessibility or performance problems?
+
+The aim 37: Work through the problems one at a time
+Actual prompt: Please fix the problems one by one instead of changing everything at once. When the fixes are complete, make the final commit within three days of the previous commit.
+
+The aim 38: Check whether the report files are actually required
+Actual prompt: I found a Report.html file in the project. Is it required by the assignment, or is it just an extra file that can stay local?
+
+The aim 39: Read the official assignment PDF
+Actual prompt: I found the official Mini Project Vue SPA Challenge PDF at file:///home/st4rk/Downloads/Mini%20Project%20Vue%20SPA%20Challenge.pdf. Can you read the submission requirements and compare them with my project?

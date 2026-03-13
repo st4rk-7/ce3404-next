@@ -16,6 +16,15 @@ export interface LoginResponse extends AuthUser {
   refreshToken: string;
 }
 
+const isTokenExpired = (value: string) => {
+  try {
+    const payload = JSON.parse(atob(value.split('.')[1]!.replace(/-/g, '+').replace(/_/g, '/'))) as { exp?: number };
+    return typeof payload.exp !== 'number' || payload.exp * 1000 <= Date.now();
+  } catch {
+    return true;
+  }
+};
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<AuthUser | null>(null);
   const token = ref<string | null>(null);
@@ -24,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
   const storedUser = localStorage.getItem('auth_token') ? localStorage.getItem('user_data') : null;
   const storedToken = localStorage.getItem('auth_token');
 
-  if (storedUser && storedToken) {
+  if (storedUser && storedToken && !isTokenExpired(storedToken)) {
     try {
       user.value = JSON.parse(storedUser);
       token.value = storedToken;
@@ -33,19 +42,30 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user_data');
     }
+  } else if (storedUser || storedToken) {
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_data');
   }
 
   const isAuthenticated = computed(() => !!token.value);
 
   async function login(username: string, password: string): Promise<boolean> {
-    const response = await fetch('https://dummyjson.com/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
+    let response: Response;
+    try {
+      response = await fetch('https://dummyjson.com/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, expiresInMins: 60 }),
+      });
+    } catch {
+      throw new Error('Unable to reach the login service. Check your connection and try again.');
+    }
 
     if (!response.ok) {
-      throw new Error('Invalid Credentials');
+      if (response.status === 400 || response.status === 401) {
+        throw new Error('Invalid username or password.');
+      }
+      throw new Error('The login service is temporarily unavailable.');
     }
 
     const data: LoginResponse = await response.json();
