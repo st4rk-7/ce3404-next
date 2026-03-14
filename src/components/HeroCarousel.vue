@@ -12,16 +12,16 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    subtitle: 'THE NEW SEASON COLLECTION',
-    headline: 'Fresh Air For Your Feet',
-    video: '/banners/hero-wide-1.mp4',
-    poster: '/banners/hero-01.jpg'
-  },
-  {
     subtitle: 'REDEFINE YOUR STRIDE',
     headline: 'Step Into Something New',
     video: '/banners/hero-wide-3.mp4',
     poster: '/banners/hero-02.jpg'
+  },
+  {
+    subtitle: 'THE NEW SEASON COLLECTION',
+    headline: 'Fresh Air For Your Feet',
+    video: '/banners/hero-wide-1.mp4',
+    poster: '/banners/hero-01.jpg'
   }
 ];
 
